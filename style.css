@@ -1,7 +1,7 @@
 /* Misc */
 :root {
     --kernel-purple: #300924;
-    --kernel-white: #d6e8ee;
+    --kernel-white: #dddddd;
     --kernel-gray: #2c2c2c;
 }
 
@@ -33,17 +33,17 @@ main {
 }
 
 h1 {
-    font-size: x-large;
+    font-size: larger;
 }
 
 h1 > span {
     background-color: currentColor;
     animation: blink 1s steps(2) infinite;
-    margin-left: 8px;
+    margin-left: 5px;
 }
 
 h2 {
-    font-size: larger;
+    font-size: large;
 }
 
 hr {
