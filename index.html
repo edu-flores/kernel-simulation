@@ -11,6 +11,7 @@
 </head>
 <body>
   <main>
+    <!-- Header -->
     <div id="header" class="flex">
       <pre>
   
@@ -30,19 +31,37 @@
       </div>
     </div>
     <hr>
+    <!-- Inputs -->
     <form>
-      <select name="" id=""></select>
-      <select name="" id=""></select>
+      <!-- Type -->
+      <select name="type" id="type">
+        <option value="scheduling">Algoritmos de scheduling</option>
+        <option value="pagination">Algoritmos de paginación</option>
+      </select>
+      <!-- Algorithm -->
+      <select name="algorithm" id="algorithm">
+        <option value="fcfs">First Come First Serve</option>
+        <option value="fifo">First In First Out</option>
+        <option value="rr">Round Robin</option>
+        <option value="sjf">Shortest Job First</option>
+        <option value="srt">Shortest Remaining Time</option>
+        <option value="hrrn">Highest Response-Ratio Next</option>
+        <option value="mfq">Multilevel Feedback Queues</option>
+      </select>
+      <!-- Process & Pagination -->
       <input type="number">
       <input type="number">
       <input type="number">
       <input type="number">
       <input type="number">
       <input type="number">
-      <button type="button">Start</button>
-      <button type="button">Stop</button>
+      <!-- Start & Stop -->
+      <button type="button">Ejecutar</button>
+      <button type="button">Interrumpir</button>
     </form>
+    <!-- Logs -->
     <div id="representation"></div>
+    <!-- Time -->
     <p>Tiempo: </p>
   </main>
   <script src="script.js"></script>

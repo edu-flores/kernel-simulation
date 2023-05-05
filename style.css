@@ -21,7 +21,7 @@
 body {
     margin: 1rem 3rem;
     background-color: black;
-    color: #d6e8ee;
+    color: var(--kernel-white);
     font-family: 'Ubuntu Mono', monospace;
 }
 
@@ -29,7 +29,7 @@ main {
     background-color: var(--kernel-purple);
     border-top: 30px solid var(--kernel-gray);
     border-radius: 0.5rem;
-    padding-top: 0.5rem;
+    padding: 0.5rem 2rem;
 }
 
 h1 {
