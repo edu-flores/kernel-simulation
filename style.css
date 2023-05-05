@@ -1,0 +1,63 @@
+/* Misc */
+:root {
+    --kernel-purple: #300924;
+    --kernel-white: #d6e8ee;
+    --kernel-gray: #2c2c2c;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 1rem 3rem;
+    background-color: black;
+    color: #d6e8ee;
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+main {
+    background-color: var(--kernel-purple);
+    border-top: 30px solid var(--kernel-gray);
+    border-radius: 0.5rem;
+    padding-top: 0.5rem;
+}
+
+h1 {
+    font-size: x-large;
+}
+
+h1 > span {
+    background-color: currentColor;
+    animation: blink 1s steps(2) infinite;
+    margin-left: 8px;
+}
+
+h2 {
+    font-size: larger;
+}
+
+hr {
+    border: 1px dashed currentColor;
+    
+}
+
+/* Classes */
+.flex {
+    display: flex;
+}
+
+/* IDs */
+#header {
+    justify-content: center;
+    gap: 3rem;
+}
