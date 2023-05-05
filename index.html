@@ -14,7 +14,6 @@
     <!-- Header -->
     <div id="header" class="flex">
       <pre>
-  
             .--.
            |o_o |
            |:_/ |
@@ -32,26 +31,28 @@
     </div>
     <hr>
     <!-- Inputs -->
-    <div class="flex" style="gap: 3rem;">
+    <div class="flex">
       <div>
           <form>
-          <!-- Type -->
-          <select name="type" id="type">
-            <option value="scheduling">Algoritmos de scheduling</option>
-            <option value="pagination">Algoritmos de paginación</option>
-          </select>
-          <!-- Algorithm -->
-          <select name="algorithm" id="algorithm">
-            <option value="fcfs">First Come First Serve</option>
-            <option value="fifo">First In First Out</option>
-            <option value="rr">Round Robin</option>
-            <option value="sjf">Shortest Job First</option>
-            <option value="srt">Shortest Remaining Time</option>
-            <option value="hrrn">Highest Response-Ratio Next</option>
-            <option value="mfq">Multilevel Feedback Queues</option>
-          </select>
+            <div class="flex mb" style="gap: 1rem;">
+            <!-- Type -->
+              <select name="type" id="type">
+                <option value="scheduling">Algoritmos de scheduling</option>
+                <option value="pagination">Algoritmos de paginación</option>
+              </select>
+              <!-- Algorithm -->
+              <select name="algorithm" id="algorithm">
+                <option value="fcfs">First Come First Serve</option>
+                <option value="fifo">First In First Out</option>
+                <option value="rr">Round Robin</option>
+                <option value="sjf">Shortest Job First</option>
+                <option value="srt">Shortest Remaining Time</option>
+                <option value="hrrn">Highest Response-Ratio Next</option>
+                <option value="mfq">Multilevel Feedback Queues</option>
+              </select>
+          </div>
           <!-- Process & Pagination -->
-          <table>
+          <table class="mb">
             <thead>
               <tr>
                 <th>ID</th>
