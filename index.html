@@ -32,37 +32,100 @@
     </div>
     <hr>
     <!-- Inputs -->
-    <form>
-      <!-- Type -->
-      <select name="type" id="type">
-        <option value="scheduling">Algoritmos de scheduling</option>
-        <option value="pagination">Algoritmos de paginación</option>
-      </select>
-      <!-- Algorithm -->
-      <select name="algorithm" id="algorithm">
-        <option value="fcfs">First Come First Serve</option>
-        <option value="fifo">First In First Out</option>
-        <option value="rr">Round Robin</option>
-        <option value="sjf">Shortest Job First</option>
-        <option value="srt">Shortest Remaining Time</option>
-        <option value="hrrn">Highest Response-Ratio Next</option>
-        <option value="mfq">Multilevel Feedback Queues</option>
-      </select>
-      <!-- Process & Pagination -->
-      <input type="number">
-      <input type="number">
-      <input type="number">
-      <input type="number">
-      <input type="number">
-      <input type="number">
-      <!-- Start & Stop -->
-      <button type="button">Ejecutar</button>
-      <button type="button">Interrumpir</button>
-    </form>
-    <!-- Logs -->
-    <div id="representation"></div>
-    <!-- Time -->
-    <p>Tiempo: </p>
+    <div class="flex" style="gap: 3rem;">
+      <div>
+          <form>
+          <!-- Type -->
+          <select name="type" id="type">
+            <option value="scheduling">Algoritmos de scheduling</option>
+            <option value="pagination">Algoritmos de paginación</option>
+          </select>
+          <!-- Algorithm -->
+          <select name="algorithm" id="algorithm">
+            <option value="fcfs">First Come First Serve</option>
+            <option value="fifo">First In First Out</option>
+            <option value="rr">Round Robin</option>
+            <option value="sjf">Shortest Job First</option>
+            <option value="srt">Shortest Remaining Time</option>
+            <option value="hrrn">Highest Response-Ratio Next</option>
+            <option value="mfq">Multilevel Feedback Queues</option>
+          </select>
+          <!-- Process & Pagination -->
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Atributo #1</th>
+                <th>Atributo #2</th>
+                <th>Atributo #3</th>
+                <th>Atributo #4</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+                <td><input type="number"></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Start & Stop -->
+          <button type="button">Ejecutar</button>
+          <button type="button">Interrumpir</button>
+        </form>
+      </div>
+      <!-- Visualization -->
+      <div style="width: 100%;">
+        <!-- Logs -->
+        <div id="visualization">
+          <p>Llego proceso: 0</p>
+          <p>Siguiente proceso: 3</p>
+          <p>Llego proceso: 3</p>
+          <p>Siguiente proceso: 1</p>
+          <p>Llego proceso: 6</p>
+          <p>Siguiente proceso: 2</p>
+        </div>
+        <!-- Time -->
+        <h3>Tiempo: <span>4</span></h3>
+      </div>
+    </div>
   </main>
   <script src="script.js"></script>
 </body>
