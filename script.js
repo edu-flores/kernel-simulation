@@ -40,15 +40,17 @@ const setAlgorithms = () => {
     algorithmSelector.value = "fcfs";
 };
 
-function Process(id, arrival, burst, status) {
-    this.id = id;
-    this.arrival = arrival;
-    this.burst = burst;
-    this.status = status;
+class Process {
+    constructor(id, arrival, burst, status) {
+        this.id = id;
+        this.arrival = arrival;
+        this.burst = burst;
+        this.status = status;
+    }
 }
 
 // List of all processes
-let processes =[
+let processes = [
     new Process(0, 0, 3, 0),
     new Process(1, 2, 5, 0),
     new Process(2, 4, 4, 0),
@@ -63,13 +65,11 @@ let currentTime = 0;
 let numProcesses = processes.length;
 let done = 0;
 
-while(done != numProcesses) {
+while (done != numProcesses) {
    
-    // document.getElementById('currentTime').innerHTML = currentTime;
-
     // See if new processes have arrived
     // Add them to queue if so
-    for(let i = 0; i < numProcesses; i++) {
+    for (let i = 0; i < numProcesses; i++) {
         if(processes[i].arrival <= currentTime && processes[i].status == 0) {
             queue.push(processes[i]);
             processes[i].status = 1;
@@ -80,14 +80,14 @@ while(done != numProcesses) {
 
     // Check if there are any processes on the queue
     // If not, continue
-    if(queue.length == 0) {
+    if (queue.length == 0) {
         console.log("Cola vacia");
         currentTime += 1;
         continue;
     }
 
     // If there is only one process, execute it
-    if(queue.length == 1) {
+    if (queue.length == 1) {
         console.log("-- Se ejecuto el proceso: ", queue[0].id, "--");
         currentTime += queue[0].burst;
         queue.pop();
@@ -96,7 +96,7 @@ while(done != numProcesses) {
     }
 
     // If there are more than one processes queued up, find next
-    if(queue.length > 1) {
+    if (queue.length > 1) {
         
         // Find next process
         let nextP = queue[0];
