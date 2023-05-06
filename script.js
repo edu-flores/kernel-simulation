@@ -41,20 +41,14 @@ const setAlgorithms = () => {
   algorithmSelector.value = "fcfs";
 };
 
-// Listen for new childs in the visualization div
-const observer = new MutationObserver(mutations => {
-  mutations.forEach(mutation => {
-    if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
-      // Handle added nodes
-      console.log("Child node(s) added to myDiv");
-    }
-  });
-});
-
-observer.observe(visualizationDiv, { childList: true });
-
+// Show in console
 const displayLog = (text) => {
   visualizationDiv.appendChild(document.createElement("p")).appendChild(document.createTextNode(text));
+}
+
+// Clear console
+const clearLogs = () => {
+  visualizationDiv.innerHTML = "";
 }
 
 /* Algorithms */
