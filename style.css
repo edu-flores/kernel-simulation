@@ -66,6 +66,7 @@ select {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     border: 0;
+    width: 16rem;
 }
 
 option:hover, option:checked {
@@ -119,4 +120,5 @@ button:active {
     width: 100%;
     height: 16rem;
     padding: 1rem 2rem;
+    overflow: auto;
 }
