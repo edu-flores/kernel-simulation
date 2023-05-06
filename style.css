@@ -2,7 +2,7 @@
 :root {
     --kernel-purple: #300924;
     --kernel-white: #dddddd;
-    --kernel-gray: #2c2c2c;
+    --kernel-gray: #504d46;
     --kernel-orange: #d7632c;
 }
 
@@ -22,17 +22,26 @@
 
 body {
     margin: 1rem 3rem;
-    background-color: black;
+    background-color: #6d0f3b;
     color: var(--kernel-white);
     font-family: 'Ubuntu Mono', monospace;
 }
 
+header {
+    background-color: var(--kernel-gray);
+    border-radius: 0.5rem 0.5rem 0 0;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+}
+
 main {
     background-color: var(--kernel-purple);
-    border-top: 30px solid var(--kernel-gray);
-    border-radius: 0.5rem;
     padding: 2rem 4rem;
     overflow: auto;
+    border-radius: 0 0 0.5rem 0.5rem;
 }
 
 h1 {
@@ -109,8 +118,27 @@ button:active {
     margin-bottom: 2rem;
 }
 
+.gray-circle {
+    border-radius: 100%;
+    background-color: #62615c;
+    width: 16px;
+    height: 15px;
+}
+
+.orange-circle {
+    border-radius: 100%;
+    background-color: #db5826;
+    width: 15px;
+    height: 15px;
+}
+
 /* IDs */
-#header {
+#controls {
+    display: flex;
+    gap: 5px;
+}
+
+#top {
     justify-content: center;
 }
 
