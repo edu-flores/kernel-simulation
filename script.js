@@ -77,6 +77,7 @@ const run = event => {
   event.preventDefault();
 
   // Run the function
+  currentTime = 0;
   clearLogs();
   const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
   selectedFunction();
@@ -109,11 +110,12 @@ let currentTime = 0;
 const fcfsScheduling = async () => {
   // List of all processes
   let processes = [
-    new Process(0, 0, 3, 0),
-    new Process(1, 2, 5, 0),
-    new Process(2, 4, 4, 0),
-    new Process(3, 6, 1, 0),
-    new Process(4, 8, 2, 0)
+    new Process(1, 0, 3, 0),
+    new Process(2, 2, 5, 0),
+    new Process(3, 4, 4, 0),
+    new Process(4, 6, 1, 0),
+    new Process(5, 8, 2, 0),
+    new Process(6, 8, 2, 0)
   ];
 
   // Queue, elements who have already arrived
@@ -139,6 +141,7 @@ const fcfsScheduling = async () => {
     if (queue.length == 0) {
       displayLog("Cola vacía");
       currentTime += 1;
+      timeSpan.textContent = currentTime;
       continue;
     }
 
@@ -147,6 +150,7 @@ const fcfsScheduling = async () => {
       displayLog("-- Se ejecuto el proceso: " + queue[0].id + " --");
       await sleep(1000);
       currentTime += queue[0].burst;
+      timeSpan.textContent = currentTime;
       queue.pop();
       done += 1;
       continue;
@@ -172,6 +176,7 @@ const fcfsScheduling = async () => {
 
       // Execute process
       currentTime += nextP.burst;
+      timeSpan.textContent = currentTime;
       done += 1;
 
       // Remove process from queue
