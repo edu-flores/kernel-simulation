@@ -120,9 +120,19 @@
             </table>
           </div>
           <!-- Start & Stop -->
-          <div class="flex" style="justify-content: space-between;">
-            <button type="submit">Ejecutar</button>
-            <button type="button">Interrumpir</button>
+          <div>
+            <button type="submit" style="display: block; width: 100%;">Ejecutar algoritmo</button>
+            <div id="interrupts">
+              <button type="button" disabled>Solicitud I/O</button>
+              <button type="button" disabled>Terminación Normal</button>
+              <button type="button" disabled>Solicitud Fecha</button>
+              <button type="button" disabled>Error Programa</button>
+              <button type="button" disabled>Quantum Expirado</button>
+              <button type="button" disabled>Interrupción Zombi</button>
+              <div></div>
+              <button type="button" disabled>Terminación Abrupta</button>
+              <div></div>
+            </div>
           </div>
         </form>
       </div>
