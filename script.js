@@ -77,6 +77,7 @@ const run = event => {
   event.preventDefault();
 
   // Run the function
+  clearLogs();
   const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
   selectedFunction();
 }
@@ -86,6 +87,11 @@ const run = event => {
   * ALGORITHMS 
   * 
   */
+
+// Sleep function to delay algorithms by milliseconds
+const sleep = ms => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 class Process {
   constructor(id, arrival, burst, status) {
@@ -100,7 +106,7 @@ class Process {
 let currentTime = 0;
 
 // First Come First Serve - Scheduling Algorithm
-const fcfsScheduling = () => {
+const fcfsScheduling = async () => {
   // List of all processes
   let processes = [
     new Process(0, 0, 3, 0),
@@ -125,6 +131,7 @@ const fcfsScheduling = () => {
         processes[i].status = 1;
         displayLog("Llego proceso: " + processes[i].id);
         displayLog("Tiempo de llegada: " + processes[i].arrival);
+        await sleep(1000);
       }
     }
     // Check if there are any processes on the queue
@@ -138,6 +145,7 @@ const fcfsScheduling = () => {
     // If there is only one process, execute it
     if (queue.length == 1) {
       displayLog("-- Se ejecuto el proceso: " + queue[0].id + " --");
+      await sleep(1000);
       currentTime += queue[0].burst;
       queue.pop();
       done += 1;
@@ -160,6 +168,7 @@ const fcfsScheduling = () => {
       }
       displayLog("Siguiente proceso: " + nextP.id + " con RR " + maxRR);
       displayLog("Tiempo actual: " + currentTime);
+      await sleep(1000);
 
       // Execute process
       currentTime += nextP.burst;
