@@ -4,6 +4,8 @@ const algorithmSelector = document.getElementById("algorithm");
 const visualizationDiv = document.getElementById("visualization");
 const timeSpan = document.getElementById("time-counter");
 const algorithmsForm = document.getElementById("algorithms-form");
+const submitButton = document.getElementById("submit-button");
+const interruptButtons = document.querySelectorAll(".interrupt-button");
 
 const schedulingAlgorithms = [
   { value: "fcfs", text: "First Come First Serve" },
@@ -44,16 +46,6 @@ const setAlgorithms = () => {
   algorithmSelector.value = "fcfs";
 };
 
-// Show in console
-const displayLog = text => {
-  visualizationDiv.appendChild(document.createElement("p")).appendChild(document.createTextNode(text));
-}
-
-// Clear console
-const clearLogs = () => {
-  visualizationDiv.innerHTML = "";
-}
-
 // Read time units from a file
 const readTime = event => {
   // Get file
@@ -72,14 +64,36 @@ const readTime = event => {
 }
 
 // Execute the selected algorithm
-const run = event => {
+const run = async (event) => {
   // Prevent page reloading
   event.preventDefault();
 
+  // Disable and enable start & stop buttons
+  submitButton.disabled = true;
+  interruptButtons.forEach(button => {
+    button.disabled = false;
+  });
+  
   // Run the function
   clearLogs();
   const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
-  selectedFunction();
+  await selectedFunction();
+
+  // Disable and enable start & stop buttons
+  submitButton.disabled = false;
+  interruptButtons.forEach(button => {
+    button.disabled = true;
+  });
+}
+
+// Show in console
+const displayLog = text => {
+  visualizationDiv.appendChild(document.createElement("p")).appendChild(document.createTextNode(text));
+}
+
+// Clear console
+const clearLogs = () => {
+  visualizationDiv.innerHTML = "";
 }
 
 /**
