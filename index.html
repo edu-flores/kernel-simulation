@@ -40,16 +40,16 @@
     <hr class="mb">
     <!-- Inputs -->
     <div class="flex">
-      <div style="width: 100%;">
+      <div class="w-100">
           <form id="algorithms-form" onsubmit="run(event)">
-            <div class="mb" style="height: 20rem;">
-              <div class="flex mb" style="justify-content: space-between;">
+            <div class="mb">
+              <div class="flex mb space-between">
               <!-- Type -->
                 <select name="type" id="type" onchange="setAlgorithms()">
                   <option value="scheduling">Algoritmos de scheduling</option>
                   <option value="pageReplacement">Algoritmos de paginación</option>
                 </select>
-                <!-- Algorithm -->
+                <!-- Algorithms -->
                 <select name="algorithm" id="algorithm">
                   <option value="fcfs">First Come First Serve</option>
                   <option value="fifo">First In First Out</option>
@@ -60,7 +60,7 @@
                   <option value="mfq">Multilevel Feedback Queues</option>
                 </select>
             </div>
-            <h2 style="text-align: center;">DEFINICIÓN DE PROCESOS</h2>
+            <h2 class="text-center">DEFINICIÓN DE PROCESOS</h2>
             <!-- Processes & Pages -->
             <table class="mb">
               <thead>
@@ -73,6 +73,7 @@
                 </tr>
               </thead>
               <tbody>
+                <!-- 1 -->
                 <tr>
                   <td>1</td>
                   <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
@@ -81,6 +82,7 @@
                   <td><input type="number" min="0" value="9" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                   <td><button class="delete" type="button">x</button></td>
                 </tr>
+                <!-- 2 -->
                 <tr>
                   <td>2</td>
                   <td><input type="number" min="0" value="8" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
@@ -89,6 +91,7 @@
                   <td><input type="number" min="0" value="7" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                   <td><button class="delete" type="button">x</button></td>
                 </tr>
+                <!-- 3 -->
                 <tr>
                   <td>3</td>
                   <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
@@ -105,7 +108,9 @@
           </div>
           <!-- Start & Stop -->
           <div>
-            <button type="submit" style="display: block; width: 100%;">Ejecutar algoritmo</button>
+            <!-- Start -->
+            <button type="submit" class="w-100">Ejecutar algoritmo</button>
+            <!-- Stop -->
             <div id="interrupts">
               <button type="button" disabled>Solicitud I/O</button>
               <button type="button" disabled>Terminación Normal</button>
@@ -121,7 +126,7 @@
         </form>
       </div>
       <!-- Visualization -->
-      <div style="width: 100%;">
+      <div class="w-100">
         <!-- Logs -->
         <div id="visualization"></div>
         <!-- Time -->
