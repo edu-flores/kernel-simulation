@@ -2,6 +2,7 @@
 const typeSelector = document.getElementById("type");
 const algorithmSelector = document.getElementById("algorithm");
 const visualizationDiv = document.getElementById("visualization");
+const timeSpan = document.getElementById("time-counter");
 
 const schedulingAlgorithms = [
   { value: "fcfs", text: "First Come First Serve" },
@@ -42,13 +43,26 @@ const setAlgorithms = () => {
 };
 
 // Show in console
-const displayLog = (text) => {
+const displayLog = text => {
   visualizationDiv.appendChild(document.createElement("p")).appendChild(document.createTextNode(text));
 }
 
 // Clear console
 const clearLogs = () => {
   visualizationDiv.innerHTML = "";
+}
+
+// Read time units from a file
+const readTime = event => {
+  const input = event.target;
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.readAsText(file);
+  reader.onload = () => {
+    const content = reader.result;
+    timeSpan.textContent = parseInt(content);
+    currentTime = parseInt(content);
+  }
 }
 
 /* Algorithms */

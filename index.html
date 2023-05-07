@@ -132,8 +132,8 @@
         <div id="visualization" class="mb"></div>
         <!-- Time -->
         <label id="file-label" for="time-file">Click para leer el tiempo desde un archivo</label>
-        <input type="file" id="time-file" name="time-file" hidden>
-        <h3>Tiempo actual: <span>4</span> unidades</h3>
+        <input type="file" id="time-file" name="time-file" oninput="readTime(event)" hidden>
+        <h3>Tiempo actual: <span id="time-counter">0</span> unidades</h3>
       </div>
     </div>
   </main>
