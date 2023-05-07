@@ -78,6 +78,7 @@ const run = event => {
 
   // Run the function
   currentTime = 0;
+  timeSpan.textContent = currentTime;
   clearLogs();
   const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
   selectedFunction();
