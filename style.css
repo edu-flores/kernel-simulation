@@ -1,9 +1,9 @@
 /* Misc */
 :root {
-    --kernel-purple: #300924;
+    --kernel-darkgray: #2c3134;
+    --kernel-lightgray: #33383a;
     --kernel-white: #dddddd;
-    --kernel-gray: #504d46;
-    --kernel-orange: #d7632c;
+    --kernel-blue: #4a90d8;
 }
 
 @keyframes blink {
@@ -22,13 +22,13 @@
 
 body {
     margin: 1rem 3rem;
-    background: url(https://www.xtrafondos.com/descargar.php?id=3441&resolucion=4096x2304) no-repeat center center fixed;
+    background: url(https://wallpapercave.com/wp/wp2071777.jpg) no-repeat center center fixed;
     color: var(--kernel-white);
     font-family: 'Ubuntu Mono', monospace;
 }
 
 header {
-    background-color: var(--kernel-gray);
+    background-color: var(--kernel-darkgray);
     border-radius: 0.5rem 0.5rem 0 0;
     height: 35px;
     display: flex;
@@ -38,7 +38,7 @@ header {
 }
 
 main {
-    background-color: var(--kernel-purple);
+    background-color: var(--kernel-lightgray);
     padding: 2rem 4rem;
     overflow: auto;
     border-radius: 0 0 0.5rem 0.5rem;
@@ -64,7 +64,7 @@ h3 {
 
 select {
     font-size: medium;
-    background-color: var(--kernel-gray);
+    background-color: var(--kernel-darkgray);
     color: currentColor;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
@@ -73,7 +73,7 @@ select {
 }
 
 option:hover, option:checked {
-    background-color: var(--kernel-orange);
+    background-color: var(--kernel-blue);
 }
 
 input {
@@ -91,7 +91,7 @@ table {
 
 button {
     font-size: medium;
-    background-color: var(--kernel-orange);
+    background-color: var(--kernel-blue);
     color: currentColor;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
@@ -143,8 +143,8 @@ button:active {
     height: 20rem;
     padding: 1rem 2rem;
     overflow: auto;
-    background-color: var(--kernel-gray);
-    color: #0cf311;
+    background-color: var(--kernel-darkgray);
+    color: var(--kernel-blue);
 }
 
 #file-label {

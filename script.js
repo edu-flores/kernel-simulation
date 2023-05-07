@@ -181,17 +181,17 @@ const fcfsScheduling = async () => {
   }
 }
 
-const fifoScheduling = () => console.log('1');
-const rrScheduling = () => console.log('2');
-const sjfScheduling = () => console.log('3');
-const srtScheduling = () => console.log('4');
-const hrrnScheduling = () => console.log('5');
-const mfqScheduling = () => console.log('6');
-const fcfsPageReplacement = () => console.log('7');
-const lruPageReplacement = () => console.log('8');
-const lfuPageReplacement = () => console.log('9');
-const nruPageReplacement = () => console.log('10');
-const rpoPageReplacement = () => console.log('11');
+const fifoScheduling = async () => console.log('1');
+const rrScheduling = async () => console.log('2');
+const sjfScheduling = async () => console.log('3');
+const srtScheduling = async () => console.log('4');
+const hrrnScheduling = async () => console.log('5');
+const mfqScheduling = async () => console.log('6');
+const fcfsPageReplacement = async () => console.log('7');
+const lruPageReplacement = async () => console.log('8');
+const lfuPageReplacement = async () => console.log('9');
+const nruPageReplacement = async () => console.log('10');
+const rpoPageReplacement = async () => console.log('11');
 
 // Object containing all algorithms
 const algorithms = {
