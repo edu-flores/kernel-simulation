@@ -11,7 +11,7 @@
 </head>
 <body>
   <header>
-    <div>&nbsp;</div>
+    <div></div>
     <b>sisop@ubuntu: ~</b>
     <div id="controls">
       <div class="gray-circle"></div>
@@ -38,95 +38,102 @@
         <h2>José Gallegos</h2>
       </div>
     </div>
-    <hr>
+    <hr class="mb">
     <!-- Inputs -->
     <div class="flex">
       <div style="width: 100%;">
           <form>
-            <div class="flex mb" style="gap: 1rem;">
-            <!-- Type -->
-              <select name="type" id="type" onchange="setAlgorithms()">
-                <option value="scheduling">Algoritmos de scheduling</option>
-                <option value="page">Algoritmos de paginación</option>
-              </select>
-              <!-- Algorithm -->
-              <select name="algorithm" id="algorithm">
-                <option value="fcfs">First Come First Serve</option>
-                <option value="fifo">First In First Out</option>
-                <option value="rr">Round Robin</option>
-                <option value="sjf">Shortest Job First</option>
-                <option value="srt">Shortest Remaining Time</option>
-                <option value="hrrn">Highest Response-Ratio Next</option>
-                <option value="mfq">Multilevel Feedback Queues</option>
-              </select>
+            <div class="mb" style="height: 20rem;">
+              <div class="flex mb" style="justify-content: space-between;">
+              <!-- Type -->
+                <select name="type" id="type" onchange="setAlgorithms()">
+                  <option value="scheduling">Algoritmos de scheduling</option>
+                  <option value="page">Algoritmos de paginación</option>
+                </select>
+                <!-- Algorithm -->
+                <select name="algorithm" id="algorithm">
+                  <option value="fcfs">First Come First Serve</option>
+                  <option value="fifo">First In First Out</option>
+                  <option value="rr">Round Robin</option>
+                  <option value="sjf">Shortest Job First</option>
+                  <option value="srt">Shortest Remaining Time</option>
+                  <option value="hrrn">Highest Response-Ratio Next</option>
+                  <option value="mfq">Multilevel Feedback Queues</option>
+                </select>
+            </div>
+            <h2 style="text-align: center;">DEFINICIÓN DE PROCESOS</h2>
+            <!-- Processes & Pages -->
+            <table class="mb">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Atributo #1</th>
+                  <th>Atributo #2</th>
+                  <th>Atributo #3</th>
+                  <th>Atributo #4</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                  <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <!-- Processes & Pages -->
-          <table class="mb">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Atributo #1</th>
-                <th>Atributo #2</th>
-                <th>Atributo #3</th>
-                <th>Atributo #4</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-                <td><input type="number" min="0" onkeypress="return event.charCode != 45"></td>
-              </tr>
-            </tbody>
-          </table>
           <!-- Start & Stop -->
-          <button type="button">Ejecutar</button>
-          <button type="button">Interrumpir</button>
+          <div class="flex" style="justify-content: space-between;">
+            <button type="button">Ejecutar</button>
+            <button type="button">Interrumpir</button>
+          </div>
         </form>
       </div>
       <!-- Visualization -->
       <div style="width: 100%;">
         <!-- Logs -->
-        <div id="visualization"></div>
+        <div id="visualization" class="mb"></div>
         <!-- Time -->
-        <h3>Tiempo: <span>4</span></h3>
+        <label id="file-label" for="time-file">Click para leer el tiempo desde un archivo</label>
+        <input type="file" id="time-file" name="time-file" hidden>
+        <h3>Tiempo actual: <span>4</span> unidades</h3>
       </div>
     </div>
   </main>
