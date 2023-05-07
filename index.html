@@ -42,13 +42,13 @@
     <!-- Inputs -->
     <div class="flex">
       <div style="width: 100%;">
-          <form>
+          <form id="algorithms-form" onsubmit="run(event)">
             <div class="mb" style="height: 20rem;">
               <div class="flex mb" style="justify-content: space-between;">
               <!-- Type -->
                 <select name="type" id="type" onchange="setAlgorithms()">
                   <option value="scheduling">Algoritmos de scheduling</option>
-                  <option value="page">Algoritmos de paginación</option>
+                  <option value="pageReplacement">Algoritmos de paginación</option>
                 </select>
                 <!-- Algorithm -->
                 <select name="algorithm" id="algorithm">
@@ -121,7 +121,7 @@
           </div>
           <!-- Start & Stop -->
           <div class="flex" style="justify-content: space-between;">
-            <button type="button">Ejecutar</button>
+            <button type="submit">Ejecutar</button>
             <button type="button">Interrumpir</button>
           </div>
         </form>
