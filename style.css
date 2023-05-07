@@ -115,14 +115,14 @@ button:active {
 
 .gray-circle {
     border-radius: 100%;
-    background-color: #62615c;
+    background-color: var(--kernel-lightgray);
     width: 16px;
     height: 15px;
 }
 
-.orange-circle {
+.blue-circle {
     border-radius: 100%;
-    background-color: #db5826;
+    background-color: var(--kernel-white);
     width: 15px;
     height: 15px;
 }
