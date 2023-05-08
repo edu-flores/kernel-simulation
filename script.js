@@ -119,8 +119,13 @@ class Process {
 // Global variables
 let currentTime = 0;
 
-// First Come First Serve - Scheduling Algorithm
-const fcfsScheduling = async () => {
+const fcfsScheduling = async () => console.log('0');
+const fifoScheduling = async () => console.log('1');
+const rrScheduling = async () => console.log('2');
+const sjfScheduling = async () => console.log('3');
+const srtScheduling = async () => console.log('4');
+
+const hrrnScheduling = async () => {
   // List of all processes
   let processes = [
     new Process(1, 0, 3, 0),
@@ -199,11 +204,6 @@ const fcfsScheduling = async () => {
   }
 }
 
-const fifoScheduling = async () => console.log('1');
-const rrScheduling = async () => console.log('2');
-const sjfScheduling = async () => console.log('3');
-const srtScheduling = async () => console.log('4');
-const hrrnScheduling = async () => console.log('5');
 const mfqScheduling = async () => console.log('6');
 const fcfsPageReplacement = async () => console.log('7');
 const lruPageReplacement = async () => console.log('8');
