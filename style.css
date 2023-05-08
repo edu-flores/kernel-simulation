@@ -78,13 +78,18 @@ option:hover, option:checked {
     background-color: var(--kernel-blue);
 }
 
-input {
+input[type="number"] {
     padding: 0.2rem 0.5rem;
     border-radius: 0.2rem;
     border: 0;
     width: 80%;
     height: 1.8rem;
     font-size: large;
+}
+
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
 }
 
 table {
@@ -144,18 +149,6 @@ button:disabled {
     background-color: var(--kernel-white);
     width: 15px;
     height: 15px;
-}
-
-.delete {
-    background-color: #d11a2a;
-    border-radius: 100%;
-    padding: 0;
-    width: 15px;
-    height: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--kernel-lightgray);
 }
 
 /* IDs */
