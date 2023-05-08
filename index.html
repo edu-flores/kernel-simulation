@@ -41,9 +41,9 @@
     <!-- Inputs -->
     <div class="flex">
       <div class="w-100">
-          <form id="algorithms-form" onsubmit="run(event)">
-            <div class="mb">
-              <div class="flex mb space-between">
+        <form id="algorithms-form" onsubmit="run(event)">
+          <div id="user-inputs" class="mb">
+            <div class="flex space-between">
               <!-- Type -->
                 <select name="type" id="type" onchange="setAlgorithms()">
                   <option value="scheduling">Algoritmos de scheduling</option>
@@ -60,51 +60,78 @@
                   <option value="mfq">Multilevel Feedback Queues</option>
                 </select>
             </div>
-            <h2 class="text-center">DEFINICIÓN DE PROCESOS</h2>
             <!-- Processes & Pages -->
-            <table class="mb">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Atributo #1</th>
-                  <th>Atributo #2</th>
-                  <th>Atributo #3</th>
-                  <th>Atributo #4</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- 1 -->
-                <tr>
-                  <td>1</td>
-                  <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><input type="number" min="0" value="9" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><button class="delete" type="button">x</button></td>
-                </tr>
-                <!-- 2 -->
-                <tr>
-                  <td>2</td>
-                  <td><input type="number" min="0" value="8" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><input type="number" min="0" value="7" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><button class="delete" type="button">x</button></td>
-                </tr>
-                <!-- 3 -->
-                <tr>
-                  <td>3</td>
-                  <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><input type="number" min="0" value="2" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><input type="number" min="0" value="9" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                  <td><button class="delete" type="button">x</button></td>
-                </tr>
-                <tr>
-                  <td colspan="6"><button id="add-row" type="button">+ Agregar</button></td>
-                </tr>
-              </tbody>
-            </table>
+            <div>
+              <h2 class="text-center">DEFINICIÓN DE PROCESOS</h2>
+              <!-- Inputs -->
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Atributo #1</th>
+                    <th>Atributo #2</th>
+                    <th>Atributo #3</th>
+                    <th>Atributo #4</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 1 -->
+                  <tr>
+                    <td>1</td>
+                    <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="9" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><button class="delete" type="button">x</button></td>
+                  </tr>
+                  <!-- 2 -->
+                  <tr>
+                    <td>2</td>
+                    <td><input type="number" min="0" value="8" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="7" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><button class="delete" type="button">x</button></td>
+                  </tr>
+                  <!-- 3 -->
+                  <tr>
+                    <td>3</td>
+                    <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="2" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="9" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><button class="delete" type="button">x</button></td>
+                  </tr>
+                  <!-- 4 -->
+                  <tr>
+                    <td>4</td>
+                    <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="7" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="6" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><button class="delete" type="button">x</button></td>
+                  </tr>
+                  <!-- 5 -->
+                  <tr>
+                    <td>5</td>
+                    <td><input type="number" min="0" value="2" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="5" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="7" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="6" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><button class="delete" type="button">x</button></td>
+                  </tr>
+                  <!-- 6 -->
+                  <tr>
+                    <td>6</td>
+                    <td><input type="number" min="0" value="2" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
+                    <td><button class="delete" type="button">x</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <!-- Start & Stop -->
           <div>
@@ -119,7 +146,7 @@
               <button type="button" class="interrupt-button" disabled>Quantum Expirado</button>
               <button type="button" class="interrupt-button" disabled>Interrupción Zombi</button>
               <div></div>
-              <button type="button" class="interrupt-button" disabled>Terminación Abrupta</button>
+              <button type="button" class="interrupt-button" disabled>Final Abrupto</button>
               <div></div>
             </div>
           </div>
@@ -128,7 +155,7 @@
       <!-- Visualization -->
       <div class="w-100">
         <!-- Logs -->
-        <div id="visualization"></div>
+        <div id="visualization" class="mb"></div>
         <!-- Time -->
         <label id="file-label" for="time-file">Click para leer el tiempo desde un archivo</label>
         <input type="file" id="time-file" name="time-file" oninput="readTime(event)" hidden>
