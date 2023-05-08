@@ -82,7 +82,7 @@
                     <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="9" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" onchange="modifyInputs(event)" checked></td>
                   </tr>
                   <!-- 2 -->
                   <tr>
@@ -91,7 +91,7 @@
                     <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="7" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" onchange="modifyInputs(event)" checked></td>
                   </tr>
                   <!-- 3 -->
                   <tr>
@@ -100,7 +100,7 @@
                     <td><input type="number" min="0" value="2" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="9" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" onchange="modifyInputs(event)" checked></td>
                   </tr>
                   <!-- 4 -->
                   <tr>
@@ -109,7 +109,7 @@
                     <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="7" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="6" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                    <td><input type="checkbox" checked></td>
+                    <td><input type="checkbox" onchange="modifyInputs(event)" checked></td>
                   </tr>
                   <!-- 5 -->
                   <tr>
@@ -118,7 +118,7 @@
                     <td><input type="number" min="0" value="5" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="7" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="6" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" onchange="modifyInputs(event)"></td>
                   </tr>
                   <!-- 6 -->
                   <tr>
@@ -127,7 +127,7 @@
                     <td><input type="number" min="0" value="3" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="1" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="4" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" onchange="modifyInputs(event)"></td>
                   </tr>
                 </tbody>
               </table>

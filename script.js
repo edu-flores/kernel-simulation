@@ -46,6 +46,18 @@ const setAlgorithms = () => {
   algorithmSelector.value = "fcfs";
 };
 
+// Enable or disable inputs on each row
+const modifyInputs = event => {
+  // Get all inputs from that row
+  const row = event.target.closest("tr");
+  const inputs = row.querySelectorAll("input[type=number]"); 
+
+  // Enable or disable them
+  inputs.forEach(input => {
+    input.disabled = !event.target.checked;
+  });
+}
+
 // Read time units from a file
 const readTime = event => {
   // Get file
