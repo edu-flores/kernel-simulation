@@ -75,6 +75,22 @@ const readTime = event => {
   }
 }
 
+// Show in console
+const displayLog = text => {
+  visualizationDiv.appendChild(document.createElement("p")).appendChild(document.createTextNode(text));
+}
+
+// Clear console
+const clearLogs = () => {
+  visualizationDiv.innerHTML = "";
+}
+
+/**
+  *
+  * ALGORITHMS 
+  * 
+  */
+
 // Execute the selected algorithm
 const run = async (event) => {
   // Prevent page reloading
@@ -97,22 +113,6 @@ const run = async (event) => {
     button.disabled = true;
   });
 }
-
-// Show in console
-const displayLog = text => {
-  visualizationDiv.appendChild(document.createElement("p")).appendChild(document.createTextNode(text));
-}
-
-// Clear console
-const clearLogs = () => {
-  visualizationDiv.innerHTML = "";
-}
-
-/**
-  *
-  * ALGORITHMS 
-  * 
-  */
 
 // Sleep function to delay algorithms by milliseconds
 const sleep = ms => {

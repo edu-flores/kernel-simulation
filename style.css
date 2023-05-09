@@ -45,6 +45,10 @@ main {
     border-radius: 0 0 0.5rem 0.5rem;
 }
 
+hr {
+    opacity: 0.1;
+}
+
 h1 {
     font-size: larger;
 }
