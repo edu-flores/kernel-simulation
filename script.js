@@ -102,11 +102,50 @@ const run = async (event) => {
   const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
   try {
     await selectedFunction();
-  } catch (error) {
-    // If interrupted
+  } catch (error) {  // If interrupted
+    // Return to defaults
     stop.value = false;
     stop.type = null;
-    displayLog(error);
+
+    // Get all messages to display
+    let messages = [];
+    switch (error.message) {
+      case "io":
+        messages.push("Leyendo archivo de entrada 'datos.txt'...");
+        messages.push("Procesando datos...");
+        messages.push("Escritura de resultados en archivo 'resultados.txt'...");
+        messages.push("Operación de I/O completada correctamente.");
+        break;
+      case "normal":
+        messages.push("Proceso finalizado correctamente.");
+        messages.push("Tiempo de ejecución: 00:02:35");
+        messages.push("Memoria utilizada: 256 MB");
+        break;
+      case "date":
+        messages.push("Ingrese la fecha en el formato YYYY-MM-DD: 2023-05-09");
+        break;
+      case "error":
+        messages.push("¡Error! Se ha producido una excepción en el archivo 'script.js', línea 157.");
+        messages.push("Mensaje de error: 'ZeroDivisionError: division by zero'");
+        break;
+      case "quantum":
+        messages.push("Interrupción por quantum expirado.");
+        messages.push("Asignando CPU a proceso de mayor prioridad...");
+        break;
+      case "zombie":
+        messages.push("Se ha detectado un proceso zombi.");
+        messages.push("Eliminando entrada de la tabla de procesos...");
+        break;
+      case "end":
+        messages.push("Proceso detenido por señal SIGKILL (-9).");
+        messages.push("Liberando memoria y otros recursos asociados...");
+        break;
+    }
+
+    // Display messages in visualization box
+    for (const message of messages) {
+      displayLog(message);
+    }
   }
 
   // Disable and enable start & stop buttons
