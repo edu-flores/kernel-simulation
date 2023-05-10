@@ -18,11 +18,9 @@ const schedulingAlgorithms = [
 ];
 
 const pageReplacementAlgorithms = [
-  { value: "fcfs", text: "First Come First Serve" },
   { value: "lru", text: "Least Recently Used" },
   { value: "lfu", text: "Least Frequently Used" },
   { value: "nru", text: "Not Recently Used" },
-  { value: "rpo", text: "Reemplazo de Página Optimal" }
 ];
 
 // Show different algorithms depending on the selector type 
@@ -41,9 +39,6 @@ const setAlgorithms = () => {
     option.text = algorithm.text;
     algorithmSelector.add(option);
   });
-
-  // Select first option as default
-  algorithmSelector.value = "fcfs";
 };
 
 // Enable or disable inputs on each row
@@ -217,11 +212,9 @@ const hrrnScheduling = async () => {
 }
 
 const mfqScheduling = async () => console.log('6');
-const fcfsPageReplacement = async () => console.log('7');
 const lruPageReplacement = async () => console.log('8');
 const lfuPageReplacement = async () => console.log('9');
 const nruPageReplacement = async () => console.log('10');
-const rpoPageReplacement = async () => console.log('11');
 
 // Object containing all algorithms
 const algorithms = {
@@ -235,10 +228,8 @@ const algorithms = {
     mfq: mfqScheduling
   },
   pageReplacement: {
-    fcfs: fcfsPageReplacement,
     lru: lruPageReplacement,
     lfu: lfuPageReplacement,
-    nru: nruPageReplacement,
-    rpo: rpoPageReplacement
+    nru: nruPageReplacement
   }
 }
