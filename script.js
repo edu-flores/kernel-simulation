@@ -163,17 +163,21 @@ const run = async (event) => {
 const interrupt = error => {
   stop.value = true;
   stop.type = error;
-  currentTime += 1;
 }
 
 // Sleep function to delay algorithms by milliseconds
 const sleep = ms => {
-  // If interrupted, throw an error, else wait ms
-  if (stop.value) {
-    throw new Error(stop.type);
-  } else {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (stop.value) {
+        reject(new Error(stop.type));
+        currentTime += 1;
+        timeSpan.textContent = currentTime;
+      } else {
+        resolve();
+      }
+    }, ms);
+  });
 }
 
 class Process {
