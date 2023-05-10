@@ -163,6 +163,7 @@ const run = async (event) => {
 const interrupt = error => {
   stop.value = true;
   stop.type = error;
+  currentTime += 1;
 }
 
 // Sleep function to delay algorithms by milliseconds
