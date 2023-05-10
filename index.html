@@ -139,14 +139,14 @@
             <button id="submit-button" type="submit" class="w-100">Ejecutar algoritmo</button>
             <!-- Stop -->
             <div id="interrupts">
-              <button type="button" class="interrupt-button" disabled>Solicitud I/O</button>
-              <button type="button" class="interrupt-button" disabled>Terminación Normal</button>
-              <button type="button" class="interrupt-button" disabled>Solicitud Fecha</button>
-              <button type="button" class="interrupt-button" disabled>Error Programa</button>
-              <button type="button" class="interrupt-button" disabled>Quantum Expirado</button>
-              <button type="button" class="interrupt-button" disabled>Interrupción Zombi</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('.')">Solicitud I/O</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('.')">Terminación Normal</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('.')">Solicitud Fecha</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('.')">Error Programa</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('.')">Quantum Expirado</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('.')">Interrupción Zombi</button>
               <div></div>
-              <button type="button" class="interrupt-button" disabled>Final Abrupto</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('.')">Final Abrupto</button>
               <div></div>
             </div>
           </div>

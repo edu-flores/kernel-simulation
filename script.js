@@ -96,11 +96,18 @@ const run = async (event) => {
   interruptButtons.forEach(button => {
     button.disabled = false;
   });
-  
+
   // Run the function
   clearLogs();
   const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
-  await selectedFunction();
+  try {
+    await selectedFunction();
+  } catch (error) {
+    // If interrupted
+    stop.value = false;
+    stop.type = null;
+    displayLog(error);
+  }
 
   // Disable and enable start & stop buttons
   submitButton.disabled = false;
@@ -109,9 +116,21 @@ const run = async (event) => {
   });
 }
 
+
+// Stop any running algorithms
+const interrupt = error => {
+  stop.value = true;
+  stop.type = error;
+}
+
 // Sleep function to delay algorithms by milliseconds
 const sleep = ms => {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  // If interrupted, throw an error, else wait ms
+  if (stop.value) {
+    throw new Error(stop.type);
+  } else {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
 
 class Process {
@@ -125,6 +144,10 @@ class Process {
 
 // Global variables
 let currentTime = 0;
+let stop = {
+  value: false,
+  type: null
+};
 
 const fcfsScheduling = async () => console.log('0');
 const fifoScheduling = async () => console.log('1');
