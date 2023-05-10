@@ -71,8 +71,11 @@ const readTime = event => {
 }
 
 // Show in console
-const displayLog = text => {
-  visualizationDiv.appendChild(document.createElement("p")).appendChild(document.createTextNode(text));
+const displayLog = (text, color) => {
+  const p = document.createElement("p");
+  p.style.color = color;
+  p.appendChild(document.createTextNode(text));
+  visualizationDiv.appendChild(p);
 }
 
 // Clear console
@@ -144,7 +147,7 @@ const run = async (event) => {
 
     // Display messages in visualization box
     for (const message of messages) {
-      displayLog(message);
+      displayLog(message, "#d13079");
     }
   }
 
@@ -218,15 +221,15 @@ const hrrnScheduling = async () => {
       if (processes[i].arrival <= currentTime && processes[i].status == 0) {
         queue.push(processes[i]);
         processes[i].status = 1;
-        displayLog("Llego proceso: " + processes[i].id);
-        displayLog("Tiempo de llegada: " + processes[i].arrival);
+        displayLog("Llego proceso: " + processes[i].id, "#dddddd");
+        displayLog("Tiempo de llegada: " + processes[i].arrival, "#dddddd");
         await sleep(1000);
       }
     }
     // Check if there are any processes on the queue
     // If not, continue
     if (queue.length == 0) {
-      displayLog("Cola vacía");
+      displayLog("Cola vacía", "#dddddd");
       currentTime += 1;
       timeSpan.textContent = currentTime;
       continue;
@@ -234,7 +237,7 @@ const hrrnScheduling = async () => {
 
     // If there is only one process, execute it
     if (queue.length == 1) {
-      displayLog("-- Se ejecuto el proceso: " + queue[0].id + " --");
+      displayLog("-- Se ejecuto el proceso: " + queue[0].id + " --", "#dddddd");
       await sleep(1000);
       currentTime += queue[0].burst;
       timeSpan.textContent = currentTime;
@@ -257,8 +260,8 @@ const hrrnScheduling = async () => {
           nextP = queue[i];
         }
       }
-      displayLog("Siguiente proceso: " + nextP.id + " con RR " + maxRR);
-      displayLog("Tiempo actual: " + currentTime);
+      displayLog("Siguiente proceso: " + nextP.id + " con RR " + maxRR, "#dddddd");
+      displayLog("Tiempo actual: " + currentTime, "#dddddd");
       await sleep(1000);
 
       // Execute process
