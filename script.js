@@ -8,7 +8,6 @@ const submitButton = document.getElementById("submit-button");
 const interruptButtons = document.querySelectorAll(".interrupt-button");
 const headersRow = document.getElementById("headers-row");
 const inputsRow = document.getElementsByClassName("inputs-row");
-const inputInstance = document.querySelector("input");
 
 const schedulingAlgorithms = [
   { value: "fcfs", text: "First Come First Serve" },
@@ -53,7 +52,7 @@ const setInputs = event => {
   let properties = ["ID"];
   switch (event.target.value) {
     case "fcfs":
-      properties.push("Burst", "Quantum", "Llegada");
+      properties.push("Atributo #1", "Atributo #2", "Atributo #3");
       break;
     case "fifo":
       properties.push("Atributo #1", "Atributo #2");
@@ -68,7 +67,7 @@ const setInputs = event => {
       properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5");
       break;
     case "hrrn":
-      properties.push("Atributo #1", "Atributo #2", "Atributo #3");
+      properties.push("Burst", "Arrival", "Quantum");
       break;
     case "mfq":
       properties.push("Atributo #1");
@@ -100,11 +99,11 @@ const setInputs = event => {
 
     // Add inputs
     properties.forEach(() => {
-      row.innerHTML += `<td><input type="number" min="0" value=${Math.floor(Math.random()*9)+1} oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>`
+      row.innerHTML += `<td><input type="number" min="0" value=${Math.floor(Math.random()*9)+1} ${index < 4 ? '' : 'disabled'} oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>`;
     });
 
     // Add checkbox
-    row.innerHTML += `<td><input type="checkbox" onchange="modifyInputs(event)" checked></td>`
+    row.innerHTML += `<td><input type="checkbox" onchange="modifyInputs(event)" ${index < 4 ? 'checked' : ''}></td>`;
   });
 }
 
@@ -167,12 +166,27 @@ const run = async (event) => {
     button.disabled = false;
   });
 
-  // Run the function
+  // Select the desired function
   clearLogs();
   const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
+  
+  // Run the function
   try {
-    await selectedFunction();
-  } catch (error) {  // If interrupted
+    // Prepare inputs
+    const properties = headersRow.querySelectorAll("th");
+    const userInputs = Array.from({ length: 6 }, () => new Process({}));
+
+    // For every input row, get every input type number value
+    Array.from(inputsRow).forEach((row, i) => {
+      userInputs[i].id = i + 1;
+      Array.from(row.querySelectorAll("td")).slice(1, -1).map(td => td.querySelector("input")).forEach((input, j) => {
+        userInputs[i][properties[j].innerHTML.toLowerCase()] = parseInt(input.value);
+      });
+    });
+
+    // Run algorithm
+    await selectedFunction(userInputs);
+  } catch (error) {
     // Return to defaults
     stop.value = false;
     stop.type = null;
@@ -247,12 +261,16 @@ const sleep = ms => {
   });
 }
 
+// Process class with optional properties
 class Process {
-  constructor(id, arrival, burst, status) {
+  constructor({ id=0, arrival=0, burst=0, status=0, quantum=0, waiting=0, turnaround=0 }) {
     this.id = id;
     this.arrival = arrival;
     this.burst = burst;
     this.status = status;
+    this.quantum = quantum;
+    this.waiting = waiting;
+    this.turnaround = turnaround;
   }
 }
 
@@ -269,16 +287,9 @@ const rrScheduling = async () => console.log('2');
 const sjfScheduling = async () => console.log('3');
 const srtScheduling = async () => console.log('4');
 
-const hrrnScheduling = async () => {
+const hrrnScheduling = async (input) => {
   // List of all processes
-  let processes = [
-    new Process(1, 0, 3, 0),
-    new Process(2, 2, 5, 0),
-    new Process(3, 4, 4, 0),
-    new Process(4, 6, 1, 0),
-    new Process(5, 8, 2, 0),
-    new Process(6, 8, 2, 0)
-  ];
+  let processes = input;
 
   // Queue, elements who have already arrived
   let queue = [];
