@@ -45,12 +45,12 @@
           <div id="user-inputs" class="mb">
             <div class="flex space-between">
               <!-- Type -->
-                <select name="type" id="type" onchange="setAlgorithms()">
+                <select name="type" id="type" onchange="setAlgorithms(event)">
                   <option value="scheduling">Algoritmos de scheduling</option>
                   <option value="pageReplacement">Algoritmos de paginación</option>
                 </select>
                 <!-- Algorithms -->
-                <select name="algorithm" id="algorithm">
+                <select name="algorithm" id="algorithm" onchange="setInputs(event)">
                   <option value="fcfs">First Come First Serve</option>
                   <option value="fifo">First In First Out</option>
                   <option value="rr">Round Robin</option>
@@ -66,7 +66,7 @@
               <!-- Inputs -->
               <table>
                 <thead>
-                  <tr>
+                  <tr id="headers-row">
                     <th>ID</th>
                     <th>Atributo #1</th>
                     <th>Atributo #2</th>
@@ -76,7 +76,7 @@
                 </thead>
                 <tbody>
                   <!-- 1 -->
-                  <tr>
+                  <tr class="inputs-row">
                     <td>1</td>
                     <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
@@ -85,7 +85,7 @@
                     <td><input type="checkbox" onchange="modifyInputs(event)" checked></td>
                   </tr>
                   <!-- 2 -->
-                  <tr>
+                  <tr class="inputs-row">
                     <td>2</td>
                     <td><input type="number" min="0" value="8" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
@@ -94,7 +94,7 @@
                     <td><input type="checkbox" onchange="modifyInputs(event)" checked></td>
                   </tr>
                   <!-- 3 -->
-                  <tr>
+                  <tr class="inputs-row">
                     <td>3</td>
                     <td><input type="number" min="0" value="4" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="2" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
@@ -103,7 +103,7 @@
                     <td><input type="checkbox" onchange="modifyInputs(event)" checked></td>
                   </tr>
                   <!-- 4 -->
-                  <tr>
+                  <tr class="inputs-row">
                     <td>4</td>
                     <td><input type="number" min="0" value="1" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="3" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
@@ -112,7 +112,7 @@
                     <td><input type="checkbox" onchange="modifyInputs(event)" checked></td>
                   </tr>
                   <!-- 5 -->
-                  <tr>
+                  <tr class="inputs-row">
                     <td>5</td>
                     <td><input type="number" min="0" value="2" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="5" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
@@ -121,7 +121,7 @@
                     <td><input type="checkbox" onchange="modifyInputs(event)"></td>
                   </tr>
                   <!-- 6 -->
-                  <tr>
+                  <tr class="inputs-row">
                     <td>6</td>
                     <td><input type="number" min="0" value="2" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>
                     <td><input type="number" min="0" value="3" disabled oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>

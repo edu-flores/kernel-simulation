@@ -6,6 +6,9 @@ const timeSpan = document.getElementById("time-counter");
 const algorithmsForm = document.getElementById("algorithms-form");
 const submitButton = document.getElementById("submit-button");
 const interruptButtons = document.querySelectorAll(".interrupt-button");
+const headersRow = document.getElementById("headers-row");
+const inputsRow = document.getElementsByClassName("inputs-row");
+const inputInstance = document.querySelector("input");
 
 const schedulingAlgorithms = [
   { value: "fcfs", text: "First Come First Serve" },
@@ -24,12 +27,12 @@ const pageReplacementAlgorithms = [
 ];
 
 // Show different algorithms depending on the selector type 
-const setAlgorithms = () => {
+const setAlgorithms = event => {
   // Remove all options
   algorithmSelector.innerHTML = "";
 
   // Add new options
-  const algorithms = typeSelector.value === "scheduling"
+  const algorithms = event.target.value === "scheduling"
     ? schedulingAlgorithms
     : pageReplacementAlgorithms;
 
@@ -39,7 +42,62 @@ const setAlgorithms = () => {
     option.text = algorithm.text;
     algorithmSelector.add(option);
   });
-};
+}
+
+// Set custom user inputs
+const setInputs = event => {
+  // Set number of properties in the table
+  let properties = ["ID"];
+  switch (event.target.value) {
+    case "fcfs":
+      properties.push("Burst", "Quantum", "Llegada");
+      break;
+    case "fifo":
+      properties.push("Atributo #1", "Atributo #2");
+      break;
+    case "rr":
+      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4");
+      break;
+    case "sjf":
+      properties.push("Atributo #1");
+      break;
+    case "srt":
+      properties.push("Atributo #1", "Atributo #2");
+      break;
+    case "hrrn":
+      properties.push("Atributo #1", "Atributo #2", "Atributo #3");
+      break;
+    case "mfq":
+      properties.push("Atributo #1");
+      break;
+    case "lru":
+      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4");
+      break;
+  }
+
+  // Set table columns names
+  headersRow.innerHTML = "";
+  properties.forEach(property => {
+    const th = document.createElement("th");
+    th.innerHTML = property;
+    headersRow.appendChild(th);
+  });
+
+  // Set input elements
+  properties.shift();
+  Array.from(inputsRow).forEach((row, index) => {
+    // Add ID
+    row.innerHTML = `<td>${index+1}</td>`;
+
+    // Add inputs
+    properties.forEach(() => {
+      row.innerHTML += "<td><input type='number' min='0' value='0' oninput='if (event.target.value == '') { event.target.value = '0'; }' onkeypress='return event.charCode != 45'></td>"
+    });
+
+    // Add checkbox
+    row.innerHTML += "<td><input type='checkbox' onchange='modifyInputs(event)' checked></td>"
+  });
+}
 
 // Enable or disable inputs on each row
 const modifyInputs = event => {
