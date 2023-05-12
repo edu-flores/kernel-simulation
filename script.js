@@ -67,7 +67,7 @@ const setInputs = event => {
       properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5");
       break;
     case "hrrn":
-      properties.push("Burst", "Arrival", "Quantum");
+      properties.push("Burst", "Arrival");
       break;
     case "mfq":
       properties.push("Atributo #1");
@@ -173,7 +173,7 @@ const run = async (event) => {
   // Run the function
   try {
     // Prepare inputs
-    const properties = headersRow.querySelectorAll("th");
+    const properties = Array.from(headersRow.querySelectorAll("th")).slice(1);
     const userInputs = Array.from({ length: 6 }, () => new Process({}));
 
     // For every input row, get every input type number value
@@ -290,6 +290,7 @@ const srtScheduling = async () => console.log('4');
 const hrrnScheduling = async (input) => {
   // List of all processes
   let processes = input;
+  console.log(processes)
 
   // Queue, elements who have already arrived
   let queue = [];
