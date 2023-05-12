@@ -370,3 +370,7 @@ const algorithms = {
     nru: nruPageReplacement
   }
 }
+
+// Initial setup
+typeSelector.dispatchEvent(new Event('change'));
+algorithmSelector.dispatchEvent(new Event('change'));
