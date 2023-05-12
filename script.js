@@ -42,6 +42,9 @@ const setAlgorithms = event => {
     option.text = algorithm.text;
     algorithmSelector.add(option);
   });
+
+  // Dispatch change event to set input properties
+  algorithmSelector.dispatchEvent(new Event('change'));
 }
 
 // Set custom user inputs
@@ -56,13 +59,13 @@ const setInputs = event => {
       properties.push("Atributo #1", "Atributo #2");
       break;
     case "rr":
-      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4");
+      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5", "Atributo #6");
       break;
     case "sjf":
       properties.push("Atributo #1");
       break;
     case "srt":
-      properties.push("Atributo #1", "Atributo #2");
+      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5");
       break;
     case "hrrn":
       properties.push("Atributo #1", "Atributo #2", "Atributo #3");
@@ -71,6 +74,12 @@ const setInputs = event => {
       properties.push("Atributo #1");
       break;
     case "lru":
+      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4");
+      break;
+    case "lfu":
+      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4");
+      break;
+    case "nru":
       properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4");
       break;
   }
@@ -91,11 +100,11 @@ const setInputs = event => {
 
     // Add inputs
     properties.forEach(() => {
-      row.innerHTML += "<td><input type='number' min='0' value='0' oninput='if (event.target.value == '') { event.target.value = '0'; }' onkeypress='return event.charCode != 45'></td>"
+      row.innerHTML += `<td><input type="number" min="0" value=${Math.floor(Math.random()*9)+1} oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>`
     });
 
     // Add checkbox
-    row.innerHTML += "<td><input type='checkbox' onchange='modifyInputs(event)' checked></td>"
+    row.innerHTML += `<td><input type="checkbox" onchange="modifyInputs(event)" checked></td>`
   });
 }
 
