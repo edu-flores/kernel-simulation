@@ -174,14 +174,25 @@ const run = async (event) => {
   try {
     // Prepare inputs
     const properties = Array.from(headersRow.querySelectorAll("th")).slice(1);
-    const userInputs = Array.from({ length: 6 }, () => new Process({}));
+    const userInputs = [];
+    let current;
 
     // For every input row, get every input type number value
     Array.from(inputsRow).forEach((row, i) => {
-      userInputs[i].id = i + 1;
-      Array.from(row.querySelectorAll("td")).slice(1, -1).map(td => td.querySelector("input")).forEach((input, j) => {
-        userInputs[i][properties[j].innerHTML.toLowerCase()] = parseInt(input.value);
-      });
+
+      // Check if the process is enabled or disabled
+      if (row.querySelector("input[type=checkbox]").checked) {
+        current = new Process({});
+        current.id = i + 1;
+
+        // Add properties from inputs
+        Array.from(row.querySelectorAll("td")).slice(1, -1).map(td => td.querySelector("input")).forEach((input, j) => {
+          current[properties[j].innerHTML.toLowerCase()] = parseInt(input.value);
+        });
+
+        // Push that process
+        userInputs.push(current);
+      }
     });
 
     // Run algorithm
@@ -290,7 +301,6 @@ const srtScheduling = async () => console.log('4');
 const hrrnScheduling = async (input) => {
   // List of all processes
   let processes = input;
-  console.log(processes)
 
   // Queue, elements who have already arrived
   let queue = [];
