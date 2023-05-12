@@ -186,7 +186,7 @@ const run = async (event) => {
         current.id = i + 1;
 
         // Add properties from inputs
-        Array.from(row.querySelectorAll("td")).slice(1, -1).map(td => td.querySelector("input")).forEach((input, j) => {
+        Array.from(row.querySelectorAll("input[type=number]")).forEach((input, j) => {
           current[properties[j].innerHTML.toLowerCase()] = parseInt(input.value);
         });
 
@@ -354,7 +354,7 @@ const hrrnScheduling = async (input) => {
           nextP = queue[i];
         }
       }
-      displayLog("Siguiente proceso: " + nextP.id + " con RR " + maxRR, "#dddddd");
+      displayLog("Siguiente proceso: " + nextP.id + " con RR " + parseFloat(maxRR).toFixed(2), "#dddddd");
       displayLog("Tiempo actual: " + currentTime, "#dddddd");
       await sleep(1000);
 
