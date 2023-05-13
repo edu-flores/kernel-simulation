@@ -52,7 +52,7 @@ const setInputs = event => {
   let properties = ["ID"];
   switch (event.target.value) {
     case "fcfs":
-      properties.push("Atributo #1", "Atributo #2", "Atributo #3");
+      properties.push("Arrival", "Burst");
       break;
     case "fifo":
       properties.push("Atributo #1", "Atributo #2");
@@ -292,7 +292,43 @@ let stop = {
   type: null
 };
 
-const fcfsScheduling = async () => console.log('0');
+const fcfsScheduling = async (input) => {
+  let processes = input;
+
+  // Sort processes based on arrival time
+  processes.sort((a,b) => a.arrival - b.arrival);
+
+  // Simulate the FCFS
+  let currentTime = 0;
+  let waitingTime = 0;
+  let turnAroundTime = 0;
+
+  for (let i = 0; i < processes.length; i++) {
+    let process = processes[i];
+    
+    if (currentTime < process.arrival) {
+      currentTime = process.arrival;
+    }
+
+    // Calculate waiting time
+    waitingTime += currentTime - process.arrival;
+
+    // Calculate turnaround time
+    turnAroundTime += currentTime + process.burst - process.arrival;
+
+    displayLog(`Llego proceso: ${process.id}`, "#dddddd");
+    displayLog(`Tiempo de llegada: ${currentTime}`, "#dddddd");
+    displayLog(`-- Se ejecuto el proceso: ${process.id} --`, "#dddddd");
+    currentTime += process.burst;
+    timeSpan.textContent = currentTime;
+    await sleep(1000);
+  }
+  displayLog("Tiempo actual: " + currentTime, "#dddddd");
+  displayLog("Promedio tiempo de respuesta: " + (turnAroundTime / processes.length).toFixed(2), "#dddddd");
+  displayLog("Promedio de tiempo de espera: " + (waitingTime / processes.length).toFixed(2), "#dddddd");
+  timeSpan.textContent = currentTime;
+}
+
 const fifoScheduling = async () => console.log('1');
 const rrScheduling = async () => console.log('2');
 const sjfScheduling = async () => console.log('3');
