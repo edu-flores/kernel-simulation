@@ -337,12 +337,12 @@ const sjfScheduling = async (input) => {
   // List of all processes
   let processes = input;
 
+  // Lenght of the processes
+  let processesLenght = input.length;
+
   // Sort processes based on arrival time and burst time
   processes.sort((a,b) => {
     if(a.arrival === b.arrival) {
-        if(a.burst === b.burst) {
-            return a.id - b.id;
-        }
         return a.burst - b.burst;
     }
     return a.arrival - b.arrival;
@@ -353,38 +353,51 @@ const sjfScheduling = async (input) => {
   let turnAroundTime = 0;
 
   // Execute the processes in SJF order
-  for(let i = 0; i < processes.length; i++) {
-    let process = processes[i];
-  
-    // Calculate waiting time
-    let processWaitingTime = currentTime - process.arrival;
-    waitingTime += processWaitingTime;
-  
-    // Calculate turnaround time
-    let processTurnAroundTime = processWaitingTime + process.burst;
-    turnAroundTime += processTurnAroundTime;
-  
-    displayLog(`Llego proceso: ${process.id}`, "#dddddd");
-    displayLog(`Tiempo de llegada: ${currentTime}`, "#dddddd");
-    displayLog(`-- Se ejecuto el proceso: ${process.id} --`, "#dddddd");
-    // Execute the process for its burst time
-    currentTime += process.burst;
-    timeSpan.textContent = currentTime;
-    await sleep(1000);
-  
-    // Update the arrival time of the remaining processes
-    for(let j = i + 1; j < processes.length; j++) {
-      let remainingProcess = processes[j];
-      if(remainingProcess.arrival <= currentTime) {
-        continue;
+  while(processes.length > 0) {
+    // Filter processes with arrival time less or equal to current time
+    let availableProcesses = processes.filter(process => process.arrival <= currentTime);
+
+    // Sort available processes based on burst time and process ID
+    availableProcesses.sort((a,b) => {
+      if(a.burst === b.burst) {
+          return a.id - b.id;
       }
-      remainingProcess.arrival = currentTime;
+      return a.burst - b.burst;
+    });
+
+    if(availableProcesses.length > 0) {
+      let process = availableProcesses[0];
+
+      // Calculate waiting time
+      let processWaitingTime = currentTime - process.arrival;
+      waitingTime += processWaitingTime;
+
+      // Calculate turnaround time
+      let processTurnAroundTime = processWaitingTime + process.burst;
+      turnAroundTime += processTurnAroundTime;
+
+      displayLog(`Llego proceso: ${process.id}`, "#dddddd");
+      displayLog(`Tiempo de llegada: ${currentTime}`, "#dddddd");
+      displayLog(`-- Se ejecuto el proceso: ${process.id} --`, "#dddddd");
+      
+      // Execute the process for its burst time
+      currentTime += process.burst;
+      timeSpan.textContent = currentTime;
+      await sleep(1000);
+
+      // Remove executed process from list
+      processes.splice(processes.indexOf(process), 1);
+    } else {
+      // If no process is available, increase the current time
+      currentTime++;
+      timeSpan.textContent = currentTime;
+      await sleep(1000);
     }
   }
 
   displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog("Promedio tiempo de respuesta: " + (turnAroundTime / processes.length).toFixed(2), "#dddddd");
-  displayLog("Promedio de tiempo de espera: " + (waitingTime / processes.length).toFixed(2), "#dddddd");
+  displayLog("Promedio tiempo de respuesta: " + (turnAroundTime / processesLenght).toFixed(2), "#dddddd");
+  displayLog("Promedio de tiempo de espera: " + (waitingTime / processesLenght).toFixed(2), "#dddddd");
   timeSpan.textContent = currentTime;
 }
 
