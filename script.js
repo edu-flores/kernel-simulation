@@ -61,7 +61,7 @@ const setInputs = event => {
       properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5", "Atributo #6");
       break;
     case "sjf":
-      properties.push("Atributo #1");
+      properties.push("Arrival", "Burst");
       break;
     case "srt":
       properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5");
@@ -293,6 +293,7 @@ let stop = {
 };
 
 const fcfsScheduling = async (input) => {
+  // List of all processes
   let processes = input;
 
   // Sort processes based on arrival time
@@ -331,7 +332,62 @@ const fcfsScheduling = async (input) => {
 
 const fifoScheduling = async () => console.log('1');
 const rrScheduling = async () => console.log('2');
-const sjfScheduling = async () => console.log('3');
+
+const sjfScheduling = async (input) => {
+  // List of all processes
+  let processes = input;
+
+  // Sort processes based on arrival time and burst time
+  processes.sort((a,b) => {
+    if(a.arrival === b.arrival) {
+        if(a.burst === b.burst) {
+            return a.id - b.id;
+        }
+        return a.burst - b.burst;
+    }
+    return a.arrival - b.arrival;
+  });
+
+  let currentTime = 0;
+  let waitingTime = 0;
+  let turnAroundTime = 0;
+
+  // Execute the processes in SJF order
+  for(let i = 0; i < processes.length; i++) {
+    let process = processes[i];
+  
+    // Calculate waiting time
+    let processWaitingTime = currentTime - process.arrival;
+    waitingTime += processWaitingTime;
+  
+    // Calculate turnaround time
+    let processTurnAroundTime = processWaitingTime + process.burst;
+    turnAroundTime += processTurnAroundTime;
+  
+    displayLog(`Llego proceso: ${process.id}`, "#dddddd");
+    displayLog(`Tiempo de llegada: ${currentTime}`, "#dddddd");
+    displayLog(`-- Se ejecuto el proceso: ${process.id} --`, "#dddddd");
+    // Execute the process for its burst time
+    currentTime += process.burst;
+    timeSpan.textContent = currentTime;
+    await sleep(1000);
+  
+    // Update the arrival time of the remaining processes
+    for(let j = i + 1; j < processes.length; j++) {
+      let remainingProcess = processes[j];
+      if(remainingProcess.arrival <= currentTime) {
+        continue;
+      }
+      remainingProcess.arrival = currentTime;
+    }
+  }
+
+  displayLog("Tiempo actual: " + currentTime, "#dddddd");
+  displayLog("Promedio tiempo de respuesta: " + (turnAroundTime / processes.length).toFixed(2), "#dddddd");
+  displayLog("Promedio de tiempo de espera: " + (waitingTime / processes.length).toFixed(2), "#dddddd");
+  timeSpan.textContent = currentTime;
+}
+
 const srtScheduling = async () => console.log('4');
 
 const hrrnScheduling = async (input) => {
