@@ -337,8 +337,8 @@ const sjfScheduling = async (input) => {
   // List of all processes
   let processes = input;
 
-  // Lenght of the processes
-  let processesLenght = input.length;
+  // Length of the processes
+  let processesLength = input.length;
 
   // Sort processes based on arrival time and burst time
   processes.sort((a,b) => {
@@ -396,8 +396,8 @@ const sjfScheduling = async (input) => {
   }
 
   displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog("Promedio tiempo de respuesta: " + (turnAroundTime / processesLenght).toFixed(2), "#dddddd");
-  displayLog("Promedio de tiempo de espera: " + (waitingTime / processesLenght).toFixed(2), "#dddddd");
+  displayLog("Promedio tiempo de respuesta: " + (turnAroundTime / processesLength).toFixed(2), "#dddddd");
+  displayLog("Promedio de tiempo de espera: " + (waitingTime / processesLength).toFixed(2), "#dddddd");
   timeSpan.textContent = currentTime;
 }
 
