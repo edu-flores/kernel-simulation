@@ -55,7 +55,7 @@ const setInputs = event => {
       properties.push("Arrival", "Burst");
       break;
     case "fifo":
-      properties.push("Atributo #1", "Atributo #2");
+      properties.push("Arrival", "Burst");
       break;
     case "rr":
       properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5", "Atributo #6");
@@ -330,7 +330,48 @@ const fcfsScheduling = async (input) => {
   timeSpan.textContent = currentTime;
 }
 
-const fifoScheduling = async () => console.log('1');
+const fifoScheduling = async (input) => {
+  // List of all processes
+  let processes = input;
+
+  let queue = [];
+
+  for (let i = 0; i < processes.length; i++) {
+    queue.push(processes[i]);
+    displayLog(`Proceso encolado: ${processes[i].id} (Llegada: ${processes[i].arrival}, Duración: ${processes[i].burst})`, "#dddddd");
+    await sleep(1000);
+  }
+
+  let currentTime = 0;
+
+  while (queue.length > 0) {
+    const currentProcess = queue.shift();
+
+    if (currentProcess.arrival > currentTime) {
+      const idleTime = currentProcess.arrival - currentTime;
+      displayLog(`Tiempo de inactividad durante ${idleTime} unidades de tiempo`, "#dddddd");
+      await sleep(1000);
+      currentTime += idleTime;
+    }
+
+    displayLog(`Ejecutando proceso ${currentProcess.id} (Duración: ${currentProcess.burst} unidades de tiempo)`, "#dddddd");
+    await sleep(currentProcess.burst);
+    currentTime += currentProcess.burst;
+    timeSpan.textContent = currentTime;
+
+    displayLog(`Proceso ${currentProcess.id} completado. Tiempo de ejecución actual: ${currentTime}`, "#dddddd");
+    await sleep(1000);
+  }
+
+  if (queue.length === 0)
+    displayLog(`Todos los procesos han sido ejecutados`, "#dddddd");
+  else
+    displayLog(`La cola no se ha vaciado completamente`, "#dddddd");
+
+  timeSpan.textContent = currentTime;
+}
+
+
 const rrScheduling = async () => console.log('2');
 
 const sjfScheduling = async (input) => {
