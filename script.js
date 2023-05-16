@@ -67,7 +67,7 @@ const setInputs = event => {
       properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5");
       break;
     case "hrrn":
-      properties.push("Burst", "Arrival");
+      properties.push("Arrival", "Burst");
       break;
     case "mfq":
       properties.push("Atributo #1");
