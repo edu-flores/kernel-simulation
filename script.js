@@ -325,8 +325,8 @@ const fcfsScheduling = async (input) => {
     await sleep(1000);
   }
   displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog("Promedio tiempo de respuesta: " + (turnAroundTime / processes.length).toFixed(2), "#dddddd");
-  displayLog("Promedio de tiempo de espera: " + (waitingTime / processes.length).toFixed(2), "#dddddd");
+  displayLog("Promedio tiempo de retorno: " + (turnAroundTime / processes.length).toFixed(2), "#dddddd");
+  displayLog("Promedio tiempo de espera: " + (waitingTime / processes.length).toFixed(2), "#dddddd");
   timeSpan.textContent = currentTime;
 }
 
