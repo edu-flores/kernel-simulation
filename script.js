@@ -64,7 +64,7 @@ const setInputs = event => {
       properties.push("Arrival", "Burst");
       break;
     case "srt":
-      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5");
+      properties.push("Arrival", "Burst");
       break;
     case "hrrn":
       properties.push("Arrival", "Burst");
@@ -442,7 +442,57 @@ const sjfScheduling = async (input) => {
   timeSpan.textContent = currentTime;
 }
 
-const srtScheduling = async () => console.log('4');
+const srtScheduling = async (input) => {
+  // List of all processes
+  let processes = input;
+
+  let currentTime = 0;
+  let completedProcesses = 0;
+  let totalTurnaroundTime = 0;
+
+  while (completedProcesses < processes.length) {
+    let shortestTime = Infinity;
+    let shortestIndex = -1;
+
+    // Find the processes with the shortest remaining time
+    for (let i = 0; i < processes.length; i++) {
+      if (
+        processes[i].arrival <= currentTime &&
+        processes[i].burst < shortestTime &&
+        processes[i].burst > 0
+      ) {
+        shortestTime = processes[i].burst;
+        shortestIndex = i;
+      }
+    }
+
+    if (shortestIndex == -1) {
+      currentTime++;
+      continue;
+    }
+
+    // Execute the process for 1 time unit
+    processes[shortestIndex].burst--;
+    currentTime++;
+
+    // Check if the process is completed
+    if (processes[shortestIndex].burst === 0) {
+      completedProcesses++;
+      processes[shortestIndex].completionTime = currentTime;
+      totalTurnaroundTime += processes[shortestIndex].completionTime - processes[shortestIndex].arrival;
+      displayLog("Llego proceso: " + processes[shortestIndex].id, "#dddddd");
+      displayLog("Tiempo de llegada: " + processes[shortestIndex].completionTime, "#dddddd");
+      timeSpan.textContent = processes[shortestIndex].completionTime;
+    }
+    await sleep(1000);
+  }
+
+  let avgTurnaroundTime = totalTurnaroundTime / processes.length;
+
+  displayLog("Tiempo actual: " + currentTime, "#dddddd");
+  displayLog("Promedio tiempo de retorno: " + avgTurnaroundTime,"#dddddd");
+  timeSpan.textContent = currentTime;
+};
 
 const hrrnScheduling = async (input) => {
   // List of all processes
