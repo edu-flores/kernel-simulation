@@ -456,11 +456,7 @@ const srtScheduling = async (input) => {
 
     // Find the processes with the shortest remaining time
     for (let i = 0; i < processes.length; i++) {
-      if (
-        processes[i].arrival <= currentTime &&
-        processes[i].burst < shortestTime &&
-        processes[i].burst > 0
-      ) {
+      if (processes[i].arrival <= currentTime && processes[i].burst < shortestTime && processes[i].burst > 0) {
         shortestTime = processes[i].burst;
         shortestIndex = i;
       }
@@ -490,7 +486,7 @@ const srtScheduling = async (input) => {
   let avgTurnaroundTime = totalTurnaroundTime / processes.length;
 
   displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog("Promedio tiempo de retorno: " + avgTurnaroundTime,"#dddddd");
+  displayLog("Promedio tiempo de retorno: " + avgTurnaroundTime, "#dddddd");
   timeSpan.textContent = currentTime;
 };
 
