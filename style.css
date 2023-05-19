@@ -213,11 +213,6 @@ button:disabled {
     color: var(--kernel-darkgray);
 }
 
-#top tr {
-    display: flex;
-    justify-content: space-between;
-}
-
-#top th {
-    padding: 0 2rem;
+#top th, #top td {
+    text-align: end;
 }
