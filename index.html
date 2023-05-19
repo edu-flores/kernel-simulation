@@ -20,8 +20,8 @@
     </div>
   </header>
   <main>
-    <!-- Top -->
-    <div id="top" class="flex">
+    <!-- Banner -->
+    <div id="banner" class="flex">
       <pre>
             .--.
            |o_o |
@@ -39,7 +39,7 @@
     </div>
     <hr class="mb">
     <!-- Inputs -->
-    <div class="flex">
+    <div class="flex mb">
       <div class="w-100">
         <form id="algorithms-form" onsubmit="run(event)">
           <div id="user-inputs" class="mb">
@@ -107,6 +107,29 @@
         <h3>Tiempo actual: <span id="time-counter">0</span> unidades</h3>
       </div>
     </div>
+    <!-- Top -->
+    <hr class="mb">
+    <table id="top" cellspacing="0">
+      <thead>
+        <tr>
+          <th>PID</th>
+          <th>USER</th>
+          <th>PR</th>
+          <th>NI</th>
+          <th>VIRT</th>
+          <th>RES</th>
+          <th>SHR</th>
+          <th>S</th>
+          <th>%CPU</th>
+          <th>%MEM</th>
+          <th>TIME+</th>
+          <th>COMMAND</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr></tr>
+      </tbody>
+    </table>
   </main>
   <script src="script.js"></script>
 </body>

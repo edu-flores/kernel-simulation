@@ -161,7 +161,7 @@ button:disabled {
     gap: 5px;
 }
 
-#top {
+#banner {
     justify-content: center;
 }
 
@@ -202,4 +202,22 @@ button:disabled {
     border: 1px dashed var(--kernel-white);
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
+}
+
+#top {
+    width: 100%;
+}
+
+#top thead {
+    background-color: var(--kernel-white);
+    color: var(--kernel-darkgray);
+}
+
+#top tr {
+    display: flex;
+    justify-content: space-between;
+}
+
+#top th {
+    padding: 0 2rem;
 }
