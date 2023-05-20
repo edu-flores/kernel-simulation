@@ -260,8 +260,7 @@ const sleep = ms => {
     setTimeout(() => {
       if (stop.value) {
         reject(new Error(stop.type));
-        currentTime += 1;
-        timeSpan.textContent = currentTime;
+        timeSpan.textContent = parseInt(timeSpan.textContent) + 1;
       } else {
         resolve();
       }
