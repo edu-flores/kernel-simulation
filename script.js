@@ -58,7 +58,7 @@ const setInputs = event => {
       properties.push("Arrival", "Burst");
       break;
     case "rr":
-      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4", "Atributo #5", "Atributo #6");
+      properties.push("Burst");
       break;
     case "sjf":
       properties.push("Arrival", "Burst");
@@ -371,8 +371,41 @@ const fifoScheduling = async (input) => {
   timeSpan.textContent = currentTime;
 }
 
+const rrScheduling = async (input) => {
+  // List of all processes
+  let processes = input;
+  let quantum = 4;
+  let totalTime = 0;
 
-const rrScheduling = async () => console.log('2');
+  // Sum their bursts
+  processes.forEach(process => {
+    totalTime += process.burst;
+  });
+
+  // While there's still total time remaining
+  while (totalTime > 0) {
+    for (let i = 0; i < processes.length; i++) {
+      if (processes[i].burst > 0) {
+        await sleep(1000);
+        displayLog(`Ejecutando el proceso ${processes[i].id} durante el quantum ${quantum}`, "#dddddd");
+        if (processes[i].burst <= quantum) {
+          currentTime += processes[i].burst;
+          timeSpan.textContent = currentTime;
+          totalTime -= processes[i].burst;
+          processes[i].burst = 0;
+        } else {
+          currentTime += quantum;
+          timeSpan.textContent = currentTime;
+          totalTime -= quantum;
+          processes[i].burst -= quantum;
+        }
+      }
+    }
+  }
+
+  // End
+  displayLog("Todos los procesos han finalizado", "#dddddd");
+}
 
 const sjfScheduling = async (input) => {
   // List of all processes
