@@ -20,9 +20,7 @@ const schedulingAlgorithms = [
 ];
 
 const pageReplacementAlgorithms = [
-  { value: "lru", text: "Least Recently Used" },
-  { value: "lfu", text: "Least Frequently Used" },
-  { value: "nru", text: "Not Recently Used" },
+  { value: "lru", text: "Least Recently Used" }
 ];
 
 // Show different algorithms depending on the selector type 
@@ -70,15 +68,9 @@ const setInputs = event => {
       properties.push("Arrival", "Burst");
       break;
     case "mfq":
-      properties.push("Atributo #1");
+      properties.push("Arrival", "Burst", "Priority", "Remaining");
       break;
     case "lru":
-      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4");
-      break;
-    case "lfu":
-      properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4");
-      break;
-    case "nru":
       properties.push("Atributo #1", "Atributo #2", "Atributo #3", "Atributo #4");
       break;
   }
@@ -279,12 +271,13 @@ const sleep = ms => {
 
 // Process class with optional properties
 class Process {
-  constructor({ id=0, arrival=0, burst=0, status=0, priority=0, waiting=0, turnaround=0 }) {
+  constructor({ id=0, arrival=0, burst=0, status=0, priority=0, remaining=0, waiting=0, turnaround=0 }) {
     this.id = id;
     this.arrival = arrival;
     this.burst = burst;
     this.status = status;
     this.priority = priority;
+    this.remaining = remaining;
     this.waiting = waiting;
     this.turnaround = turnaround;
   }
@@ -595,10 +588,9 @@ const hrrnScheduling = async (input) => {
   }
 }
 
-const mfqScheduling = async () => console.log('6');
-const lruPageReplacement = async () => console.log('8');
-const lfuPageReplacement = async () => console.log('9');
-const nruPageReplacement = async () => console.log('10');
+const mfqScheduling = async () => console.log('');
+
+const lruPageReplacement = async () => console.log('');
 
 // Object containing all algorithms
 const algorithms = {
@@ -612,9 +604,7 @@ const algorithms = {
     mfq: mfqScheduling
   },
   pageReplacement: {
-    lru: lruPageReplacement,
-    lfu: lfuPageReplacement,
-    nru: nruPageReplacement
+    lru: lruPageReplacement
   }
 }
 
