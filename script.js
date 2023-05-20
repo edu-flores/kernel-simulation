@@ -250,12 +250,17 @@ const run = async (event) => {
   });
 }
 
-
 // Stop any running algorithms
 const interrupt = error => {
   stop.value = true;
   stop.type = error;
 }
+
+// Interruptions object
+let stop = {
+  value: false,
+  type: null
+};
 
 // Sleep function to delay algorithms by milliseconds
 const sleep = ms => {
@@ -274,23 +279,16 @@ const sleep = ms => {
 
 // Process class with optional properties
 class Process {
-  constructor({ id=0, arrival=0, burst=0, status=0, quantum=0, waiting=0, turnaround=0 }) {
+  constructor({ id=0, arrival=0, burst=0, status=0, priority=0, waiting=0, turnaround=0 }) {
     this.id = id;
     this.arrival = arrival;
     this.burst = burst;
     this.status = status;
-    this.quantum = quantum;
+    this.priority = priority;
     this.waiting = waiting;
     this.turnaround = turnaround;
   }
 }
-
-// Global variables
-let currentTime = 0;
-let stop = {
-  value: false,
-  type: null
-};
 
 const fcfsScheduling = async (input) => {
   // List of all processes
@@ -376,6 +374,7 @@ const rrScheduling = async (input) => {
   let processes = input;
   let quantum = 4;
   let totalTime = 0;
+  let currentTime = 0;
 
   // Sum their bursts
   processes.forEach(process => {
@@ -531,6 +530,7 @@ const hrrnScheduling = async (input) => {
   let queue = [];
   let numProcesses = processes.length;
   let done = 0;
+  let currentTime = 0;
 
   while (done != numProcesses) {
 
