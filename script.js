@@ -8,6 +8,7 @@ const submitButton = document.getElementById("submit-button");
 const interruptButtons = document.querySelectorAll(".interrupt-button");
 const headersRow = document.getElementById("headers-row");
 const inputsRow = document.getElementsByClassName("inputs-row");
+const topsRow = document.getElementsByClassName("tops-row");
 
 const schedulingAlgorithms = [
   { value: "fcfs", text: "First Come First Serve" },
@@ -85,17 +86,11 @@ const setInputs = (event) => {
 
     // Add inputs
     properties.forEach(() => {
-      row.innerHTML += `<td><input type="number" min="0" value=${
-        Math.floor(Math.random() * 9) + 1
-      } ${
-        index < 4 ? "" : "disabled"
-      } oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>`;
+      row.innerHTML += `<td><input type="number" min="0" value=${Math.floor(Math.random() * 9) + 1} ${index < 4 ? "" : "disabled"} oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>`;
     });
 
     // Add checkbox
-    row.innerHTML += `<td><input type="checkbox" onchange="modifyInputs(event)" ${
-      index < 4 ? "checked" : ""
-    }></td>`;
+    row.innerHTML += `<td><input type="checkbox" onchange="modifyInputs(event)" ${index < 4 ? "checked" : ""}></td>`;
   });
 };
 
@@ -188,6 +183,23 @@ const run = async (event) => {
     if (row.querySelector("input[type=checkbox]").checked) {
       current = new Process({});
       current.id = i + 1;
+
+      // Fill top row
+      let row = topsRow[i];
+      row.innerHTML = `
+        <td>${i+1}</td>
+        <td>root</td>
+        <td>1</td>
+        <td>0</td>
+        <td>${Math.floor(Math.random() * (7382947 - 829436 + 1)) + 1829436}</td>
+        <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
+        <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
+        <td>S</td>
+        <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
+        <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
+        <td>1</td>
+        <td>sisop</td>
+      `;
 
       // Add properties from inputs
       Array.from(row.querySelectorAll("input[type=number]")).forEach(
