@@ -362,7 +362,7 @@ const fcfsScheduling = async (input) => {
     await sleep(1000);
 
     for (let i = 0; i < process.burst; i++) {
-      currentTime += 1;
+      currentTime++;
       timeSpan.textContent = currentTime;
       displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
       await sleep(1000);
@@ -407,7 +407,7 @@ const fifoScheduling = async (input) => {
 
     // Execute process
     for (let i = 0; i < process.burst; i++) {
-      currentTime += 1;
+      currentTime++;
       timeSpan.textContent = currentTime;
       displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
       await sleep(1000);
@@ -445,7 +445,7 @@ const rrScheduling = async (input) => {
       if (processes[i].burst > 0) {
         // Execute process
         for (let i = 0; i < processes[i].burst; i++) {
-          currentTime += 1;
+          currentTime++;
           timeSpan.textContent = currentTime;
           displayLog(`Ejecutando el proceso ${processes[i].id} durante el quantum de duración: ${quantum}`, "#dddddd");
           await sleep(1000);
@@ -521,7 +521,7 @@ const sjfScheduling = async (input) => {
   
       // Execute process
       for (let i = 0; i < process.burst; i++) {
-        currentTime += 1;
+        currentTime++;
         timeSpan.textContent = currentTime;
         displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
         await sleep(1000);
@@ -645,7 +645,7 @@ const hrrnScheduling = async (input) => {
     // If there is only one process, execute it
     if (queue.length == 1) {
       for (let i = 0; i < queue[0].burst; i++) {
-        currentTime += 1;
+        currentTime++;
         timeSpan.textContent = currentTime;
         displayLog(`Ejecutando proceso ${queue[0].id} en tiempo: ${currentTime}`, "#dddddd");
         await sleep(1000);
@@ -745,8 +745,8 @@ const mfqScheduling = async (input) => {
         displayLog("Ejecutando proceso: " + q1[0].id, "#dddddd");
         for (let j = 0; j < quantum1; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-          q1[0].remaining -= 1;
-          currentTime += 1;
+          q1[0].remaining--;
+          currentTime++;
           // For every unit of time, check if new processes have arrived
           if (processes.length > 0 && currentTime <= processes[0].arrival) {
             // New processes are added to q1 always
@@ -762,8 +762,8 @@ const mfqScheduling = async (input) => {
               displayLog("Ejecutando proceso: " + q1[0].id, "#dddddd");
               for (let j = 0; j < quantum1; j++) {
                 displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-                q1[0].remaining -= 1;
-                currentTime += 1;
+                q1[0].remaining--;
+                currentTime++;
                 // For every unit of time, check if new processes have arrived
                 if (
                   processes.length > 0 &&
@@ -812,8 +812,8 @@ const mfqScheduling = async (input) => {
               displayLog("Ejecutando proceso: " + q2[0].id, "#dddddd");
               for (let j = 0; j < quantum2; j++) {
                 displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-                q2[0].remaining -= 1;
-                currentTime += 1; // For every unit of time, check if new processes have arrived
+                q2[0].remaining--;
+                currentTime++; // For every unit of time, check if new processes have arrived
                 if (
                   processes.length > 0 &&
                   currentTime <= processes[0].arrival
@@ -847,7 +847,7 @@ const mfqScheduling = async (input) => {
               displayLog("Ejecutando proceso: " + q3[0].id);
               for (let j = 0; j < q3[0].burst; j++) {
                 displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-                currentTime += 1; // For every unit of time, check if new processes have arrived
+                currentTime++; // For every unit of time, check if new processes have arrived
                 if (
                   processes.length > 0 &&
                   currentTime <= processes[0].arrival
@@ -857,7 +857,7 @@ const mfqScheduling = async (input) => {
                   processes.shift();
                 }
                 timeSpan.textContent = currentTime;
-                q3[0].remaining -= 1;
+                q3[0].remaining--;
                 await sleep(1000);
                 if (q3[0].remaining === 0) {
                   displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
@@ -892,8 +892,8 @@ const mfqScheduling = async (input) => {
         displayLog("Ejecutando proceso: " + q2[0].id, "#dddddd");
         for (let j = 0; j < quantum2; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-          q2[0].remaining -= 1;
-          currentTime += 1; // For every unit of time, check if new processes have arrived
+          q2[0].remaining--;
+          currentTime++; // For every unit of time, check if new processes have arrived
           if (processes.length > 0 && currentTime <= processes[0].arrival) {
             // New processes are added to q1 always
             q1.push(processes[0]);
@@ -926,14 +926,14 @@ const mfqScheduling = async (input) => {
         displayLog("Ejecutando proceso: " + q3[0].id);
         for (let j = 0; j < q3[0].burst; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-          currentTime += 1; // For every unit of time, check if new processes have arrived
+          currentTime++; // For every unit of time, check if new processes have arrived
           if (processes.length > 0 && currentTime <= processes[0].arrival) {
             // New processes are added to q1 always
             q1.push(processes[0]);
             processes.shift();
           }
           timeSpan.textContent = currentTime;
-          q3[0].remaining -= 1;
+          q3[0].remaining--;
           await sleep(1000);
           if (q3[0].remaining === 0) {
             displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
