@@ -82,14 +82,14 @@
             <button id="submit-button" type="submit" class="w-100">Ejecutar algoritmo</button>
             <!-- Stop -->
             <div id="interrupts">
-              <button type="button" class="interrupt-button" disabled onclick="interrupt('io')">Solicitud I/O</button>
-              <button type="button" class="interrupt-button" disabled onclick="interrupt('normal')">Terminación Normal</button>
-              <button type="button" class="interrupt-button" disabled onclick="interrupt('date')">Solicitud Fecha</button>
-              <button type="button" class="interrupt-button" disabled onclick="interrupt('error')">Error Programa</button>
-              <button type="button" class="interrupt-button" disabled onclick="interrupt('quantum')">Quantum Expirado</button>
-              <button type="button" class="interrupt-button" disabled onclick="interrupt('zombie')">Interrupción Zombi</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('Leyendo archivo de entrada \'text.txt\', procesando datos...')">Solicitud I/O</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('Proceso finalizado correctamente, tiempo de ejecución y memoria utilizada: undefined')">Terminación Normal</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('Ingrese la fecha en el formato YYYY-MM-DD: 2023-05-22')">Solicitud Fecha</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('¡Error! Se ha producido una excepción en el archivo \'script.js\', línea 157')">Error Programa</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('Interrupción por quantum expirado, asignando CPU a proceso de mayor prioridad...')">Quantum Expirado</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('Se ha detectado un proceso zombi, eliminando entrada de la tabla de procesos...')">Interrupción Zombi</button>
               <div></div>
-              <button type="button" class="interrupt-button" disabled onclick="interrupt2('Error: Interrupción abrupta')">Abrupto</button>
+              <button type="button" class="interrupt-button" disabled onclick="interrupt('Error: Interrupción abrupta. Liberando memoria y otros recursos asociados')">Abrupto</button>
               <div></div>
             </div>
           </div>
@@ -125,34 +125,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test+</td>
-          <td>Test</td>
-        </tr>
-        <tr>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test+</td>
-          <td>Test</td>
-        </tr>
+        <!-- 1 -->
+        <tr class="tops-row"></tr>
+        <!-- 2 -->
+        <tr class="tops-row"></tr>
+        <!-- 3 -->
+        <tr class="tops-row"></tr>
+        <!-- 4 -->
+        <tr class="tops-row"></tr>
+        <!-- 5 -->
+        <tr class="tops-row"></tr>
       </tbody>
     </table>
   </main>

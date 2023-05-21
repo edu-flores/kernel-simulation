@@ -8,6 +8,7 @@ const submitButton = document.getElementById("submit-button");
 const interruptButtons = document.querySelectorAll(".interrupt-button");
 const headersRow = document.getElementById("headers-row");
 const inputsRow = document.getElementsByClassName("inputs-row");
+const topsRow = document.getElementsByClassName("tops-row");
 
 const schedulingAlgorithms = [
   { value: "fcfs", text: "First Come First Serve" },
@@ -51,23 +52,11 @@ const setInputs = (event) => {
   let properties = ["ID"];
   switch (event.target.value) {
     case "fcfs":
-      properties.push("Arrival", "Burst");
-      break;
     case "fifo":
-      properties.push("Arrival", "Burst");
-      break;
     case "rr":
-      properties.push("Burst");
-      break;
     case "sjf":
-      properties.push("Arrival", "Burst");
-      break;
     case "srt":
-      properties.push("Arrival", "Burst");
-      break;
     case "hrrn":
-      properties.push("Arrival", "Burst");
-      break;
     case "mfq":
       properties.push("Arrival", "Burst");
       break;
@@ -97,22 +86,22 @@ const setInputs = (event) => {
 
     // Add inputs
     properties.forEach(() => {
-      row.innerHTML += `<td><input type="number" min="0" value=${
-        Math.floor(Math.random() * 9) + 1
-      } ${
-        index < 4 ? "" : "disabled"
-      } oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>`;
+      row.innerHTML += `<td><input type="number" min="0" value=${Math.floor(Math.random() * 9) + 1} ${index < 4 ? "" : "disabled"} oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>`;
     });
 
     // Add checkbox
-    row.innerHTML += `<td><input type="checkbox" onchange="modifyInputs(event)" ${
-      index < 4 ? "checked" : ""
-    }></td>`;
+    row.innerHTML += `<td><input type="checkbox" onchange="modifyInputs(event)" ${index < 4 ? "checked" : ""}></td>`;
   });
 };
 
 // Enable or disable inputs on each row
 const modifyInputs = (event) => {
+  // At least 1 row activated
+  if (Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).length === 0) {
+    event.target.checked = true;
+    return;
+  }
+
   // Get all inputs from that row
   const row = event.target.closest("tr");
   const inputs = row.querySelectorAll("input[type=number]");
@@ -181,84 +170,54 @@ const run = async (event) => {
 
   // Select the desired function
   clearLogs();
-  const selectedFunction =
-    algorithms[typeSelector.value][algorithmSelector.value];
+  const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
 
-  // Run the function
-  try {
-    // Prepare inputs
-    const properties = Array.from(headersRow.querySelectorAll("th")).slice(1);
-    const userInputs = [];
-    let current;
+  // Prepare inputs
+  const properties = Array.from(headersRow.querySelectorAll("th")).slice(1);
+  const userInputs = [];
+  let current;
 
-    // For every input row, get every input type number value
-    Array.from(inputsRow).forEach((row, i) => {
-      // Check if the process is enabled or disabled
-      if (row.querySelector("input[type=checkbox]").checked) {
-        current = new Process({});
-        current.id = i + 1;
+  // For every input row, get every input type number value
+  Array.from(inputsRow).forEach((row, i) => {
+    // Check if the process is enabled or disabled
+    if (row.querySelector("input[type=checkbox]").checked) {
+      current = new Process({});
+      current.id = i + 1;
 
-        // Add properties from inputs
-        Array.from(row.querySelectorAll("input[type=number]")).forEach(
-          (input, j) => {
-            current[properties[j].innerHTML.toLowerCase()] = parseInt(
-              input.value
-            );
-          }
-        );
+      // Fill top row
+      let row = topsRow[i];
+      row.innerHTML = `
+        <td>${i+1}</td>
+        <td>root</td>
+        <td>1</td>
+        <td>0</td>
+        <td>${Math.floor(Math.random() * (7382947 - 829436 + 1)) + 1829436}</td>
+        <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
+        <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
+        <td>S</td>
+        <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
+        <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
+        <td>1</td>
+        <td>sisop</td>
+      `;
 
-        // Push that process
-        userInputs.push(current);
-      }
-    });
+      // Add properties from inputs
+      Array.from(row.querySelectorAll("input[type=number]")).forEach(
+        (input, j) => {
+          current[properties[j].innerHTML.toLowerCase()] = parseInt(
+            input.value
+          );
+        }
+      );
 
-    // Run algorithm
-    await selectedFunction(userInputs);
-  } catch (error) {
-    // Return to defaults
-    stop.value = false;
-    stop.type = null;
-
-    // Get all messages to display
-    let messages = [];
-    switch (error.message) {
-      case "io":
-        messages.push("Leyendo archivo de entrada 'datos.txt'...");
-        messages.push("Procesando datos...");
-        messages.push("Escritura de resultados en archivo 'resultados.txt'...");
-        messages.push("Operación de I/O completada correctamente.");
-        break;
-      case "normal":
-        messages.push("Proceso finalizado correctamente.");
-        messages.push("Tiempo de ejecución: 00:02:35");
-        messages.push("Memoria utilizada: 256 MB");
-        break;
-      case "date":
-        messages.push("Ingrese la fecha en el formato YYYY-MM-DD: 2023-05-09");
-        break;
-      case "error":
-        messages.push("¡Error! Se ha producido una excepción en el archivo 'script.js', línea 157.");
-        messages.push("Mensaje de error: 'ZeroDivisionError: division by zero'");
-        break;
-      case "quantum":
-        messages.push("Interrupción por quantum expirado.");
-        messages.push("Asignando CPU a proceso de mayor prioridad...");
-        break;
-      case "zombie":
-        messages.push("Se ha detectado un proceso zombi.");
-        messages.push("Eliminando entrada de la tabla de procesos...");
-        break;
-      case "end":
-        messages.push("Proceso detenido por señal SIGKILL (-9).");
-        messages.push("Liberando memoria y otros recursos asociados...");
-        break;
+      // Push that process
+      userInputs.push(current);
     }
+  });
 
-    // Display messages in visualization box
-    for (const message of messages) {
-      displayLog(message, "#d13079");
-    }
-  }
+  // Run algorithm
+  stop = false;
+  await selectedFunction(userInputs);
 
   // Disable and enable start & stop buttons
   submitButton.disabled = false;
@@ -267,37 +226,18 @@ const run = async (event) => {
   });
 };
 
-// Stop any running algorithms
-const interrupt = (error) => {
-  stop.value = true;
-  stop.type = error;
-};
+// Interruptions global variable
+let stop = false;
 
-// Interruptions object
-let stop = {
-  value: false,
-  type: null,
-};
-
-let stop2 = false;
-
-function interrupt2(message) {
-  displayLog(message, "#ff0000");
-  stop2 = true;
+// Send interruption
+const interrupt = msg => {
+  displayLog(msg, "#d13079");
+  stop = true;
 }
 
 // Sleep function to delay algorithms by milliseconds
-const sleep = (ms) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (stop.value) {
-        reject(new Error(stop.type));
-        timeSpan.textContent = parseInt(timeSpan.textContent) + 1;
-      } else {
-        resolve();
-      }
-    }, ms);
-  });
+const sleep = ms => {
+  return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 // Process class with optional properties
@@ -332,14 +272,17 @@ const fcfsScheduling = async (input) => {
 
   // Simulate the FCFS
   let currentTime = 0;
+  timeSpan.textContent = currentTime;
   let waitingTime = 0;
   let turnAroundTime = 0;
 
   for (let i = 0; i < processes.length; i++) {
     let process = processes[i];
 
-    if (currentTime < process.arrival) {
-      currentTime = process.arrival;
+    for (currentTime; currentTime < process.arrival; currentTime++) {
+      displayLog("Esperando llegada de un nuevo proceso...", "#e39a0f");
+      timeSpan.textContent = currentTime;
+      await sleep(1000);
     }
 
     // Calculate waiting time
@@ -348,84 +291,87 @@ const fcfsScheduling = async (input) => {
     // Calculate turnaround time
     turnAroundTime += currentTime + process.burst - process.arrival;
 
-    displayLog(`Llego proceso: ${process.id}`, "#dddddd");
-    displayLog(`Tiempo de llegada: ${currentTime}`, "#dddddd");
-    displayLog(`-- Se ejecuto el proceso: ${process.id} --`, "#dddddd");
-    currentTime += process.burst;
+    displayLog(`Llegó proceso: ${process.id}`, "#dddddd");
     timeSpan.textContent = currentTime;
     await sleep(1000);
+
+    for (let i = 0; i < process.burst; i++) {
+      currentTime++;
+      timeSpan.textContent = currentTime;
+      displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
+      await sleep(1000);
+    }
+    displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
   }
-  displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog(
-    "Promedio tiempo de retorno: " +
-      (turnAroundTime / processes.length).toFixed(2),
-    "#dddddd"
-  );
-  displayLog(
-    "Promedio tiempo de espera: " + (waitingTime / processes.length).toFixed(2),
-    "#dddddd"
-  );
-  timeSpan.textContent = currentTime;
+
+  // Display stats
+  displayLog("Tiempo de retorno promedio: " + (turnAroundTime / processes.length).toFixed(2), "#dddddd");
+  displayLog("Tiempo de espera promedio: " + (waitingTime / processes.length).toFixed(2), "#dddddd");
 };
 
 const fifoScheduling = async (input) => {
   // List of all processes
   let processes = input;
 
-  let queue = [];
+  // Time
+  let currentTime = 0;
+  timeSpan.textContent = currentTime;
 
+  // Enqueue all processes
+  let queue = [];
   for (let i = 0; i < processes.length; i++) {
     queue.push(processes[i]);
     displayLog(
-      `Proceso encolado: ${processes[i].id} (Llegada: ${processes[i].arrival}, Duración: ${processes[i].burst})`,
+      `Proceso encolado: ${processes[i].id} (Llegada: ${processes[i].arrival} | Duración: ${processes[i].burst})`,
       "#dddddd"
     );
-    await sleep(1000);
+    await sleep(300);
   }
 
-  let currentTime = 0;
-
+  // Simulate the FIFO
   while (queue.length > 0) {
-    const currentProcess = queue.shift();
+    const process = queue.shift();
 
-    if (currentProcess.arrival > currentTime) {
-      const idleTime = currentProcess.arrival - currentTime;
-      displayLog(
-        `Tiempo de inactividad durante ${idleTime} unidades de tiempo`,
-        "#dddddd"
-      );
+    // Idle time
+    for (currentTime; currentTime < process.arrival; currentTime++) {
+      displayLog("Esperando llegada de un nuevo proceso...", "#e39a0f");
+      timeSpan.textContent = currentTime;
       await sleep(1000);
-      currentTime += idleTime;
     }
 
-    displayLog(
-      `Ejecutando proceso ${currentProcess.id} (Duración: ${currentProcess.burst} unidades de tiempo)`,
-      "#dddddd"
-    );
-    await sleep(currentProcess.burst);
-    currentTime += currentProcess.burst;
-    timeSpan.textContent = currentTime;
-
-    displayLog(
-      `Proceso ${currentProcess.id} completado. Tiempo de ejecución actual: ${currentTime}`,
-      "#dddddd"
-    );
-    await sleep(1000);
+    // Execute process
+    for (let i = 0; i < process.burst; i++) {
+      currentTime++;
+      timeSpan.textContent = currentTime;
+      displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
+      await sleep(1000);
+    }
+    displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
   }
 
+  // Display status
   if (queue.length === 0)
     displayLog(`Todos los procesos han sido ejecutados`, "#dddddd");
   else displayLog(`La cola no se ha vaciado completamente`, "#dddddd");
 
+  // Update time
   timeSpan.textContent = currentTime;
 };
 
 const rrScheduling = async (input) => {
   // List of all processes
   let processes = input;
+
+  // Sort processes based on arrival time
+  processes.sort((a, b) => a.arrival - b.arrival);
+
+  // Variables
   let quantum = 4;
   let totalTime = 0;
+
+  // Time
   let currentTime = 0;
+  timeSpan.textContent = currentTime;
 
   // Sum their bursts
   processes.forEach((process) => {
@@ -435,23 +381,40 @@ const rrScheduling = async (input) => {
   // While there's still total time remaining
   while (totalTime > 0) {
     for (let i = 0; i < processes.length; i++) {
-      if (processes[i].burst > 0) {
+
+      // Wait for a process to arrive
+      for (currentTime; currentTime < processes[i].arrival; currentTime++) {
+        displayLog("Esperando llegada de un nuevo proceso...", "#e39a0f");
+        timeSpan.textContent = currentTime;
         await sleep(1000);
-        displayLog(
-          `Ejecutando el proceso ${processes[i].id} durante el quantum ${quantum}`,
-          "#dddddd"
-        );
-        if (processes[i].burst <= quantum) {
-          currentTime += processes[i].burst;
+      }
+
+      // New process
+      displayLog(`Proceso a ejecutar: ${processes[i].id}`, "#dddddd");
+      timeSpan.textContent = currentTime;
+      await sleep(1000);
+
+      if (processes[i].burst > 0) {
+        // Execute process
+        for (let j = 0; j < processes[i].burst && j < quantum; j++) {
+          currentTime++;
           timeSpan.textContent = currentTime;
+          displayLog(`Ejecutando el proceso ${processes[i].id} durante el quantum de duración: ${quantum}`, "#dddddd");
+          await sleep(1000);
+        }
+
+        // Finished or not
+        if (processes[i].burst <= quantum) {
+          displayLog(`Proceso: ${processes[i].id} terminado en tiempo ${currentTime}`, "#08967e");
           totalTime -= processes[i].burst;
           processes[i].burst = 0;
         } else {
-          currentTime += quantum;
-          timeSpan.textContent = currentTime;
+          displayLog(`Proceso: ${processes[i].id} parcialmente terminado`, "#e39a0f");
           totalTime -= quantum;
           processes[i].burst -= quantum;
         }
+
+        displayLog("--- Nuevo Quantum ---", "#4790d2");
       }
     }
   }
@@ -475,7 +438,11 @@ const sjfScheduling = async (input) => {
     return a.arrival - b.arrival;
   });
 
+  // Time
   let currentTime = 0;
+  timeSpan.textContent = currentTime;
+
+  // Variables
   let waitingTime = 0;
   let turnAroundTime = 0;
 
@@ -505,14 +472,16 @@ const sjfScheduling = async (input) => {
       let processTurnAroundTime = processWaitingTime + process.burst;
       turnAroundTime += processTurnAroundTime;
 
-      displayLog(`Llego proceso: ${process.id}`, "#dddddd");
-      displayLog(`Tiempo de llegada: ${currentTime}`, "#dddddd");
-      displayLog(`-- Se ejecuto el proceso: ${process.id} --`, "#dddddd");
-
-      // Execute the process for its burst time
-      currentTime += process.burst;
-      timeSpan.textContent = currentTime;
-      await sleep(1000);
+      displayLog(`Llegó proceso: ${process.id}`, "#dddddd");
+  
+      // Execute process
+      for (let i = 0; i < process.burst; i++) {
+        currentTime++;
+        timeSpan.textContent = currentTime;
+        displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
+        await sleep(1000);
+      }
+      displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
 
       // Remove executed process from list
       processes.splice(processes.indexOf(process), 1);
@@ -520,20 +489,16 @@ const sjfScheduling = async (input) => {
       // If no process is available, increase the current time
       currentTime++;
       timeSpan.textContent = currentTime;
+      displayLog("Esperando llegada de un nuevo proceso...", "#e39a0f");
       await sleep(1000);
     }
   }
 
-  displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog(
-    "Promedio tiempo de retorno: " +
-      (turnAroundTime / processesLength).toFixed(2),
-    "#dddddd"
-  );
-  displayLog(
-    "Promedio tiempo de espera: " + (waitingTime / processesLength).toFixed(2),
-    "#dddddd"
-  );
+  // Display stats
+  displayLog("Tiempo de retorno promedio: " + (turnAroundTime / processesLength).toFixed(2), "#dddddd");
+  displayLog("Tiempo de espera promedio: " + (waitingTime / processesLength).toFixed(2), "#dddddd");
+
+  // Update time
   timeSpan.textContent = currentTime;
 };
 
@@ -541,10 +506,15 @@ const srtScheduling = async (input) => {
   // List of all processes
   let processes = input;
 
+  // Time
   let currentTime = 0;
+  timeSpan.textContent = currentTime;
+
+  // Variables
   let completedProcesses = 0;
   let totalTurnaroundTime = 0;
 
+  // Simulate SRT
   while (completedProcesses < processes.length) {
     let shortestTime = Infinity;
     let shortestIndex = -1;
@@ -561,36 +531,35 @@ const srtScheduling = async (input) => {
       }
     }
 
-    if (shortestIndex == -1) {
+    if (shortestIndex === -1) {
       currentTime++;
+      timeSpan.textContent = currentTime;
+      displayLog("Esperando un proceso disponbile...", "#e39a0f");
+      await sleep(1000);
       continue;
     }
 
     // Execute the process for 1 time unit
     processes[shortestIndex].burst--;
     currentTime++;
+    timeSpan.textContent = currentTime;
+    displayLog(`Ejecutando proceso: ${processes[shortestIndex].id} en tiempo ${currentTime}`, "#dddddd");
 
     // Check if the process is completed
     if (processes[shortestIndex].burst === 0) {
       completedProcesses++;
       processes[shortestIndex].completionTime = currentTime;
-      totalTurnaroundTime +=
-        processes[shortestIndex].completionTime -
-        processes[shortestIndex].arrival;
-      displayLog("Llego proceso: " + processes[shortestIndex].id, "#dddddd");
-      displayLog(
-        "Tiempo de llegada: " + processes[shortestIndex].completionTime,
-        "#dddddd"
-      );
+      totalTurnaroundTime += processes[shortestIndex].completionTime - processes[shortestIndex].arrival;
+      displayLog(`Proceso: ${processes[shortestIndex].id} terminado`, "#08967e");
       timeSpan.textContent = processes[shortestIndex].completionTime;
     }
     await sleep(1000);
   }
 
-  let avgTurnaroundTime = totalTurnaroundTime / processes.length;
+  // Display stats
+  displayLog("Tiempo de retorno promedio: " + (totalTurnaroundTime / processes.length).toFixed(2), "#dddddd");
 
-  displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog("Promedio tiempo de retorno: " + avgTurnaroundTime, "#dddddd");
+  // Update time
   timeSpan.textContent = currentTime;
 };
 
@@ -602,37 +571,45 @@ const hrrnScheduling = async (input) => {
   let queue = [];
   let numProcesses = processes.length;
   let done = 0;
-  let currentTime = 0;
 
+  // Time
+  let currentTime = 0;
+  timeSpan.textContent = currentTime;
+
+  // Simulate HRRN
   while (done != numProcesses) {
-    // See if new processes have arrived
-    // Add them to queue if so
+    // See if new processes have arrived, add them to queue if so
     for (let i = 0; i < numProcesses; i++) {
       if (processes[i].arrival <= currentTime && processes[i].status == 0) {
         queue.push(processes[i]);
         processes[i].status = 1;
-        displayLog("Llego proceso: " + processes[i].id, "#dddddd");
-        displayLog("Tiempo de llegada: " + processes[i].arrival, "#dddddd");
-        await sleep(1000);
+        displayLog(`Llegó proceso: ${processes[i].id}`, "#dddddd");
       }
     }
+
     // Check if there are any processes on the queue
     // If not, continue
     if (queue.length == 0) {
-      displayLog("Cola vacía", "#dddddd");
-      currentTime += 1;
+      displayLog("Cola vacía, esperando un nuevo proceso...", "#e39a0f");
+      currentTime++;
       timeSpan.textContent = currentTime;
+      await sleep(1000);
       continue;
     }
 
     // If there is only one process, execute it
     if (queue.length == 1) {
-      displayLog("-- Se ejecuto el proceso: " + queue[0].id + " --", "#dddddd");
-      await sleep(1000);
-      currentTime += queue[0].burst;
-      timeSpan.textContent = currentTime;
+      for (let i = 0; i < queue[0].burst; i++) {
+        currentTime++;
+        timeSpan.textContent = currentTime;
+        displayLog(`Ejecutando proceso ${queue[0].id} en tiempo: ${currentTime}`, "#dddddd");
+        await sleep(1000);
+      }
+      displayLog(`Proceso: ${queue[0].id} terminado en tiempo ${currentTime}`, "#08967e");
+  
+      // Dequeue element
       queue.pop();
-      done += 1;
+      done++;
       continue;
     }
 
@@ -640,42 +617,40 @@ const hrrnScheduling = async (input) => {
     if (queue.length > 1) {
       // Find next process
       let nextP = queue[0];
-      let maxRR =
-        (currentTime - queue[0].arrival + queue[0].burst) / queue[0].burst;
+      let maxRR = (currentTime - queue[0].arrival + queue[0].burst) / queue[0].burst;
 
       for (let i = 1; i < queue.length; i++) {
-        let RR =
-          (currentTime - queue[i].arrival + queue[i].burst) / queue[i].burst;
+        let RR = (currentTime - queue[i].arrival + queue[i].burst) / queue[i].burst;
         if (RR > maxRR) {
           maxRR = RR;
           nextP = queue[i];
         }
       }
-      displayLog(
-        "Siguiente proceso: " +
-          nextP.id +
-          " con RR " +
-          parseFloat(maxRR).toFixed(2),
-        "#dddddd"
-      );
-      displayLog("Tiempo actual: " + currentTime, "#dddddd");
+      displayLog(`Siguiente proceso: ${nextP.id} con RR ${(maxRR).toFixed(2)}`, "#dddddd");
       await sleep(1000);
 
       // Execute process
-      currentTime += nextP.burst;
-      timeSpan.textContent = currentTime;
-      done += 1;
+      for (let i = 0; i < nextP.burst; i++) {
+        currentTime++;
+        timeSpan.textContent = currentTime;
+        displayLog(`Ejecutando proceso ${nextP.id} en tiempo: ${currentTime}`, "#dddddd");
+        await sleep(1000);
+      }
+      displayLog(`Proceso: ${nextP.id} terminado en tiempo ${currentTime}`, "#08967e");
+      done++;
 
       // Remove process from queue
       let index = queue.indexOf(nextP);
       queue.splice(index, 1);
     }
   }
+
+  // Done
+  displayLog("Todos los procesos han sido ejecutados", "#dddddd");
 };
 
 const mfqScheduling = async (input) => {
   let processes = input;
-  stop2 = false;
 
   // Sort algorithms by arrival time
   for (let i = 0; i < processes.length - 1; i++) {
@@ -724,8 +699,8 @@ const mfqScheduling = async (input) => {
         displayLog("Ejecutando proceso: " + q1[0].id, "#dddddd");
         for (let j = 0; j < quantum1; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-          q1[0].remaining -= 1;
-          currentTime += 1;
+          q1[0].remaining--;
+          currentTime++;
           // For every unit of time, check if new processes have arrived
           if (processes.length > 0 && currentTime <= processes[0].arrival) {
             // New processes are added to q1 always
@@ -734,18 +709,15 @@ const mfqScheduling = async (input) => {
           }
           // First queue is emptied first
           if (q1.length !== 0) {
-            displayLog("--- QUEUE 1 ---", "#dddddd");
+            displayLog("--- QUEUE 1 ---", "#4790d2");
             // Apply round robin, run each process for a quantum and move to next queue if not done
             while (q1.length > 0) {
               // Execute algorithm for quantum time
               displayLog("Ejecutando proceso: " + q1[0].id, "#dddddd");
               for (let j = 0; j < quantum1; j++) {
-                displayLog(
-                  "Ejecutando proceso en tiempo " + currentTime,
-                  "#dddddd"
-                );
-                q1[0].remaining -= 1;
-                currentTime += 1;
+                displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
+                q1[0].remaining--;
+                currentTime++;
                 // For every unit of time, check if new processes have arrived
                 if (
                   processes.length > 0 &&
@@ -758,39 +730,27 @@ const mfqScheduling = async (input) => {
                 timeSpan.textContent = currentTime;
                 await sleep(1000);
                 if (q1[0].remaining === 0) {
-                  displayLog(
-                    "Proceso " +
-                      q1[0].id +
-                      " terminado en tiempo: " +
-                      currentTime,
-                    "#00D100"
-                  );
+                  displayLog(`Proceso ${q1[0].id} terminado en tiempo: ${currentTime}`, "#08967e");
                   break;
                 }
                 // Check for interruptions
-                if (stop2) {
+                if (stop) {
                   currentTime++;
                   timeSpan.textContent = currentTime;
-                  displayLog("Proceso interrumpido", "#ff0000");
+                  displayLog("Proceso interrumpido", "#d13079");
                   // Stop execution
                   break;
                 }
               }
               // If process is not done, move to next queue
               if (q1[0].remaining > 0) {
-                if (!stop2) {
-                  displayLog(
-                    "Tiempo restante para el proceso " +
-                      q1[0].id +
-                      ": " +
-                      q1[0].remaining,
-                    "#FFFF00"
-                  );
+                if (!stop) {
+                  displayLog(`Tiempo restante para el proceso ${q1[0].id}: ${q1[0].remaining}`, "#e39a0f");
                   q1[0].priority = 2;
                   q2.push(q1[0]);
                 } else {
                   // Reset
-                  stop2 = false;
+                  stop = false;
                 }
               }
               // Remove from queue
@@ -799,18 +759,15 @@ const mfqScheduling = async (input) => {
           }
           // Second queue is emptied Second
           else if (q2.length != 0) {
-            displayLog("--- QUEUE 2 ---", "#dddddd");
+            displayLog("--- QUEUE 2 ---", "#4790d2");
             // Apply round robin, run each process for a quantum and move to next queue if not done
             while (q2.length > 0) {
               // Execute algorithm for quantum time
               displayLog("Ejecutando proceso: " + q2[0].id, "#dddddd");
               for (let j = 0; j < quantum2; j++) {
-                displayLog(
-                  "Ejecutando proceso en tiempo " + currentTime,
-                  "#dddddd"
-                );
-                q2[0].remaining -= 1;
-                currentTime += 1; // For every unit of time, check if new processes have arrived
+                displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
+                q2[0].remaining--;
+                currentTime++; // For every unit of time, check if new processes have arrived
                 if (
                   processes.length > 0 &&
                   currentTime <= processes[0].arrival
@@ -822,25 +779,13 @@ const mfqScheduling = async (input) => {
                 timeSpan.textContent = currentTime;
                 await sleep(1000);
                 if (q2[0].remaining === 0) {
-                  displayLog(
-                    "Proceso " +
-                      q2[0].id +
-                      " terminado en tiempo: " +
-                      currentTime,
-                    "#00D100"
-                  );
+                  displayLog("Proceso " + q2[0].id + " terminado en tiempo: " + currentTime, "#08967e");
                   break;
                 }
               }
               // If process is not done, move to next queue
               if (q2[0].remaining > 0) {
-                displayLog(
-                  "Tiempo restante para el proceso " +
-                    q2[0].id +
-                    ": " +
-                    q2[0].remaining,
-                  "#FFFF00"
-                );
+                displayLog(`Tiempo restante para el proceso ${q2[0].id}: ${q2[0].remaining}`, "#e39a0f");
                 q2[0].priority = 3;
                 q3.push(q2[0]);
               }
@@ -850,16 +795,13 @@ const mfqScheduling = async (input) => {
           }
           // Third queue is emptied last
           else if (q3.length != 0) {
-            displayLog("--- QUEUE 3 ---", "#dddddd");
+            displayLog("--- QUEUE 3 ---", "#4790d2");
             // Apply FCFS to deal with remaining processes
             while (q2.length > 0) {
               displayLog("Ejecutando proceso: " + q3[0].id);
               for (let j = 0; j < q3[0].burst; j++) {
-                displayLog(
-                  "Ejecutando proceso en tiempo " + currentTime,
-                  "#dddddd"
-                );
-                currentTime += 1; // For every unit of time, check if new processes have arrived
+                displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
+                currentTime++; // For every unit of time, check if new processes have arrived
                 if (
                   processes.length > 0 &&
                   currentTime <= processes[0].arrival
@@ -869,16 +811,10 @@ const mfqScheduling = async (input) => {
                   processes.shift();
                 }
                 timeSpan.textContent = currentTime;
-                q3[0].remaining -= 1;
+                q3[0].remaining--;
                 await sleep(1000);
                 if (q3[0].remaining === 0) {
-                  displayLog(
-                    "Proceso " +
-                      q3[0].id +
-                      " terminado en tiempo: " +
-                      currentTime,
-                    "#00D100"
-                  );
+                  displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
                   break;
                 }
               }
@@ -888,22 +824,13 @@ const mfqScheduling = async (input) => {
           timeSpan.textContent = currentTime;
           await sleep(1000);
           if (q1[0].remaining === 0) {
-            displayLog(
-              "Proceso " + q1[0].id + " terminado en tiempo: " + currentTime,
-              "#00D100"
-            );
+            displayLog("Proceso " + q1[0].id + " terminado en tiempo: " + currentTime, "#08967e");
             break;
           }
         }
         // If process is not done, move to next queue
         if (q1[0].remaining > 0) {
-          displayLog(
-            "Tiempo restante para el proceso " +
-              q1[0].id +
-              ": " +
-              q1[0].remaining,
-            "#FFFF00"
-          );
+          displayLog(`Tiempo restante para el proceso ${q1[0].id}: ${q1[0].remaining}`, "#e39a0f");
           q1[0].priority = 2;
           q2.push(q1[0]);
         }
@@ -919,8 +846,8 @@ const mfqScheduling = async (input) => {
         displayLog("Ejecutando proceso: " + q2[0].id, "#dddddd");
         for (let j = 0; j < quantum2; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-          q2[0].remaining -= 1;
-          currentTime += 1; // For every unit of time, check if new processes have arrived
+          q2[0].remaining--;
+          currentTime++; // For every unit of time, check if new processes have arrived
           if (processes.length > 0 && currentTime <= processes[0].arrival) {
             // New processes are added to q1 always
             q1.push(processes[0]);
@@ -931,20 +858,14 @@ const mfqScheduling = async (input) => {
           if (q2[0].remaining === 0) {
             displayLog(
               "Proceso " + q2[0].id + " terminado en tiempo: " + currentTime,
-              "#00D100"
+              "#08967e"
             );
             break;
           }
         }
         // If process is not done, move to next queue
         if (q2[0].remaining > 0) {
-          displayLog(
-            "Tiempo restante para el proceso " +
-              q2[0].id +
-              ": " +
-              q2[0].remaining,
-            "#FFFF00"
-          );
+          displayLog(`Tiempo restante para el proceso ${q2[0].id}: ${q2[0].remaining}`, "#e39a0f");
           q2[0].priority = 3;
           q3.push(q2[0]);
         }
@@ -959,20 +880,17 @@ const mfqScheduling = async (input) => {
         displayLog("Ejecutando proceso: " + q3[0].id);
         for (let j = 0; j < q3[0].burst; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-          currentTime += 1; // For every unit of time, check if new processes have arrived
+          currentTime++; // For every unit of time, check if new processes have arrived
           if (processes.length > 0 && currentTime <= processes[0].arrival) {
             // New processes are added to q1 always
             q1.push(processes[0]);
             processes.shift();
           }
           timeSpan.textContent = currentTime;
-          q3[0].remaining -= 1;
+          q3[0].remaining--;
           await sleep(1000);
           if (q3[0].remaining === 0) {
-            displayLog(
-              "Proceso " + q3[0].id + " terminado en tiempo: " + currentTime,
-              "#00D100"
-            );
+            displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
             break;
           }
         }
