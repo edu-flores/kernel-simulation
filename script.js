@@ -714,218 +714,98 @@ const mfqScheduling = async (input) => {
   // Quantum for each queue
   let quantum1 = 4;
   let quantum2 = 8;
-
+   
   // Repeat until all processes are completed
-  while (
-    !(q1.length === 0 && q2.length === 0 && q3.length === 0) ||
-    processes.length > 0
-  ) {
+  while(!(q1.length === 0 && q2.length === 0 && q3.length === 0) || processes.length > 0) {
     // For every unit of time, check if new processes have arrived
-    if (processes.length > 0 && currentTime <= processes[0].arrival) {
+    if(processes.length > 0 && currentTime <= processes[0].arrival) {
       // New processes are added to q1 always
       q1.push(processes[0]);
       processes.shift();
     }
     // First queue is emptied first
-    if (q1.length !== 0) {
+    if(q1.length !== 0) {
       // Apply round robin, run each process for a quantum and move to next queue if not done
-      while (q1.length > 0) {
+      while(q1.length > 0) {
         // Execute algorithm for quantum time
         displayLog("Ejecutando proceso: " + q1[0].id, "#dddddd");
-        for (let j = 0; j < quantum1; j++) {
-          displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-          q1[0].remaining--;
-          currentTime++;
-          // For every unit of time, check if new processes have arrived
-          if (processes.length > 0 && currentTime <= processes[0].arrival) {
-            // New processes are added to q1 always
-            q1.push(processes[0]);
-            processes.shift();
-          }
-          // First queue is emptied first
-          if (q1.length !== 0) {
-            displayLog("--- QUEUE 1 ---", "#4790d2");
-            // Apply round robin, run each process for a quantum and move to next queue if not done
-            while (q1.length > 0) {
-              // Execute algorithm for quantum time
-              displayLog("Ejecutando proceso: " + q1[0].id, "#dddddd");
-              for (let j = 0; j < quantum1; j++) {
-                displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-                q1[0].remaining--;
-                currentTime++;
-                // For every unit of time, check if new processes have arrived
-                if (
-                  processes.length > 0 &&
-                  currentTime <= processes[0].arrival
-                ) {
-                  // New processes are added to q1 always
-                  q1.push(processes[0]);
-                  processes.shift();
-                }
-                timeSpan.textContent = currentTime;
-                await sleep(1000);
-                if (q1[0].remaining === 0) {
-                  displayLog(`Proceso ${q1[0].id} terminado en tiempo: ${currentTime}`, "#08967e");
-                  break;
-                }
-                // Check for interruptions
-                if (stop) {
-                  currentTime++;
-                  timeSpan.textContent = currentTime;
-                  displayLog("Proceso interrumpido", "#d13079");
-                  // Stop execution
-                  break;
-                }
-              }
-              // If process is not done, move to next queue
-              if (q1[0].remaining > 0) {
-                if (!stop) {
-                  displayLog(`Tiempo restante para el proceso ${q1[0].id}: ${q1[0].remaining}`, "#e39a0f");
-                  q1[0].priority = 2;
-                  q2.push(q1[0]);
-                } else {
-                  // Reset
-                  stop = false;
-                }
-              }
-              // Remove from queue
-              q1.shift();
+          for(let j = 0; j < quantum1; j++) {
+            displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
+            q1[0].remaining -= 1;
+            currentTime += 1;
+            // For every unit of time, check if new processes have arrived
+            if(processes.length > 0 && currentTime <= processes[0].arrival) {
+              // New processes are added to q1 always
+              q1.push(processes[0]);
+              processes.shift();
+            }
+            timeSpan.textContent = currentTime;
+            await sleep(1000);
+            if(q1[0].remaining === 0) {
+              displayLog("Proceso " + q1[0].id + " terminado en tiempo: " + currentTime, "#00D100");
+              break;
             }
           }
-          // Second queue is emptied Second
-          else if (q2.length != 0) {
-            displayLog("--- QUEUE 2 ---", "#4790d2");
-            // Apply round robin, run each process for a quantum and move to next queue if not done
-            while (q2.length > 0) {
-              // Execute algorithm for quantum time
-              displayLog("Ejecutando proceso: " + q2[0].id, "#dddddd");
-              for (let j = 0; j < quantum2; j++) {
-                displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-                q2[0].remaining--;
-                currentTime++; // For every unit of time, check if new processes have arrived
-                if (
-                  processes.length > 0 &&
-                  currentTime <= processes[0].arrival
-                ) {
-                  // New processes are added to q1 always
-                  q1.push(processes[0]);
-                  processes.shift();
-                }
-                timeSpan.textContent = currentTime;
-                await sleep(1000);
-                if (q2[0].remaining === 0) {
-                  displayLog("Proceso " + q2[0].id + " terminado en tiempo: " + currentTime, "#08967e");
-                  break;
-                }
-              }
-              // If process is not done, move to next queue
-              if (q2[0].remaining > 0) {
-                displayLog(`Tiempo restante para el proceso ${q2[0].id}: ${q2[0].remaining}`, "#e39a0f");
-                q2[0].priority = 3;
-                q3.push(q2[0]);
-              }
-              // Remove from queue
-              q2.shift();
-            }
-          }
-          // Third queue is emptied last
-          else if (q3.length != 0) {
-            displayLog("--- QUEUE 3 ---", "#4790d2");
-            // Apply FCFS to deal with remaining processes
-            while (q2.length > 0) {
-              displayLog("Ejecutando proceso: " + q3[0].id);
-              for (let j = 0; j < q3[0].burst; j++) {
-                displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-                currentTime++; // For every unit of time, check if new processes have arrived
-                if (
-                  processes.length > 0 &&
-                  currentTime <= processes[0].arrival
-                ) {
-                  // New processes are added to q1 always
-                  q1.push(processes[0]);
-                  processes.shift();
-                }
-                timeSpan.textContent = currentTime;
-                q3[0].remaining--;
-                await sleep(1000);
-                if (q3[0].remaining === 0) {
-                  displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
-                  break;
-                }
-              }
-              q3.shift();
-            }
-          }
-          timeSpan.textContent = currentTime;
-          await sleep(1000);
-          if (q1[0].remaining === 0) {
-            displayLog("Proceso " + q1[0].id + " terminado en tiempo: " + currentTime, "#08967e");
-            break;
-          }
-        }
         // If process is not done, move to next queue
-        if (q1[0].remaining > 0) {
-          displayLog(`Tiempo restante para el proceso ${q1[0].id}: ${q1[0].remaining}`, "#e39a0f");
+        if(q1[0].remaining > 0) {
+          displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#FFFF00");
           q1[0].priority = 2;
-          q2.push(q1[0]);
+          q2.push(q1[0]); 
         }
         // Remove from queue
         q1.shift();
       }
-    }
+    }   
     // Second queue is emptied Second
-    else if (q2.length != 0) {
+    else if(q2.length != 0) {
       // Apply round robin, run each process for a quantum and move to next queue if not done
-      while (q2.length > 0) {
+      while(q2.length > 0) {
         // Execute algorithm for quantum time
         displayLog("Ejecutando proceso: " + q2[0].id, "#dddddd");
-        for (let j = 0; j < quantum2; j++) {
+        for(let j = 0; j < quantum2; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-          q2[0].remaining--;
-          currentTime++; // For every unit of time, check if new processes have arrived
-          if (processes.length > 0 && currentTime <= processes[0].arrival) {
+          q2[0].remaining -= 1;
+          currentTime += 1;// For every unit of time, check if new processes have arrived
+          if(processes.length > 0 && currentTime <= processes[0].arrival) {
             // New processes are added to q1 always
             q1.push(processes[0]);
             processes.shift();
           }
           timeSpan.textContent = currentTime;
           await sleep(1000);
-          if (q2[0].remaining === 0) {
-            displayLog(
-              "Proceso " + q2[0].id + " terminado en tiempo: " + currentTime,
-              "#08967e"
-            );
+          if(q2[0].remaining === 0) {
+            displayLog("Proceso " + q2[0].id + " terminado en tiempo: " + currentTime, "#00D100");
             break;
           }
         }
         // If process is not done, move to next queue
-        if (q2[0].remaining > 0) {
-          displayLog(`Tiempo restante para el proceso ${q2[0].id}: ${q2[0].remaining}`, "#e39a0f");
+        if(q2[0].remaining > 0) {
+          displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#FFFF00");
           q2[0].priority = 3;
-          q3.push(q2[0]);
+          q3.push(q2[0]); 
         }
         // Remove from queue
         q2.shift();
       }
     }
     // Third queue is emptied last
-    else if (q3.length != 0) {
+    else if(q3.length != 0) {
       // Apply FCFS to deal with remaining processes
-      while (q2.length > 0) {
+      while(q2.length > 0) {
         displayLog("Ejecutando proceso: " + q3[0].id);
-        for (let j = 0; j < q3[0].burst; j++) {
+        for(let j = 0; j < q3[0].burst; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
-          currentTime++; // For every unit of time, check if new processes have arrived
-          if (processes.length > 0 && currentTime <= processes[0].arrival) {
+          currentTime += 1;// For every unit of time, check if new processes have arrived
+          if(processes.length > 0 && currentTime <= processes[0].arrival) {
             // New processes are added to q1 always
             q1.push(processes[0]);
             processes.shift();
           }
           timeSpan.textContent = currentTime;
-          q3[0].remaining--;
+          q3[0].remaining -= 1;
           await sleep(1000);
-          if (q3[0].remaining === 0) {
-            displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
+          if(q3[0].remaining === 0) {
+            displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#00D100");
             break;
           }
         }
