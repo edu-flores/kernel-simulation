@@ -51,23 +51,11 @@ const setInputs = (event) => {
   let properties = ["ID"];
   switch (event.target.value) {
     case "fcfs":
-      properties.push("Arrival", "Burst");
-      break;
     case "fifo":
-      properties.push("Arrival", "Burst");
-      break;
     case "rr":
-      properties.push("Burst");
-      break;
     case "sjf":
-      properties.push("Arrival", "Burst");
-      break;
     case "srt":
-      properties.push("Arrival", "Burst");
-      break;
     case "hrrn":
-      properties.push("Arrival", "Burst");
-      break;
     case "mfq":
       properties.push("Arrival", "Burst");
       break;
@@ -428,9 +416,14 @@ const rrScheduling = async (input) => {
   // List of all processes
   let processes = input;
 
+  // Sort processes based on arrival time
+  processes.sort((a, b) => a.arrival - b.arrival);
+
   // Variables
   let quantum = 4;
   let totalTime = 0;
+
+  // Time
   let currentTime = 0;
   timeSpan.textContent = currentTime;
 
@@ -442,14 +435,28 @@ const rrScheduling = async (input) => {
   // While there's still total time remaining
   while (totalTime > 0) {
     for (let i = 0; i < processes.length; i++) {
+
+      // Wait for a process to arrive
+      for (currentTime; currentTime < processes[i].arrival; currentTime++) {
+        displayLog("Esperando llegada de un nuevo proceso...", "#e39a0f");
+        timeSpan.textContent = currentTime;
+        await sleep(1000);
+      }
+
+      // New process
+      displayLog(`Proceso a ejecutar: ${processes[i].id}`, "#dddddd");
+      timeSpan.textContent = currentTime;
+      await sleep(1000);
+
       if (processes[i].burst > 0) {
         // Execute process
-        for (let i = 0; i < processes[i].burst; i++) {
+        for (let j = 0; j < processes[i].burst && j < quantum; j++) {
           currentTime++;
           timeSpan.textContent = currentTime;
           displayLog(`Ejecutando el proceso ${processes[i].id} durante el quantum de duración: ${quantum}`, "#dddddd");
           await sleep(1000);
         }
+
         // Finished or not
         if (processes[i].burst <= quantum) {
           displayLog(`Proceso: ${processes[i].id} terminado en tiempo ${currentTime}`, "#08967e");
@@ -460,6 +467,8 @@ const rrScheduling = async (input) => {
           totalTime -= quantum;
           processes[i].burst -= quantum;
         }
+
+        displayLog("--- Nuevo Quantum ---", "#4790d2");
       }
     }
   }
