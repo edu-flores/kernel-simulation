@@ -151,6 +151,26 @@ const scrollToBottom = () => {
   visualizationDiv.scrollTop = visualizationDiv.scrollHeight;
 };
 
+// Change each process table row
+const updateTableTop = (id, pr=20, ni=0, s='S', time=0) => {
+  let topRow = topsRow[id-1];
+  const currentTime = +topRow.querySelectorAll("td")[10].textContent + time;
+  topRow.innerHTML = `
+    <td>${id}</td>
+    <td>root</td>
+    <td>${pr}</td>
+    <td>${ni}</td>
+    <td>${Math.floor(Math.random() * (7382947 - 829436 + 1)) + 1829436}</td>
+    <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
+    <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
+    <td>${s}</td>
+    <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
+    <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
+    <td>${currentTime+1}</td>
+    <td>sisop</td>
+  `;
+};
+
 /**
  *
  * ALGORITHMS
@@ -190,7 +210,7 @@ const run = async (event) => {
       topRow.innerHTML = `
         <td>${i+1}</td>
         <td>root</td>
-        <td>1</td>
+        <td>20</td>
         <td>0</td>
         <td>${Math.floor(Math.random() * (7382947 - 829436 + 1)) + 1829436}</td>
         <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
@@ -198,7 +218,7 @@ const run = async (event) => {
         <td>S</td>
         <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
         <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
-        <td>1</td>
+        <td>0</td>
         <td>sisop</td>
       `;
 
@@ -302,9 +322,11 @@ const fcfsScheduling = async (input) => {
       currentTime++;
       timeSpan.textContent = currentTime;
       displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
+      updateTableTop(process.id, 20, 0, 'R');
       await sleep(1000);
     }
     displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
+    updateTableTop(process.id, 20, 0, 'Z', -1);
   }
 
   // Display stats
