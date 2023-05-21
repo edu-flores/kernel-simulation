@@ -178,6 +178,7 @@ const run = async (event) => {
   let current;
 
   // For every input row, get every input type number value
+  Array.from(topsRow).forEach(row => { row.innerHTML = ""; });
   Array.from(inputsRow).forEach((row, i) => {
     // Check if the process is enabled or disabled
     if (row.querySelector("input[type=checkbox]").checked) {
@@ -185,8 +186,8 @@ const run = async (event) => {
       current.id = i + 1;
 
       // Fill top row
-      let row = topsRow[i];
-      row.innerHTML = `
+      let topRow = topsRow[i];
+      topRow.innerHTML = `
         <td>${i+1}</td>
         <td>root</td>
         <td>1</td>
@@ -273,6 +274,8 @@ const fcfsScheduling = async (input) => {
   // Simulate the FCFS
   let currentTime = 0;
   timeSpan.textContent = currentTime;
+
+  // Variables
   let waitingTime = 0;
   let turnAroundTime = 0;
 
@@ -295,7 +298,7 @@ const fcfsScheduling = async (input) => {
     timeSpan.textContent = currentTime;
     await sleep(1000);
 
-    for (let i = 0; i < process.burst; i++) {
+    for (let j = 0; j < process.burst; j++) {
       currentTime++;
       timeSpan.textContent = currentTime;
       displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
