@@ -616,37 +616,45 @@ const hrrnScheduling = async (input) => {
   let queue = [];
   let numProcesses = processes.length;
   let done = 0;
-  let currentTime = 0;
 
+  // Time
+  let currentTime = 0;
+  timeSpan.textContent = currentTime;
+
+  // Simulate HRRN
   while (done != numProcesses) {
-    // See if new processes have arrived
-    // Add them to queue if so
+    // See if new processes have arrived, add them to queue if so
     for (let i = 0; i < numProcesses; i++) {
       if (processes[i].arrival <= currentTime && processes[i].status == 0) {
         queue.push(processes[i]);
         processes[i].status = 1;
-        displayLog("Llego proceso: " + processes[i].id, "#dddddd");
-        displayLog("Tiempo de llegada: " + processes[i].arrival, "#dddddd");
-        await sleep(1000);
+        displayLog(`Llegó proceso: ${processes[i].id}`, "#dddddd");
       }
     }
+
     // Check if there are any processes on the queue
     // If not, continue
     if (queue.length == 0) {
-      displayLog("Cola vacía", "#dddddd");
-      currentTime += 1;
+      displayLog("Cola vacía, esperando un nuevo proceso...", "#e39a0f");
+      currentTime++;
       timeSpan.textContent = currentTime;
+      await sleep(1000);
       continue;
     }
 
     // If there is only one process, execute it
     if (queue.length == 1) {
-      displayLog("-- Se ejecuto el proceso: " + queue[0].id + " --", "#dddddd");
-      await sleep(1000);
-      currentTime += queue[0].burst;
-      timeSpan.textContent = currentTime;
+      for (let i = 0; i < queue[0].burst; i++) {
+        currentTime += 1;
+        timeSpan.textContent = currentTime;
+        displayLog(`Ejecutando proceso ${queue[0].id} en tiempo: ${currentTime}`, "#dddddd");
+        await sleep(1000);
+      }
+      displayLog(`Proceso: ${queue[0].id} terminado en tiempo ${currentTime}`, "#08967e");
+  
+      // Dequeue element
       queue.pop();
-      done += 1;
+      done++;
       continue;
     }
 
@@ -654,37 +662,36 @@ const hrrnScheduling = async (input) => {
     if (queue.length > 1) {
       // Find next process
       let nextP = queue[0];
-      let maxRR =
-        (currentTime - queue[0].arrival + queue[0].burst) / queue[0].burst;
+      let maxRR = (currentTime - queue[0].arrival + queue[0].burst) / queue[0].burst;
 
       for (let i = 1; i < queue.length; i++) {
-        let RR =
-          (currentTime - queue[i].arrival + queue[i].burst) / queue[i].burst;
+        let RR = (currentTime - queue[i].arrival + queue[i].burst) / queue[i].burst;
         if (RR > maxRR) {
           maxRR = RR;
           nextP = queue[i];
         }
       }
-      displayLog(
-        "Siguiente proceso: " +
-          nextP.id +
-          " con RR " +
-          parseFloat(maxRR).toFixed(2),
-        "#dddddd"
-      );
-      displayLog("Tiempo actual: " + currentTime, "#dddddd");
+      displayLog(`Siguiente proceso: ${nextP.id} con RR ${(maxRR).toFixed(2)}`, "#dddddd");
       await sleep(1000);
 
       // Execute process
-      currentTime += nextP.burst;
-      timeSpan.textContent = currentTime;
-      done += 1;
+      for (let i = 0; i < nextP.burst; i++) {
+        currentTime++;
+        timeSpan.textContent = currentTime;
+        displayLog(`Ejecutando proceso ${nextP.id} en tiempo: ${currentTime}`, "#dddddd");
+        await sleep(1000);
+      }
+      displayLog(`Proceso: ${nextP.id} terminado en tiempo ${currentTime}`, "#08967e");
+      done++;
 
       // Remove process from queue
       let index = queue.indexOf(nextP);
       queue.splice(index, 1);
     }
   }
+
+  // Done
+  displayLog("Todos los procesos han sido ejecutados", "#dddddd");
 };
 
 const mfqScheduling = async (input) => {
