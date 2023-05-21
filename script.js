@@ -338,8 +338,10 @@ const fcfsScheduling = async (input) => {
   for (let i = 0; i < processes.length; i++) {
     let process = processes[i];
 
-    if (currentTime < process.arrival) {
-      currentTime = process.arrival;
+    for (currentTime; currentTime < process.arrival; currentTime++) {
+      displayLog("Esperando llegada de un nuevo proceso...", "#e39a0f");
+      timeSpan.textContent = currentTime;
+      await sleep(1000);
     }
 
     // Calculate waiting time
@@ -348,24 +350,22 @@ const fcfsScheduling = async (input) => {
     // Calculate turnaround time
     turnAroundTime += currentTime + process.burst - process.arrival;
 
-    displayLog(`Llego proceso: ${process.id}`, "#dddddd");
-    displayLog(`Tiempo de llegada: ${currentTime}`, "#dddddd");
-    displayLog(`-- Se ejecuto el proceso: ${process.id} --`, "#dddddd");
-    currentTime += process.burst;
+    displayLog(`Llegó proceso: ${process.id}`, "#dddddd");
     timeSpan.textContent = currentTime;
     await sleep(1000);
+
+    for (let i = 0; i < process.burst; i++) {
+      currentTime += 1;
+      timeSpan.textContent = currentTime;
+      displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
+      await sleep(1000);
+    }
+    displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
   }
-  displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog(
-    "Promedio tiempo de retorno: " +
-      (turnAroundTime / processes.length).toFixed(2),
-    "#dddddd"
-  );
-  displayLog(
-    "Promedio tiempo de espera: " + (waitingTime / processes.length).toFixed(2),
-    "#dddddd"
-  );
-  timeSpan.textContent = currentTime;
+
+  // Display stats
+  displayLog("Tiempo de retorno promedio: " + (turnAroundTime / processes.length).toFixed(2), "#dddddd");
+  displayLog("Tiempo de espera promedio: " + (waitingTime / processes.length).toFixed(2), "#dddddd");
 };
 
 const fifoScheduling = async (input) => {
