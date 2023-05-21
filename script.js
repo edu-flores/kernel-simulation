@@ -175,84 +175,37 @@ const run = async (event) => {
 
   // Select the desired function
   clearLogs();
-  const selectedFunction =
-    algorithms[typeSelector.value][algorithmSelector.value];
+  const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
 
-  // Run the function
-  try {
-    // Prepare inputs
-    const properties = Array.from(headersRow.querySelectorAll("th")).slice(1);
-    const userInputs = [];
-    let current;
+  // Prepare inputs
+  const properties = Array.from(headersRow.querySelectorAll("th")).slice(1);
+  const userInputs = [];
+  let current;
 
-    // For every input row, get every input type number value
-    Array.from(inputsRow).forEach((row, i) => {
-      // Check if the process is enabled or disabled
-      if (row.querySelector("input[type=checkbox]").checked) {
-        current = new Process({});
-        current.id = i + 1;
+  // For every input row, get every input type number value
+  Array.from(inputsRow).forEach((row, i) => {
+    // Check if the process is enabled or disabled
+    if (row.querySelector("input[type=checkbox]").checked) {
+      current = new Process({});
+      current.id = i + 1;
 
-        // Add properties from inputs
-        Array.from(row.querySelectorAll("input[type=number]")).forEach(
-          (input, j) => {
-            current[properties[j].innerHTML.toLowerCase()] = parseInt(
-              input.value
-            );
-          }
-        );
+      // Add properties from inputs
+      Array.from(row.querySelectorAll("input[type=number]")).forEach(
+        (input, j) => {
+          current[properties[j].innerHTML.toLowerCase()] = parseInt(
+            input.value
+          );
+        }
+      );
 
-        // Push that process
-        userInputs.push(current);
-      }
-    });
-
-    // Run algorithm
-    await selectedFunction(userInputs);
-  } catch (error) {
-    // Return to defaults
-    stop.value = false;
-    stop.type = null;
-
-    // Get all messages to display
-    let messages = [];
-    switch (error.message) {
-      case "io":
-        messages.push("Leyendo archivo de entrada 'datos.txt'...");
-        messages.push("Procesando datos...");
-        messages.push("Escritura de resultados en archivo 'resultados.txt'...");
-        messages.push("Operación de I/O completada correctamente.");
-        break;
-      case "normal":
-        messages.push("Proceso finalizado correctamente.");
-        messages.push("Tiempo de ejecución: 00:02:35");
-        messages.push("Memoria utilizada: 256 MB");
-        break;
-      case "date":
-        messages.push("Ingrese la fecha en el formato YYYY-MM-DD: 2023-05-09");
-        break;
-      case "error":
-        messages.push("¡Error! Se ha producido una excepción en el archivo 'script.js', línea 157.");
-        messages.push("Mensaje de error: 'ZeroDivisionError: division by zero'");
-        break;
-      case "quantum":
-        messages.push("Interrupción por quantum expirado.");
-        messages.push("Asignando CPU a proceso de mayor prioridad...");
-        break;
-      case "zombie":
-        messages.push("Se ha detectado un proceso zombi.");
-        messages.push("Eliminando entrada de la tabla de procesos...");
-        break;
-      case "end":
-        messages.push("Proceso detenido por señal SIGKILL (-9).");
-        messages.push("Liberando memoria y otros recursos asociados...");
-        break;
+      // Push that process
+      userInputs.push(current);
     }
+  });
 
-    // Display messages in visualization box
-    for (const message of messages) {
-      displayLog(message, "#d13079");
-    }
-  }
+  // Run algorithm
+  stop = false;
+  await selectedFunction(userInputs);
 
   // Disable and enable start & stop buttons
   submitButton.disabled = false;
@@ -261,37 +214,18 @@ const run = async (event) => {
   });
 };
 
-// Stop any running algorithms
-const interrupt = (error) => {
-  stop.value = true;
-  stop.type = error;
-};
+// Interruptions global variable
+let stop = false;
 
-// Interruptions object
-let stop = {
-  value: false,
-  type: null,
-};
-
-let stop2 = false;
-
-function interrupt2(message) {
-  displayLog(message, "#d13079");
-  stop2 = true;
+// Send interruption
+const interrupt = msg => {
+  displayLog(msg, "#d13079");
+  stop = true;
 }
 
 // Sleep function to delay algorithms by milliseconds
-const sleep = (ms) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (stop.value) {
-        reject(new Error(stop.type));
-        timeSpan.textContent = parseInt(timeSpan.textContent) + 1;
-      } else {
-        resolve();
-      }
-    }, ms);
-  });
+const sleep = ms => {
+  return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 // Process class with optional properties
@@ -705,7 +639,6 @@ const hrrnScheduling = async (input) => {
 
 const mfqScheduling = async (input) => {
   let processes = input;
-  stop2 = false;
 
   // Sort algorithms by arrival time
   for (let i = 0; i < processes.length - 1; i++) {
@@ -789,7 +722,7 @@ const mfqScheduling = async (input) => {
                   break;
                 }
                 // Check for interruptions
-                if (stop2) {
+                if (stop) {
                   currentTime++;
                   timeSpan.textContent = currentTime;
                   displayLog("Proceso interrumpido", "#d13079");
@@ -799,13 +732,13 @@ const mfqScheduling = async (input) => {
               }
               // If process is not done, move to next queue
               if (q1[0].remaining > 0) {
-                if (!stop2) {
+                if (!stop) {
                   displayLog(`Tiempo restante para el proceso ${q1[0].id}: ${q1[0].remaining}`, "#e39a0f");
                   q1[0].priority = 2;
                   q2.push(q1[0]);
                 } else {
                   // Reset
-                  stop2 = false;
+                  stop = false;
                 }
               }
               // Remove from queue
