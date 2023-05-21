@@ -346,10 +346,7 @@ const fifoScheduling = async (input) => {
   let queue = [];
   for (let i = 0; i < processes.length; i++) {
     queue.push(processes[i]);
-    displayLog(
-      `Proceso encolado: ${processes[i].id} (Llegada: ${processes[i].arrival} | Duración: ${processes[i].burst})`,
-      "#dddddd"
-    );
+    displayLog(`Proceso encolado: ${processes[i].id} (Llegada: ${processes[i].arrival} | Duración: ${processes[i].burst})`, "#dddddd");
     await sleep(300);
   }
 
@@ -369,9 +366,11 @@ const fifoScheduling = async (input) => {
       currentTime++;
       timeSpan.textContent = currentTime;
       displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
+      updateTableTop(process.id, 20, 0, 'R');
       await sleep(1000);
     }
     displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
+    updateTableTop(process.id, 20, 0, 'Z', -1);
   }
 
   // Display status
@@ -425,16 +424,19 @@ const rrScheduling = async (input) => {
           currentTime++;
           timeSpan.textContent = currentTime;
           displayLog(`Ejecutando el proceso ${processes[i].id} durante el quantum de duración: ${quantum}`, "#dddddd");
+          updateTableTop(processes[i].id, 20, 0, 'R');
           await sleep(1000);
         }
 
         // Finished or not
         if (processes[i].burst <= quantum) {
           displayLog(`Proceso: ${processes[i].id} terminado en tiempo ${currentTime}`, "#08967e");
+          updateTableTop(processes[i].id, 20, 0, 'Z', -1);
           totalTime -= processes[i].burst;
           processes[i].burst = 0;
         } else {
           displayLog(`Proceso: ${processes[i].id} parcialmente terminado`, "#e39a0f");
+          updateTableTop(processes[i].id, 20, 0, 'S', -1);
           totalTime -= quantum;
           processes[i].burst -= quantum;
         }
@@ -504,9 +506,11 @@ const sjfScheduling = async (input) => {
         currentTime++;
         timeSpan.textContent = currentTime;
         displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
+        updateTableTop(process.id, 20, 0, 'R');
         await sleep(1000);
       }
       displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
+      updateTableTop(process.id, 20, 0, 'Z', -1);
 
       // Remove executed process from list
       processes.splice(processes.indexOf(process), 1);
@@ -569,6 +573,7 @@ const srtScheduling = async (input) => {
     currentTime++;
     timeSpan.textContent = currentTime;
     displayLog(`Ejecutando proceso: ${processes[shortestIndex].id} en tiempo ${currentTime}`, "#dddddd");
+    updateTableTop(processes[shortestIndex].id, 20, 0, 'R');
 
     // Check if the process is completed
     if (processes[shortestIndex].burst === 0) {
@@ -576,6 +581,7 @@ const srtScheduling = async (input) => {
       processes[shortestIndex].completionTime = currentTime;
       totalTurnaroundTime += processes[shortestIndex].completionTime - processes[shortestIndex].arrival;
       displayLog(`Proceso: ${processes[shortestIndex].id} terminado`, "#08967e");
+      updateTableTop(processes[shortestIndex].id, 20, 0, 'Z', -1);
       timeSpan.textContent = processes[shortestIndex].completionTime;
     }
     await sleep(1000);
@@ -628,10 +634,12 @@ const hrrnScheduling = async (input) => {
         currentTime++;
         timeSpan.textContent = currentTime;
         displayLog(`Ejecutando proceso ${queue[0].id} en tiempo: ${currentTime}`, "#dddddd");
+        updateTableTop(queue[0].id, 20, 0, 'R');
         await sleep(1000);
       }
       displayLog(`Proceso: ${queue[0].id} terminado en tiempo ${currentTime}`, "#08967e");
-  
+      updateTableTop(queue[0].id, 20, 0, 'Z', -1);
+
       // Dequeue element
       queue.pop();
       done++;
@@ -659,9 +667,11 @@ const hrrnScheduling = async (input) => {
         currentTime++;
         timeSpan.textContent = currentTime;
         displayLog(`Ejecutando proceso ${nextP.id} en tiempo: ${currentTime}`, "#dddddd");
+        updateTableTop(nextP.id, 20, 0, 'R');
         await sleep(1000);
       }
       displayLog(`Proceso: ${nextP.id} terminado en tiempo ${currentTime}`, "#08967e");
+      updateTableTop(nextP.id, 20, 0, 'Z', -1);
       done++;
 
       // Remove process from queue
