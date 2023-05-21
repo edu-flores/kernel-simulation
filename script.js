@@ -282,7 +282,7 @@ let stop = {
 let stop2 = false;
 
 function interrupt2(message) {
-  displayLog(message, "#ff0000");
+  displayLog(message, "#d13079");
   stop2 = true;
 }
 
@@ -763,7 +763,7 @@ const mfqScheduling = async (input) => {
                       q1[0].id +
                       " terminado en tiempo: " +
                       currentTime,
-                    "#00D100"
+                    "#08967e"
                   );
                   break;
                 }
@@ -771,7 +771,7 @@ const mfqScheduling = async (input) => {
                 if (stop2) {
                   currentTime++;
                   timeSpan.textContent = currentTime;
-                  displayLog("Proceso interrumpido", "#ff0000");
+                  displayLog("Proceso interrumpido", "#d13079");
                   // Stop execution
                   break;
                 }
@@ -784,7 +784,7 @@ const mfqScheduling = async (input) => {
                       q1[0].id +
                       ": " +
                       q1[0].remaining,
-                    "#FFFF00"
+                    "#e39a0f"
                   );
                   q1[0].priority = 2;
                   q2.push(q1[0]);
@@ -827,7 +827,7 @@ const mfqScheduling = async (input) => {
                       q2[0].id +
                       " terminado en tiempo: " +
                       currentTime,
-                    "#00D100"
+                    "#08967e"
                   );
                   break;
                 }
@@ -839,7 +839,7 @@ const mfqScheduling = async (input) => {
                     q2[0].id +
                     ": " +
                     q2[0].remaining,
-                  "#FFFF00"
+                  "#e39a0f"
                 );
                 q2[0].priority = 3;
                 q3.push(q2[0]);
@@ -877,7 +877,7 @@ const mfqScheduling = async (input) => {
                       q3[0].id +
                       " terminado en tiempo: " +
                       currentTime,
-                    "#00D100"
+                    "#08967e"
                   );
                   break;
                 }
@@ -890,7 +890,7 @@ const mfqScheduling = async (input) => {
           if (q1[0].remaining === 0) {
             displayLog(
               "Proceso " + q1[0].id + " terminado en tiempo: " + currentTime,
-              "#00D100"
+              "#08967e"
             );
             break;
           }
@@ -902,7 +902,7 @@ const mfqScheduling = async (input) => {
               q1[0].id +
               ": " +
               q1[0].remaining,
-            "#FFFF00"
+            "#e39a0f"
           );
           q1[0].priority = 2;
           q2.push(q1[0]);
@@ -931,7 +931,7 @@ const mfqScheduling = async (input) => {
           if (q2[0].remaining === 0) {
             displayLog(
               "Proceso " + q2[0].id + " terminado en tiempo: " + currentTime,
-              "#00D100"
+              "#08967e"
             );
             break;
           }
@@ -943,7 +943,7 @@ const mfqScheduling = async (input) => {
               q2[0].id +
               ": " +
               q2[0].remaining,
-            "#FFFF00"
+            "#e39a0f"
           );
           q2[0].priority = 3;
           q3.push(q2[0]);
@@ -971,7 +971,7 @@ const mfqScheduling = async (input) => {
           if (q3[0].remaining === 0) {
             displayLog(
               "Proceso " + q3[0].id + " terminado en tiempo: " + currentTime,
-              "#00D100"
+              "#08967e"
             );
             break;
           }
