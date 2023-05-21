@@ -427,9 +427,12 @@ const fifoScheduling = async (input) => {
 const rrScheduling = async (input) => {
   // List of all processes
   let processes = input;
+
+  // Variables
   let quantum = 4;
   let totalTime = 0;
   let currentTime = 0;
+  timeSpan.textContent = currentTime;
 
   // Sum their bursts
   processes.forEach((process) => {
@@ -440,19 +443,20 @@ const rrScheduling = async (input) => {
   while (totalTime > 0) {
     for (let i = 0; i < processes.length; i++) {
       if (processes[i].burst > 0) {
-        await sleep(1000);
-        displayLog(
-          `Ejecutando el proceso ${processes[i].id} durante el quantum ${quantum}`,
-          "#dddddd"
-        );
-        if (processes[i].burst <= quantum) {
-          currentTime += processes[i].burst;
+        // Execute process
+        for (let i = 0; i < processes[i].burst; i++) {
+          currentTime += 1;
           timeSpan.textContent = currentTime;
+          displayLog(`Ejecutando el proceso ${processes[i].id} durante el quantum de duración: ${quantum}`, "#dddddd");
+          await sleep(1000);
+        }
+        // Finished or not
+        if (processes[i].burst <= quantum) {
+          displayLog(`Proceso: ${processes[i].id} terminado en tiempo ${currentTime}`, "#08967e");
           totalTime -= processes[i].burst;
           processes[i].burst = 0;
         } else {
-          currentTime += quantum;
-          timeSpan.textContent = currentTime;
+          displayLog(`Proceso: ${processes[i].id} parcialmente terminado`, "#e39a0f");
           totalTime -= quantum;
           processes[i].burst -= quantum;
         }
