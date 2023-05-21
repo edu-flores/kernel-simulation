@@ -113,6 +113,12 @@ const setInputs = (event) => {
 
 // Enable or disable inputs on each row
 const modifyInputs = (event) => {
+  // At least 1 row activated
+  if (Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).length === 0) {
+    event.target.checked = true;
+    return;
+  }
+
   // Get all inputs from that row
   const row = event.target.closest("tr");
   const inputs = row.querySelectorAll("input[type=number]");
