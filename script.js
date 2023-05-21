@@ -755,16 +755,13 @@ const mfqScheduling = async (input) => {
           }
           // First queue is emptied first
           if (q1.length !== 0) {
-            displayLog("--- QUEUE 1 ---", "#dddddd");
+            displayLog("--- QUEUE 1 ---", "#4790d2");
             // Apply round robin, run each process for a quantum and move to next queue if not done
             while (q1.length > 0) {
               // Execute algorithm for quantum time
               displayLog("Ejecutando proceso: " + q1[0].id, "#dddddd");
               for (let j = 0; j < quantum1; j++) {
-                displayLog(
-                  "Ejecutando proceso en tiempo " + currentTime,
-                  "#dddddd"
-                );
+                displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
                 q1[0].remaining -= 1;
                 currentTime += 1;
                 // For every unit of time, check if new processes have arrived
@@ -779,13 +776,7 @@ const mfqScheduling = async (input) => {
                 timeSpan.textContent = currentTime;
                 await sleep(1000);
                 if (q1[0].remaining === 0) {
-                  displayLog(
-                    "Proceso " +
-                      q1[0].id +
-                      " terminado en tiempo: " +
-                      currentTime,
-                    "#08967e"
-                  );
+                  displayLog(`Proceso ${q1[0].id} terminado en tiempo: ${currentTime}`, "#08967e");
                   break;
                 }
                 // Check for interruptions
@@ -800,13 +791,7 @@ const mfqScheduling = async (input) => {
               // If process is not done, move to next queue
               if (q1[0].remaining > 0) {
                 if (!stop2) {
-                  displayLog(
-                    "Tiempo restante para el proceso " +
-                      q1[0].id +
-                      ": " +
-                      q1[0].remaining,
-                    "#e39a0f"
-                  );
+                  displayLog(`Tiempo restante para el proceso ${q1[0].id}: ${q1[0].remaining}`, "#e39a0f");
                   q1[0].priority = 2;
                   q2.push(q1[0]);
                 } else {
@@ -820,16 +805,13 @@ const mfqScheduling = async (input) => {
           }
           // Second queue is emptied Second
           else if (q2.length != 0) {
-            displayLog("--- QUEUE 2 ---", "#dddddd");
+            displayLog("--- QUEUE 2 ---", "#4790d2");
             // Apply round robin, run each process for a quantum and move to next queue if not done
             while (q2.length > 0) {
               // Execute algorithm for quantum time
               displayLog("Ejecutando proceso: " + q2[0].id, "#dddddd");
               for (let j = 0; j < quantum2; j++) {
-                displayLog(
-                  "Ejecutando proceso en tiempo " + currentTime,
-                  "#dddddd"
-                );
+                displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
                 q2[0].remaining -= 1;
                 currentTime += 1; // For every unit of time, check if new processes have arrived
                 if (
@@ -843,25 +825,13 @@ const mfqScheduling = async (input) => {
                 timeSpan.textContent = currentTime;
                 await sleep(1000);
                 if (q2[0].remaining === 0) {
-                  displayLog(
-                    "Proceso " +
-                      q2[0].id +
-                      " terminado en tiempo: " +
-                      currentTime,
-                    "#08967e"
-                  );
+                  displayLog("Proceso " + q2[0].id + " terminado en tiempo: " + currentTime, "#08967e");
                   break;
                 }
               }
               // If process is not done, move to next queue
               if (q2[0].remaining > 0) {
-                displayLog(
-                  "Tiempo restante para el proceso " +
-                    q2[0].id +
-                    ": " +
-                    q2[0].remaining,
-                  "#e39a0f"
-                );
+                displayLog(`Tiempo restante para el proceso ${q2[0].id}: ${q2[0].remaining}`, "#e39a0f");
                 q2[0].priority = 3;
                 q3.push(q2[0]);
               }
@@ -871,15 +841,12 @@ const mfqScheduling = async (input) => {
           }
           // Third queue is emptied last
           else if (q3.length != 0) {
-            displayLog("--- QUEUE 3 ---", "#dddddd");
+            displayLog("--- QUEUE 3 ---", "#4790d2");
             // Apply FCFS to deal with remaining processes
             while (q2.length > 0) {
               displayLog("Ejecutando proceso: " + q3[0].id);
               for (let j = 0; j < q3[0].burst; j++) {
-                displayLog(
-                  "Ejecutando proceso en tiempo " + currentTime,
-                  "#dddddd"
-                );
+                displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
                 currentTime += 1; // For every unit of time, check if new processes have arrived
                 if (
                   processes.length > 0 &&
@@ -893,13 +860,7 @@ const mfqScheduling = async (input) => {
                 q3[0].remaining -= 1;
                 await sleep(1000);
                 if (q3[0].remaining === 0) {
-                  displayLog(
-                    "Proceso " +
-                      q3[0].id +
-                      " terminado en tiempo: " +
-                      currentTime,
-                    "#08967e"
-                  );
+                  displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
                   break;
                 }
               }
@@ -909,22 +870,13 @@ const mfqScheduling = async (input) => {
           timeSpan.textContent = currentTime;
           await sleep(1000);
           if (q1[0].remaining === 0) {
-            displayLog(
-              "Proceso " + q1[0].id + " terminado en tiempo: " + currentTime,
-              "#08967e"
-            );
+            displayLog("Proceso " + q1[0].id + " terminado en tiempo: " + currentTime, "#08967e");
             break;
           }
         }
         // If process is not done, move to next queue
         if (q1[0].remaining > 0) {
-          displayLog(
-            "Tiempo restante para el proceso " +
-              q1[0].id +
-              ": " +
-              q1[0].remaining,
-            "#e39a0f"
-          );
+          displayLog(`Tiempo restante para el proceso ${q1[0].id}: ${q1[0].remaining}`, "#e39a0f");
           q1[0].priority = 2;
           q2.push(q1[0]);
         }
@@ -959,13 +911,7 @@ const mfqScheduling = async (input) => {
         }
         // If process is not done, move to next queue
         if (q2[0].remaining > 0) {
-          displayLog(
-            "Tiempo restante para el proceso " +
-              q2[0].id +
-              ": " +
-              q2[0].remaining,
-            "#e39a0f"
-          );
+          displayLog(`Tiempo restante para el proceso ${q2[0].id}: ${q2[0].remaining}`, "#e39a0f");
           q2[0].priority = 3;
           q3.push(q2[0]);
         }
@@ -990,10 +936,7 @@ const mfqScheduling = async (input) => {
           q3[0].remaining -= 1;
           await sleep(1000);
           if (q3[0].remaining === 0) {
-            displayLog(
-              "Proceso " + q3[0].id + " terminado en tiempo: " + currentTime,
-              "#08967e"
-            );
+            displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
             break;
           }
         }
