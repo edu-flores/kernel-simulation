@@ -130,15 +130,24 @@ const readTime = event => {
 
 // Show in console
 const displayLog = (text, color) => {
+  // Display message
   const p = document.createElement("p");
   p.style.color = color;
   p.appendChild(document.createTextNode(text));
   visualizationDiv.appendChild(p);
+
+  // Scroll to bottom
+  scrollToBottom();
 }
 
 // Clear console
 const clearLogs = () => {
   visualizationDiv.innerHTML = "";
+}
+
+// Scroll to bottom when updating the visualization div
+const scrollToBottom = () => {
+  visualizationDiv.scrollTop = visualizationDiv.scrollHeight;
 }
 
 /**
@@ -252,7 +261,7 @@ const interrupt = error => {
 let stop = {
   value: false,
   type: null
-};
+}
 
 // Sleep function to delay algorithms by milliseconds
 const sleep = ms => {
@@ -512,7 +521,7 @@ const srtScheduling = async (input) => {
   displayLog("Tiempo actual: " + currentTime, "#dddddd");
   displayLog("Promedio tiempo de retorno: " + avgTurnaroundTime, "#dddddd");
   timeSpan.textContent = currentTime;
-};
+}
 
 const hrrnScheduling = async (input) => {
   // List of all processes
