@@ -985,8 +985,93 @@ const mfqScheduling = async (input) => {
   }
 };
 
-const lruPageReplacement = async () => console.log("");
+const lruPageReplacement = async (input) => {
+  // Initialize cache
+  // The cache used will be able to store 3 memory addresses at the same time
+  // Initialize with -1 to be able to access addresses directly
+  let cache = [-1, -1, -1];
+  let pages = "701203042303212";
+  let faults = 0;
+  let hits = 0;
+  for(let i = 0; i < pages.length; i++) {
+    // Parse digit from string to base 10 int
+    let page = parseInt(pages[i], 10);
 
+    // Check if page is included in cache
+    if(cache[0] === page || cache[1] === page || cache[2] === page) {
+      // Page found, this is a hit
+      hits++;
+      displayLog("Pagina " + page + " encontrada en cache", "#00D100");
+    }
+    else {
+      // If not found, implement LRU
+      faults++; 
+      displayLog("Pagina " + page + " no encontrada en cache", "#FFFF00");
+      // Check if cache is empty
+      if(cache[0] === -1) {
+        cache[0] = page;
+        displayLog("Pagina " + page + " guardada en cache", "#dddddd");
+        displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
+      }
+      
+      else if(cache[1] === -1) {
+        cache[1] = page;
+        displayLog("Pagina " + page + " guardada en cache", "#dddddd");
+        displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
+      }
+      
+      else if(cache[2] === -1) {
+        cache[2] = page;
+        displayLog("Pagina " + page + " guardada en cache", "#dddddd");
+        displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
+      }
+
+      // If not empty, find least recently used
+      else {
+        displayLog("Cache no vacío: ejecutar LRU", "#dddddd");
+        let indexes = new Map();
+        let found = 0;
+        let j = i-1; // Index to check the string backwards
+        //  Look for the indexes of addresses in cache
+        while(found !== 3 && j > -1) {
+          // Check for first address 
+          if(pages[j] == cache[0] && !indexes.has(cache[0])) {
+            indexes.set(cache[0], j);
+            found++;
+          }
+          else if(pages[j] == cache[1] && !indexes.has(cache[1])) {
+            indexes.set(cache[1], j);
+            found++;
+          }
+          else if(pages[j] == cache[2] && !indexes.has(cache[2])) {
+            indexes.set(cache[2], j);
+            found++;
+          }
+          j--;
+        }
+        // Find least recently used
+        let minV = indexes.get(cache[0]);
+        let minK = cache[0];
+        for(j = 1; j < 3; j++) {
+          if(indexes.get(cache[j]) < minV) {
+            minV = indexes.get(cache[j]);
+            minK = cache[j];
+          }
+        }
+        displayLog("LRU: " + minK, "#dddddd")
+        // Replace LRU with newest page
+        cache[cache.indexOf(minK)] = page;
+        displayLog("Replacing " + minK + " with " + page, "#dddddd");
+        
+        displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
+      }
+    }
+    displayLog("");
+  }
+  displayLog("Page faults: " + faults, "#00D100");
+}
+
+ 
 // Object containing all algorithms
 const algorithms = {
   scheduling: {
