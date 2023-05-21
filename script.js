@@ -483,7 +483,11 @@ const sjfScheduling = async (input) => {
     return a.arrival - b.arrival;
   });
 
+  // Time
   let currentTime = 0;
+  timeSpan.textContent = currentTime;
+
+  // Variables
   let waitingTime = 0;
   let turnAroundTime = 0;
 
@@ -513,14 +517,16 @@ const sjfScheduling = async (input) => {
       let processTurnAroundTime = processWaitingTime + process.burst;
       turnAroundTime += processTurnAroundTime;
 
-      displayLog(`Llego proceso: ${process.id}`, "#dddddd");
-      displayLog(`Tiempo de llegada: ${currentTime}`, "#dddddd");
-      displayLog(`-- Se ejecuto el proceso: ${process.id} --`, "#dddddd");
-
-      // Execute the process for its burst time
-      currentTime += process.burst;
-      timeSpan.textContent = currentTime;
-      await sleep(1000);
+      displayLog(`Llegó proceso: ${process.id}`, "#dddddd");
+  
+      // Execute process
+      for (let i = 0; i < process.burst; i++) {
+        currentTime += 1;
+        timeSpan.textContent = currentTime;
+        displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
+        await sleep(1000);
+      }
+      displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
 
       // Remove executed process from list
       processes.splice(processes.indexOf(process), 1);
@@ -528,20 +534,16 @@ const sjfScheduling = async (input) => {
       // If no process is available, increase the current time
       currentTime++;
       timeSpan.textContent = currentTime;
+      displayLog("Esperando llegada de un nuevo proceso...", "#e39a0f");
       await sleep(1000);
     }
   }
 
-  displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog(
-    "Promedio tiempo de retorno: " +
-      (turnAroundTime / processesLength).toFixed(2),
-    "#dddddd"
-  );
-  displayLog(
-    "Promedio tiempo de espera: " + (waitingTime / processesLength).toFixed(2),
-    "#dddddd"
-  );
+  // Display stats
+  displayLog("Tiempo de retorno promedio: " + (turnAroundTime / processesLength).toFixed(2), "#dddddd");
+  displayLog("Tiempo de espera promedio: " + (waitingTime / processesLength).toFixed(2), "#dddddd");
+
+  // Update time
   timeSpan.textContent = currentTime;
 };
 
