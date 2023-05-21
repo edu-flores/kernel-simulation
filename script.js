@@ -254,6 +254,16 @@ let stop = {
   type: null
 };
 
+let stop2 = false;
+
+function interrupt2(message) {
+    displayLog(message, "#ff0000");
+    stop2 = true;
+};
+
+
+
+
 // Sleep function to delay algorithms by milliseconds
 const sleep = ms => {
   return new Promise((resolve, reject) => {
@@ -587,8 +597,11 @@ const hrrnScheduling = async (input) => {
   }
 }
 
+
+
 const mfqScheduling = async (input) => {
     let processes = input;
+    stop2 = false;
 
     // Sort algorithms by arrival time
     for(let i = 0; i < processes.length-1; i++){
@@ -628,6 +641,7 @@ const mfqScheduling = async (input) => {
             }
         // First queue is emptied first
         if(q1.length !== 0) {
+            displayLog("--- QUEUE 1 ---", "#dddddd");
             // Apply round robin, run each process for a quantum and move to next queue if not done
             while(q1.length > 0) {
                 // Execute algorithm for quantum time
@@ -637,7 +651,7 @@ const mfqScheduling = async (input) => {
                     q1[0].remaining -= 1;
                     currentTime += 1;
                     // For every unit of time, check if new processes have arrived
-                        if(processes.length > 0 && currentTime <= processes[0].arrival) {
+                    if(processes.length > 0 && currentTime <= processes[0].arrival) {
                         // New processes are added to q1 always
                         q1.push(processes[0]);
                         processes.shift();
@@ -648,12 +662,26 @@ const mfqScheduling = async (input) => {
                         displayLog("Proceso " + q1[0].id + " terminado en tiempo: " + currentTime, "#00D100");
                         break;
                     }
+                    // Check for interruptions
+                    if(stop2) {
+                        currentTime++;
+                        timeSpan.textContent = currentTime;
+                        displayLog("Proceso interrumpido", "#ff0000");
+                        // Stop execution
+                        break;
+                    }
                 }
                 // If process is not done, move to next queue
                 if(q1[0].remaining > 0) {
-                    displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#FFFF00");
-                    q1[0].priority = 2;
-                    q2.push(q1[0]); 
+                    if(!stop2) {
+                        displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#FFFF00");
+                        q1[0].priority = 2;
+                        q2.push(q1[0]); 
+                    }
+                    else {
+                        // Reset
+                        stop2 = false;
+                    }
                 }
                 // Remove from queue
                 q1.shift();
@@ -661,6 +689,7 @@ const mfqScheduling = async (input) => {
         }   
         // Second queue is emptied Second
         else if(q2.length != 0) {
+            displayLog("--- QUEUE 2 ---", "#dddddd");
             // Apply round robin, run each process for a quantum and move to next queue if not done
             while(q2.length > 0) {
                 // Execute algorithm for quantum time
@@ -693,6 +722,7 @@ const mfqScheduling = async (input) => {
         }
         // Third queue is emptied last
         else if(q3.length != 0) {
+            displayLog("--- QUEUE 3 ---", "#dddddd");
             // Apply FCFS to deal with remaining processes
             while(q2.length > 0) {
                 displayLog("Ejecutando proceso: " + q3[0].id);
