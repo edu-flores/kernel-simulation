@@ -332,6 +332,7 @@ const fcfsScheduling = async (input) => {
 
   // Simulate the FCFS
   let currentTime = 0;
+  timeSpan.textContent = currentTime;
   let waitingTime = 0;
   let turnAroundTime = 0;
 
@@ -372,51 +373,48 @@ const fifoScheduling = async (input) => {
   // List of all processes
   let processes = input;
 
-  let queue = [];
+  // Time
+  let currentTime = 0;
+  timeSpan.textContent = currentTime;
 
+  // Enqueue all processes
+  let queue = [];
   for (let i = 0; i < processes.length; i++) {
     queue.push(processes[i]);
     displayLog(
-      `Proceso encolado: ${processes[i].id} (Llegada: ${processes[i].arrival}, Duración: ${processes[i].burst})`,
+      `Proceso encolado: ${processes[i].id} (Llegada: ${processes[i].arrival} | Duración: ${processes[i].burst})`,
       "#dddddd"
     );
-    await sleep(1000);
+    await sleep(300);
   }
 
-  let currentTime = 0;
-
+  // Simulate the FIFO
   while (queue.length > 0) {
-    const currentProcess = queue.shift();
+    const process = queue.shift();
 
-    if (currentProcess.arrival > currentTime) {
-      const idleTime = currentProcess.arrival - currentTime;
-      displayLog(
-        `Tiempo de inactividad durante ${idleTime} unidades de tiempo`,
-        "#dddddd"
-      );
+    // Idle time
+    for (currentTime; currentTime < process.arrival; currentTime++) {
+      displayLog("Esperando llegada de un nuevo proceso...", "#e39a0f");
+      timeSpan.textContent = currentTime;
       await sleep(1000);
-      currentTime += idleTime;
     }
 
-    displayLog(
-      `Ejecutando proceso ${currentProcess.id} (Duración: ${currentProcess.burst} unidades de tiempo)`,
-      "#dddddd"
-    );
-    await sleep(currentProcess.burst);
-    currentTime += currentProcess.burst;
-    timeSpan.textContent = currentTime;
-
-    displayLog(
-      `Proceso ${currentProcess.id} completado. Tiempo de ejecución actual: ${currentTime}`,
-      "#dddddd"
-    );
-    await sleep(1000);
+    // Execute process
+    for (let i = 0; i < process.burst; i++) {
+      currentTime += 1;
+      timeSpan.textContent = currentTime;
+      displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
+      await sleep(1000);
+    }
+    displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
   }
 
+  // Display status
   if (queue.length === 0)
     displayLog(`Todos los procesos han sido ejecutados`, "#dddddd");
   else displayLog(`La cola no se ha vaciado completamente`, "#dddddd");
 
+  // Update time
   timeSpan.textContent = currentTime;
 };
 
