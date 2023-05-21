@@ -551,10 +551,15 @@ const srtScheduling = async (input) => {
   // List of all processes
   let processes = input;
 
+  // Time
   let currentTime = 0;
+  timeSpan.textContent = currentTime;
+
+  // Variables
   let completedProcesses = 0;
   let totalTurnaroundTime = 0;
 
+  // Simulate SRT
   while (completedProcesses < processes.length) {
     let shortestTime = Infinity;
     let shortestIndex = -1;
@@ -571,36 +576,35 @@ const srtScheduling = async (input) => {
       }
     }
 
-    if (shortestIndex == -1) {
+    if (shortestIndex === -1) {
       currentTime++;
+      timeSpan.textContent = currentTime;
+      displayLog("Esperando un proceso disponbile...", "#e39a0f");
+      await sleep(1000);
       continue;
     }
 
     // Execute the process for 1 time unit
     processes[shortestIndex].burst--;
     currentTime++;
+    timeSpan.textContent = currentTime;
+    displayLog(`Ejecutando proceso: ${processes[shortestIndex].id} en tiempo ${currentTime}`, "#dddddd");
 
     // Check if the process is completed
     if (processes[shortestIndex].burst === 0) {
       completedProcesses++;
       processes[shortestIndex].completionTime = currentTime;
-      totalTurnaroundTime +=
-        processes[shortestIndex].completionTime -
-        processes[shortestIndex].arrival;
-      displayLog("Llego proceso: " + processes[shortestIndex].id, "#dddddd");
-      displayLog(
-        "Tiempo de llegada: " + processes[shortestIndex].completionTime,
-        "#dddddd"
-      );
+      totalTurnaroundTime += processes[shortestIndex].completionTime - processes[shortestIndex].arrival;
+      displayLog(`Proceso: ${processes[shortestIndex].id} terminado`, "#08967e");
       timeSpan.textContent = processes[shortestIndex].completionTime;
     }
     await sleep(1000);
   }
 
-  let avgTurnaroundTime = totalTurnaroundTime / processes.length;
+  // Display stats
+  displayLog("Tiempo de retorno promedio: " + (totalTurnaroundTime / processes.length).toFixed(2), "#dddddd");
 
-  displayLog("Tiempo actual: " + currentTime, "#dddddd");
-  displayLog("Promedio tiempo de retorno: " + avgTurnaroundTime, "#dddddd");
+  // Update time
   timeSpan.textContent = currentTime;
 };
 
