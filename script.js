@@ -246,15 +246,15 @@ const run = async (event) => {
         }
       });
 
+      // Run algorithm
+      stop = false;
+      await selectedFunction(userInputs);
+
       // Disable and enable start & stop buttons
       submitButton.disabled = false;
       interruptButtons.forEach((button) => {
         button.disabled = true;
       });
-
-      // Run algorithm
-      stop = false;
-      await selectedFunction(userInputs);
       break;
     case 'page-replacement':
       // Get input value
