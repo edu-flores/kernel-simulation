@@ -119,6 +119,13 @@ button:disabled {
     cursor: auto;
 }
 
+a {
+    font-weight: bold;
+    font-size: larger;
+    text-decoration: none;
+    color: var(--kernel-darkgray);
+}
+
 /* Classes */
 .flex {
     display: flex;
@@ -139,6 +146,14 @@ button:disabled {
 
 .text-center {
     text-align: center;
+}
+
+.text-start {
+    text-align: start;
+}
+
+.text-end {
+    text-align: end;
 }
 
 .space-between {
