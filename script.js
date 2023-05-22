@@ -472,7 +472,7 @@ const sjfScheduling = async (input) => {
   // Variables
   let waitingTime = 0;
   let turnAroundTime = 0;
-
+  stop = false;
   // Execute the processes in SJF order
   while (processes.length > 0) {
     // Filter processes with arrival time less or equal to current time
@@ -499,7 +499,7 @@ const sjfScheduling = async (input) => {
       let processTurnAroundTime = processWaitingTime + process.burst;
       turnAroundTime += processTurnAroundTime;
 
-      displayLog(`Llegó proceso: ${process.id}`, "#dddddd");
+      displayLog(`Ejecutando proceso: ${process.id}`, "#dddddd");
   
       // Execute process
       for (let i = 0; i < process.burst; i++) {
@@ -508,8 +508,16 @@ const sjfScheduling = async (input) => {
         displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
         updateTableTop(process.id, 20, 0, 'R');
         await sleep(1000);
+        if(stop) {
+          currentTime++;
+          timeSpan.textContent = currentTime;
+          break;
+        }
       }
-      displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
+      if(!stop) {
+        displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
+      }
+      stop = false;
       updateTableTop(process.id, 20, 0, 'Z', -1);
 
       // Remove executed process from list
