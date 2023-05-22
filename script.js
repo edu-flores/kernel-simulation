@@ -686,7 +686,7 @@ const hrrnScheduling = async (input) => {
 
 const mfqScheduling = async (input) => {
   let processes = input;
-
+  stop = false;
   // Sort algorithms by arrival time
   for (let i = 0; i < processes.length - 1; i++) {
     for (let j = 0; j < processes.length - 1; j++) {
@@ -745,12 +745,24 @@ const mfqScheduling = async (input) => {
               displayLog("Proceso " + q1[0].id + " terminado en tiempo: " + currentTime, "#00D100");
               break;
             }
+            // Check for interruptions
+            if(stop) {
+              currentTime++;
+              timeSpan.textContent = currentTime;
+              // Stop execution
+              break;
+            }
           }
         // If process is not done, move to next queue
         if(q1[0].remaining > 0) {
-          displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#FFFF00");
-          q1[0].priority = 2;
-          q2.push(q1[0]); 
+          if(!stop) {
+            displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#FFFF00");
+            q1[0].priority = 2;
+            q2.push(q1[0]); 
+          }
+          else {
+            stop = false;
+          }
         }
         // Remove from queue
         q1.shift();
@@ -777,12 +789,24 @@ const mfqScheduling = async (input) => {
             displayLog("Proceso " + q2[0].id + " terminado en tiempo: " + currentTime, "#00D100");
             break;
           }
+          // Check for interruptions
+          if(stop) {
+            currentTime++;
+            timeSpan.textContent = currentTime;
+            // Stop execution
+            break;
+          }
         }
         // If process is not done, move to next queue
         if(q2[0].remaining > 0) {
-          displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#FFFF00");
-          q2[0].priority = 3;
-          q3.push(q2[0]); 
+          if(stop) {
+            displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#FFFF00");
+            q2[0].priority = 3;
+            q3.push(q2[0]); 
+          }
+          else {
+            stop = false;
+          }
         }
         // Remove from queue
         q2.shift();
@@ -806,6 +830,14 @@ const mfqScheduling = async (input) => {
           await sleep(1000);
           if(q3[0].remaining === 0) {
             displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#00D100");
+            break;
+          }
+          // Check for interruptions
+          if(stop) {
+            currentTime++;
+            timeSpan.textContent = currentTime;
+            // Stop execution
+            stop = false;
             break;
           }
         }
