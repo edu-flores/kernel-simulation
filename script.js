@@ -317,7 +317,7 @@ const fcfsScheduling = async (input) => {
   // Variables
   let waitingTime = 0;
   let turnAroundTime = 0;
-
+  stop = false;
   for (let i = 0; i < processes.length; i++) {
     let process = processes[i];
 
@@ -343,8 +343,17 @@ const fcfsScheduling = async (input) => {
       displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
       updateTableTop(process.id, 20, 0, 'R');
       await sleep(1000);
+      // Check for interruptions
+      if(stop) {
+        currentTime++;
+        timeSpan.textContent = currentTime;
+        break;
+      }
     }
-    displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
+    if(!stop) {
+      displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
+    }
+    stop = false;
     updateTableTop(process.id, 20, 0, 'Z', -1);
   }
 
