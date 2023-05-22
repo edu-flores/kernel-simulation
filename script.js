@@ -418,8 +418,16 @@ const rrScheduling = async (input) => {
   processes.sort((a, b) => a.arrival - b.arrival);
 
   // Variables
-  let quantum = 4;
   let totalTime = 0;
+  let quantum = 0;
+  while (quantum <= 0) {
+    const input = prompt("Ingresa el valor de quantum:");
+    quantum = parseInt(input);
+  
+    if (isNaN(quantum) || quantum <= 0) {
+      alert("Por favor, ingresa un número válido mayor a 0.");
+    }
+  }
 
   // Time
   let currentTime = 0;
@@ -761,9 +769,16 @@ const mfqScheduling = async (input) => {
 
   let currentTime = 0;
 
-  // Quantum for each queue
-  let quantum1 = 4;
-  let quantum2 = 8;
+  // Quantum
+  let quantum = 0;
+  while (quantum <= 0) {
+    const input = prompt("Ingresa el valor de quantum:");
+    quantum = parseInt(input);
+  
+    if (isNaN(quantum) || quantum <= 0) {
+      alert("Por favor, ingresa un número válido mayor a 0.");
+    }
+  }
    
   // Repeat until all processes are completed
   while(!(q1.length === 0 && q2.length === 0 && q3.length === 0) || processes.length > 0) {
@@ -779,7 +794,7 @@ const mfqScheduling = async (input) => {
       while(q1.length > 0) {
         // Execute algorithm for quantum time
         displayLog("Ejecutando proceso: " + q1[0].id, "#dddddd");
-          for(let j = 0; j < quantum1; j++) {
+          for(let j = 0; j < quantum; j++) {
             displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
             updateTableTop(q1[0].id, 20-q1[0].priority, q1[0].priority, 'R');
             q1[0].remaining -= 1;
@@ -827,7 +842,7 @@ const mfqScheduling = async (input) => {
       while(q2.length > 0) {
         // Execute algorithm for quantum time
         displayLog("Ejecutando proceso: " + q2[0].id, "#dddddd");
-        for(let j = 0; j < quantum2; j++) {
+        for(let j = 0; j < quantum; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
           updateTableTop(q2[0].id, 20-q2[0].priority, q2[0].priority, 'R');
           q2[0].remaining -= 1;
