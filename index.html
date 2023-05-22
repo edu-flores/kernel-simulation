@@ -41,7 +41,7 @@
     <!-- Inputs -->
     <div class="flex mb">
       <div class="w-100">
-        <form id="algorithms-form" onsubmit="run(event)">
+        <form id="algorithms-form" onsubmit="run(event)" data-type="scheduling">
           <div id="user-inputs" class="mb">
             <div class="flex space-between">
               <!-- Type -->
@@ -53,8 +53,8 @@
               <select name="algorithm" id="algorithm" onchange="setInputs(event)">
               </select>
             </div>
-            <!-- Processes & Pages -->
-            <div>
+            <!-- Scheduling -->
+            <div class="user-data">
               <h2 class="text-center">DEFINICIÓN DE PROCESOS</h2>
               <!-- Inputs -->
               <table>
@@ -74,6 +74,12 @@
                   <tr class="inputs-row"></tr>
                 </tbody>
               </table>
+            </div>
+            <!-- Page Replacement -->
+            <div class="user-data d-none">
+              <h2 class="text-center">DEFINICIÓN DE REFERENCIAS DE PÁGINAS</h2>
+              <label for="page-references">Páginas</label>
+              <input id="page-references" type="number" min="0" value="701203042303212" oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45">
             </div>
           </div>
           <!-- Start & Stop -->

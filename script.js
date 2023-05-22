@@ -9,6 +9,7 @@ const interruptButtons = document.querySelectorAll(".interrupt-button");
 const headersRow = document.getElementById("headers-row");
 const inputsRow = document.getElementsByClassName("inputs-row");
 const topsRow = document.getElementsByClassName("tops-row");
+const userDivs = document.getElementsByClassName("user-data");
 
 const schedulingAlgorithms = [
   { value: "fcfs", text: "First Come First Serve" },
@@ -50,7 +51,9 @@ const setAlgorithms = (event) => {
 const setInputs = (event) => {
   // Set number of properties in the table
   let properties = ["ID"];
+
   switch (event.target.value) {
+    // Scheduling
     case "fcfs":
     case "fifo":
     case "rr":
@@ -58,40 +61,44 @@ const setInputs = (event) => {
     case "srt":
     case "hrrn":
     case "mfq":
+      // Show and hide inputs
+      userDivs[1].style.display = 'none';
+      userDivs[0].style.display = 'initial';
+      algorithmsForm.dataset.type = 'scheduling';
+
       properties.push("Arrival", "Burst");
+
+      // Set table columns names
+      headersRow.innerHTML = "";
+      properties.forEach((property) => {
+        const th = document.createElement("th");
+        th.innerHTML = property;
+        headersRow.appendChild(th);
+      });
+
+      // Set input elements
+      properties.shift();
+      Array.from(inputsRow).forEach((row, index) => {
+        // Add ID
+        row.innerHTML = `<td>${index + 1}</td>`;
+
+        // Add inputs
+        properties.forEach(() => {
+          row.innerHTML += `<td><input type="number" min="0" value=${Math.floor(Math.random() * 9) + 1} ${index < 4 ? "" : "disabled"} oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>`;
+        });
+
+        // Add checkbox
+        row.innerHTML += `<td><input type="checkbox" onchange="modifyInputs(event)" ${index < 4 ? "checked" : ""}></td>`;
+      });
       break;
+    // Page replacement
     case "lru":
-      properties.push(
-        "Atributo #1",
-        "Atributo #2",
-        "Atributo #3",
-        "Atributo #4"
-      );
+      // Show and hide inputs
+      userDivs[0].style.display = 'none';
+      userDivs[1].style.display = 'initial';
+      algorithmsForm.dataset.type = 'page-replacement';
       break;
   }
-
-  // Set table columns names
-  headersRow.innerHTML = "";
-  properties.forEach((property) => {
-    const th = document.createElement("th");
-    th.innerHTML = property;
-    headersRow.appendChild(th);
-  });
-
-  // Set input elements
-  properties.shift();
-  Array.from(inputsRow).forEach((row, index) => {
-    // Add ID
-    row.innerHTML = `<td>${index + 1}</td>`;
-
-    // Add inputs
-    properties.forEach(() => {
-      row.innerHTML += `<td><input type="number" min="0" value=${Math.floor(Math.random() * 9) + 1} ${index < 4 ? "" : "disabled"} oninput="if (event.target.value == '') { event.target.value = '0'; }" onkeypress="return event.charCode != 45"></td>`;
-    });
-
-    // Add checkbox
-    row.innerHTML += `<td><input type="checkbox" onchange="modifyInputs(event)" ${index < 4 ? "checked" : ""}></td>`;
-  });
 };
 
 // Enable or disable inputs on each row
@@ -182,69 +189,81 @@ const run = async (event) => {
   // Prevent page reloading
   event.preventDefault();
 
-  // Disable and enable start & stop buttons
-  submitButton.disabled = true;
-  interruptButtons.forEach((button) => {
-    button.disabled = false;
-  });
-
   // Select the desired function
   clearLogs();
   const selectedFunction = algorithms[typeSelector.value][algorithmSelector.value];
 
-  // Prepare inputs
-  const properties = Array.from(headersRow.querySelectorAll("th")).slice(1);
-  const userInputs = [];
-  let current;
+  // Scheduling or page replacement
+  switch (algorithmsForm.dataset.type) {
+    case 'scheduling':
+      // Disable and enable start & stop buttons
+      submitButton.disabled = true;
+      interruptButtons.forEach((button) => {
+        button.disabled = false;
+      });
 
-  // For every input row, get every input type number value
-  Array.from(topsRow).forEach(row => { row.innerHTML = ""; });
-  Array.from(inputsRow).forEach((row, i) => {
-    // Check if the process is enabled or disabled
-    if (row.querySelector("input[type=checkbox]").checked) {
-      current = new Process({});
-      current.id = i + 1;
+      // Prepare inputs
+      const properties = Array.from(headersRow.querySelectorAll("th")).slice(1);
+      const userInputs = [];
+      let current;
 
-      // Fill top row
-      let topRow = topsRow[i];
-      topRow.innerHTML = `
-        <td>${i+1}</td>
-        <td>root</td>
-        <td>20</td>
-        <td>0</td>
-        <td>${Math.floor(Math.random() * (7382947 - 829436 + 1)) + 1829436}</td>
-        <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
-        <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
-        <td>S</td>
-        <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
-        <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
-        <td>0</td>
-        <td>sisop</td>
-      `;
+      // For every input row, get every input type number value
+      Array.from(topsRow).forEach(row => { row.innerHTML = ""; });
+      Array.from(inputsRow).forEach((row, i) => {
+        // Check if the process is enabled or disabled
+        if (row.querySelector("input[type=checkbox]").checked) {
+          current = new Process({});
+          current.id = i + 1;
 
-      // Add properties from inputs
-      Array.from(row.querySelectorAll("input[type=number]")).forEach(
-        (input, j) => {
-          current[properties[j].innerHTML.toLowerCase()] = parseInt(
-            input.value
+          // Fill top row
+          let topRow = topsRow[i];
+          topRow.innerHTML = `
+            <td>${i+1}</td>
+            <td>root</td>
+            <td>20</td>
+            <td>0</td>
+            <td>${Math.floor(Math.random() * (7382947 - 829436 + 1)) + 1829436}</td>
+            <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
+            <td>${Math.floor(Math.random() * (382947 - 29436 + 1)) + 29436}</td>
+            <td>S</td>
+            <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
+            <td>${(Math.random() * (99.99 - 0.00 + 1) + 0.00).toFixed(2)}</td>
+            <td>0</td>
+            <td>sisop</td>
+          `;
+
+          // Add properties from inputs
+          Array.from(row.querySelectorAll("input[type=number]")).forEach(
+            (input, j) => {
+              current[properties[j].innerHTML.toLowerCase()] = parseInt(
+                input.value
+              );
+            }
           );
+
+          // Push that process
+          userInputs.push(current);
         }
-      );
+      });
 
-      // Push that process
-      userInputs.push(current);
-    }
-  });
+      // Run algorithm
+      stop = false;
+      await selectedFunction(userInputs);
 
-  // Run algorithm
-  stop = false;
-  await selectedFunction(userInputs);
+      // Disable and enable start & stop buttons
+      submitButton.disabled = false;
+      interruptButtons.forEach((button) => {
+        button.disabled = true;
+      });
+      break;
+    case 'page-replacement':
+      // Get input value
+      const userInput = document.getElementById("page-references").value;
 
-  // Disable and enable start & stop buttons
-  submitButton.disabled = false;
-  interruptButtons.forEach((button) => {
-    button.disabled = true;
-  });
+      // Run the algorithm
+      await selectedFunction(userInput);
+      break;
+  }
 };
 
 // Interruptions global variable
@@ -884,8 +903,8 @@ const lruPageReplacement = async (input) => {
   // Initialize cache
   // The cache used will be able to store 3 memory addresses at the same time
   // Initialize with -1 to be able to access addresses directly
+  let pages = input;
   let cache = [-1, -1, -1];
-  let pages = "701203042303212";
   let faults = 0;
   let hits = 0;
   for(let i = 0; i < pages.length; i++) {
@@ -896,25 +915,25 @@ const lruPageReplacement = async (input) => {
     if(cache[0] === page || cache[1] === page || cache[2] === page) {
       // Page found, this is a hit
       hits++;
-      displayLog("Página " + page + " encontrada en cache", "#00D100");
+      displayLog("Página " + page + " encontrada en cache", "#08967e");
     }
     else {
       // If not found, implement LRU
       faults++; 
-      displayLog("Página " + page + " no encontrada en cache", "#FFFF00");
+      displayLog("Página " + page + " no encontrada en cache", "#e39a0f");
       // Check if cache is empty
       if(cache[0] === -1) {
         cache[0] = page;
         displayLog("Página " + page + " guardada en cache", "#dddddd");
         displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
       }
-      
+
       else if(cache[1] === -1) {
         cache[1] = page;
         displayLog("Página " + page + " guardada en cache", "#dddddd");
         displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
       }
-      
+
       else if(cache[2] === -1) {
         cache[2] = page;
         displayLog("Página " + page + " guardada en cache", "#dddddd");
@@ -956,14 +975,17 @@ const lruPageReplacement = async (input) => {
         displayLog("LRU: " + minK, "#dddddd")
         // Replace LRU with newest page
         cache[cache.indexOf(minK)] = page;
-        displayLog("Replacing " + minK + " with " + page, "#dddddd");
-        
-        displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
+        displayLog("Reemplazando " + minK + " con " + page, "#dddddd");
+
+        displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#4790d2");
       }
     }
-    displayLog("");
+
+    // Wait
+    await sleep(1000);
+    timeSpan.textContent = +timeSpan.textContent + 1;
   }
-  displayLog("Page faults: " + faults, "#00D100");
+  displayLog("Page faults: " + faults, "#08967e");
 };
 
  
