@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono">
+    <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/GNOME_Terminal_icon_2019.svg/1200px-GNOME_Terminal_icon_2019.svg.png">
+    <title>Kernel</title>
+</head>
+<body>
+  <header>
+    <div></div>
+    <b>sisop@centos: ~</b>
+    <div id="controls">
+      <div class="gray-circle"></div>
+      <div class="gray-circle"></div>
+      <div class="blue-circle"></div>
+    </div>
+  </header>
+  <main>
+    <!-- Banner -->
+    <div id="banner" class="flex">
+      <pre>
+            .--.
+           |o_o |
+           |:_/ |
+          //   \ \
+         (|     | )
+        /'\_   _/`\
+        \___)=(___/</pre>
+      <div>
+        <h1>Simulación de Kernel<span>&nbsp;</span></h1>
+        <h2>Eduardo Flores 568379</h2>
+        <h2>Oscar Flores 570390</h2>
+        <h2>José Gallegos 610750</h2>
+      </div>
+    </div>
+    <hr class="mb">
+    <!-- Inputs -->
+    <div class="flex mb">
+      <div class="w-100">
+          <div id="user-inputs" class="mb" style="margin-top: 0; flex-direction: row !important;">
+            <div class="flex space-between">
+            </div>
+            <!-- Processes & Pages -->
+            <div>
+              <h2 class="text-center">SIMULACIÓN DE CRONTABS</h2>
+              <!-- Inputs -->
+              <table>
+                <tr>
+                  <td style="text-align: end;"><label for="date-input">Fecha (1-31):</label></td>
+                  <td style="text-align: center;"><input type="number" id="date-input" min="1" max="31" value="1"></td>
+                </tr>
+                <tr>
+                  <td style="text-align: end;"><label for="hour-input">Hora (0-23):</label></td>
+                  <td style="text-align: center;"><input type="number" id="hour-input" min="0" max="23" value="0"></td>
+                </tr>
+                <tr>
+                  <td style="text-align: end;"><label for="minute-input">Minutos (0-59):</label></td>
+                  <td style="text-align: center;"><input type="number" id="minute-input" min="0" max="59" value="0"></td>
+                </tr>
+                <tr>
+                  <td style="text-align: end;"><label for="interval-input">Intervalo de tiempo (segundos):</label></td>
+                  <td style="text-align: center;"><input type="number" id="interval-input" min="1" value="1"></td>
+                </tr>
+                <!-- Start & Stop -->
+                <tr>
+                  <!-- Start -->
+                  <td style="padding-top: 2rem;"><button id="submit-button" type="submit" onclick="scheduleTask(); clearOutput(); infoTask();">Programar tarea</button></td>
+                  <!-- Stop -->
+                  <td style="padding-top: 2rem;"><button type="button" class="interrupt-button" onclick="stopTask()">Detener tarea</button></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+      </div>
+      <!-- Visualization -->
+      <div class="w-100">
+        <!-- Logs -->
+        <div id="visualization" class="mb">
+          <div id="output"></div>
+        </div>
+        <center><button type="button" class="interrupt-button" onclick="clearOutput()">Limpiar terminal</button></center>
+      </div>
+    </div>
+  </main>
+
+  <script src="crontabSimulation.js"></script>
+</body>
+</html>
