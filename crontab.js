@@ -2,7 +2,9 @@ var intervalId;
   
 function job() {
   var outputDiv = document.getElementById('output');
-  outputDiv.innerHTML += 'Tarea programada ejecutada<br>';
+  const p = document.createElement("p");
+  p.appendChild(document.createTextNode('Tarea programada ejecutada'));
+  outputDiv.appendChild(p);
 }
 
 function infoTask() {
@@ -25,11 +27,15 @@ function infoTask() {
 
   // Display task information
   var outputDiv = document.getElementById('output');
-  outputDiv.innerHTML += `Tarea establecida para el ${currentDate.toLocaleString()}<br>`;
+  const p = document.createElement("p");
+  p.appendChild(document.createTextNode(`Tarea establecida para el ${currentDate.toLocaleString()}`));
+  outputDiv.appendChild(p);
 
   // Check if the scheduled date and time have passed
   if (currentDate < new Date()) {
-    outputDiv.innerHTML += `La fecha y hora ya han pasado<br>`;
+    const p = document.createElement("p");
+    p.appendChild(document.createTextNode('La fecha y hora ya han pasado'));
+    outputDiv.appendChild(p);
     stopTask();
   }
 }
@@ -60,7 +66,9 @@ function scheduleTask() {
   if (msUntilScheduledTime > 0 && currentDate > new Date()) {
     setTimeout(() => {
       var outputDiv = document.getElementById('output');
-      outputDiv.innerHTML += `Tarea programada ejecutada el ${currentDate.toLocaleString()}<br>`;
+      const p = document.createElement("p");
+      p.appendChild(document.createTextNode(`Tarea programada ejecutada el ${currentDate.toLocaleString()}`));
+      outputDiv.appendChild(p);
       intervalId = setInterval(job, interval * 1000);
     }, msUntilScheduledTime);
   } else {
@@ -68,7 +76,9 @@ function scheduleTask() {
     var msUntilNextDay = msInOneDay - Math.abs(msUntilScheduledTime);
     setTimeout(() => {
       var outputDiv = document.getElementById('output');
-      outputDiv.innerHTML += `Tarea programada ejecutada el ${currentDate.toLocaleString()}<br>`;
+      const p = document.createElement("p");
+      p.appendChild(document.createTextNode(`Tarea programada ejecutada el ${currentDate.toLocaleString()}`));
+      outputDiv.appendChild(p);
       intervalId = setInterval(job, interval * 1000);
     }, msUntilNextDay);
   }
