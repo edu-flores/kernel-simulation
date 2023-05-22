@@ -758,21 +758,15 @@ const mfqScheduling = async (input) => {
           }
         // If process is not done, move to next queue
         if(q1[0].remaining > 0) {
-<<<<<<< HEAD
           if(!stop) {
-            displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#FFFF00");
+            displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#e39a0f");
+            updateTableTop(q1[0].id, 20-q1[0].priority, q1[0].priority, 'S', -1);
             q1[0].priority = 2;
             q2.push(q1[0]); 
           }
           else {
             stop = false;
           }
-=======
-          displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#e39a0f");
-          updateTableTop(q1[0].id, 20-q1[0].priority, q1[0].priority, 'S', -1);
-          q1[0].priority = 2;
-          q2.push(q1[0]); 
->>>>>>> 1abe74bcc2797ea6e7f8b53a8d9341b684dd7432
         }
         // Remove from queue
         q1.shift();
@@ -811,21 +805,15 @@ const mfqScheduling = async (input) => {
         }
         // If process is not done, move to next queue
         if(q2[0].remaining > 0) {
-<<<<<<< HEAD
           if(stop) {
-            displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#FFFF00");
+            displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#e39a0f");
+            updateTableTop(q2[0].id, 20-q2[0].priority, q2[0].priority, 'S', -1);
             q2[0].priority = 3;
             q3.push(q2[0]); 
           }
           else {
             stop = false;
           }
-=======
-          displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#e39a0f");
-          updateTableTop(q2[0].id, 20-q2[0].priority, q2[0].priority, 'S', -1);
-          q2[0].priority = 3;
-          q3.push(q2[0]); 
->>>>>>> 1abe74bcc2797ea6e7f8b53a8d9341b684dd7432
         }
         // Remove from queue
         q2.shift();
