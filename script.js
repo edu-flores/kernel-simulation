@@ -604,7 +604,7 @@ const srtScheduling = async (input) => {
   // Variables
   let completedProcesses = 0;
   let totalTurnaroundTime = 0;
-
+  stop = false;
   // Simulate SRT
   while (completedProcesses < processes.length) {
     let shortestTime = Infinity;
@@ -636,17 +636,25 @@ const srtScheduling = async (input) => {
     timeSpan.textContent = currentTime;
     displayLog(`Ejecutando proceso: ${processes[shortestIndex].id} en tiempo ${currentTime}`, "#dddddd");
     updateTableTop(processes[shortestIndex].id, 20, 0, 'R');
-
+    await sleep(1000);
+  
+    if(stop) {
+      currentTime++;
+      timeSpan.textContent = currentTime;
+      processes[shortestIndex].burst = 0;
+    }
     // Check if the process is completed
     if (processes[shortestIndex].burst === 0) {
       completedProcesses++;
       processes[shortestIndex].completionTime = currentTime;
-      totalTurnaroundTime += processes[shortestIndex].completionTime - processes[shortestIndex].arrival;
-      displayLog(`Proceso: ${processes[shortestIndex].id} terminado`, "#08967e");
+      if(!stop) {
+        displayLog(`Proceso: ${processes[shortestIndex].id} terminado`, "#08967e");
+        totalTurnaroundTime += processes[shortestIndex].completionTime - processes[shortestIndex].arrival;
+      }
       updateTableTop(processes[shortestIndex].id, 20, 0, 'Z', -1);
       timeSpan.textContent = processes[shortestIndex].completionTime;
     }
-    await sleep(1000);
+    stop = false;
   }
 
   // Display stats
