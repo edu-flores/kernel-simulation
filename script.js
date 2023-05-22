@@ -602,7 +602,7 @@ const hrrnScheduling = async (input) => {
   let queue = [];
   let numProcesses = processes.length;
   let done = 0;
-
+  stop = false;
   // Time
   let currentTime = 0;
   timeSpan.textContent = currentTime;
@@ -636,6 +636,11 @@ const hrrnScheduling = async (input) => {
         displayLog(`Ejecutando proceso ${queue[0].id} en tiempo: ${currentTime}`, "#dddddd");
         updateTableTop(queue[0].id, 20, 0, 'R');
         await sleep(1000);
+        if(stop) {
+          currentTime++;
+          timeSpan.textContent = currentTime;
+          break;
+        }
       }
       displayLog(`Proceso: ${queue[0].id} terminado en tiempo ${currentTime}`, "#08967e");
       updateTableTop(queue[0].id, 20, 0, 'Z', -1);
@@ -669,8 +674,16 @@ const hrrnScheduling = async (input) => {
         displayLog(`Ejecutando proceso ${nextP.id} en tiempo: ${currentTime}`, "#dddddd");
         updateTableTop(nextP.id, 20, 0, 'R');
         await sleep(1000);
+        if(stop) {
+          currentTime++;
+          timeSpan.textContent = currentTime;
+          break;
+        }
       }
-      displayLog(`Proceso: ${nextP.id} terminado en tiempo ${currentTime}`, "#08967e");
+      if(!stop) {
+        displayLog(`Proceso: ${nextP.id} terminado en tiempo ${currentTime}`, "#08967e");
+        stop = false;
+      }
       updateTableTop(nextP.id, 20, 0, 'Z', -1);
       done++;
 
