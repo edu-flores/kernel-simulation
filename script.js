@@ -377,7 +377,7 @@ const fifoScheduling = async (input) => {
     displayLog(`Proceso encolado: ${processes[i].id} (Llegada: ${processes[i].arrival} | Duración: ${processes[i].burst})`, "#dddddd");
     await sleep(300);
   }
-
+  stop = false;
   // Simulate the FIFO
   while (queue.length > 0) {
     const process = queue.shift();
@@ -396,8 +396,16 @@ const fifoScheduling = async (input) => {
       displayLog(`Ejecutando proceso ${process.id} en tiempo: ${currentTime}`, "#dddddd");
       updateTableTop(process.id, 20, 0, 'R');
       await sleep(1000);
+      if(stop) {
+        currentTime++;
+        timeSpan.textContent = currentTime;
+        break;
+      }
     }
+    if(!stop) {
     displayLog(`Proceso: ${process.id} terminado en tiempo ${currentTime}`, "#08967e");
+    }
+    stop = false;
     updateTableTop(process.id, 20, 0, 'Z', -1);
   }
 
