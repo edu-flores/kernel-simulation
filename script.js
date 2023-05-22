@@ -460,7 +460,6 @@ const rrScheduling = async (input) => {
       // New process
       displayLog(`Proceso a ejecutar: ${processes[i].id}`, "#dddddd");
       timeSpan.textContent = currentTime;
-      await sleep(1000);
 
       if (processes[i].burst > 0) {
         // Execute process
@@ -473,28 +472,27 @@ const rrScheduling = async (input) => {
           if(stop) {
             currentTime++;
             timeSpan.textContent = currentTime;
-            processes[i].burst = -1;
             break;
+          }
         }
 
         // Finished or not
-        if (processes[i].burst <= quantum && !stop) {
-          displayLog(`Proceso: ${processes[i].id} terminado en tiempo ${currentTime}`, "#08967e");
+        if (processes[i].burst <= quantum || stop) {
+          if(!stop) {
+            displayLog(`Proceso: ${processes[i].id} terminado en tiempo ${currentTime}`, "#08967e");
+          }
           updateTableTop(processes[i].id, 20, 0, 'Z', -1);
           totalTime -= processes[i].burst;
           processes[i].burst = 0;
         } else {
-          if(!stop) {
-            displayLog(`Proceso: ${processes[i].id} parcialmente terminado`, "#e39a0f");
-            updateTableTop(processes[i].id, 20, 0, 'S', -1);
-            totalTime -= quantum;
-            processes[i].burst -= quantum;
-          }
+          displayLog(`Proceso: ${processes[i].id} parcialmente terminado`, "#e39a0f");
+          updateTableTop(processes[i].id, 20, 0, 'S', -1);
+          totalTime -= quantum;
+          processes[i].burst -= quantum;
         }
           stop = false;
 
         displayLog("--- Nuevo Quantum ---", "#4790d2");
-        }  
       }
     }
   }
