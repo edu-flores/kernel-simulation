@@ -585,7 +585,8 @@ const sjfScheduling = async (input) => {
 
 const srtScheduling = async (input) => {
   // List of all processes
-  let processes = input;
+  // Creates a new array processes by cloning each object from the input array.
+  let processes = input.map((process) => ({ ...process }));
 
   // Time
   let currentTime = 0;
@@ -615,7 +616,7 @@ const srtScheduling = async (input) => {
     if (shortestIndex === -1) {
       currentTime++;
       timeSpan.textContent = currentTime;
-      displayLog("Esperando un proceso disponbile...", "#e39a0f");
+      displayLog("Esperando un proceso disponible...", "#e39a0f");
       await sleep(1000);
       continue;
     }
