@@ -685,6 +685,7 @@ const hrrnScheduling = async (input) => {
 };
 
 const mfqScheduling = async (input) => {
+  // List of all processes
   let processes = input;
   stop = false;
   // Sort algorithms by arrival time
@@ -731,6 +732,7 @@ const mfqScheduling = async (input) => {
         displayLog("Ejecutando proceso: " + q1[0].id, "#dddddd");
           for(let j = 0; j < quantum1; j++) {
             displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
+            updateTableTop(q1[0].id, 20-q1[0].priority, q1[0].priority, 'R');
             q1[0].remaining -= 1;
             currentTime += 1;
             // For every unit of time, check if new processes have arrived
@@ -742,7 +744,8 @@ const mfqScheduling = async (input) => {
             timeSpan.textContent = currentTime;
             await sleep(1000);
             if(q1[0].remaining === 0) {
-              displayLog("Proceso " + q1[0].id + " terminado en tiempo: " + currentTime, "#00D100");
+              displayLog("Proceso " + q1[0].id + " terminado en tiempo: " + currentTime, "#08967e");
+              updateTableTop(q1[0].id, 20-q1[0].priority, q1[0].priority, 'Z', -1);
               break;
             }
             // Check for interruptions
@@ -755,6 +758,7 @@ const mfqScheduling = async (input) => {
           }
         // If process is not done, move to next queue
         if(q1[0].remaining > 0) {
+<<<<<<< HEAD
           if(!stop) {
             displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#FFFF00");
             q1[0].priority = 2;
@@ -763,6 +767,12 @@ const mfqScheduling = async (input) => {
           else {
             stop = false;
           }
+=======
+          displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#e39a0f");
+          updateTableTop(q1[0].id, 20-q1[0].priority, q1[0].priority, 'S', -1);
+          q1[0].priority = 2;
+          q2.push(q1[0]); 
+>>>>>>> 1abe74bcc2797ea6e7f8b53a8d9341b684dd7432
         }
         // Remove from queue
         q1.shift();
@@ -776,6 +786,7 @@ const mfqScheduling = async (input) => {
         displayLog("Ejecutando proceso: " + q2[0].id, "#dddddd");
         for(let j = 0; j < quantum2; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
+          updateTableTop(q2[0].id, 20-q2[0].priority, q2[0].priority, 'R');
           q2[0].remaining -= 1;
           currentTime += 1;// For every unit of time, check if new processes have arrived
           if(processes.length > 0 && currentTime <= processes[0].arrival) {
@@ -786,7 +797,8 @@ const mfqScheduling = async (input) => {
           timeSpan.textContent = currentTime;
           await sleep(1000);
           if(q2[0].remaining === 0) {
-            displayLog("Proceso " + q2[0].id + " terminado en tiempo: " + currentTime, "#00D100");
+            displayLog("Proceso " + q2[0].id + " terminado en tiempo: " + currentTime, "#08967e");
+            updateTableTop(q2[0].id, 20-q2[0].priority, q2[0].priority, 'Z', -1);
             break;
           }
           // Check for interruptions
@@ -799,6 +811,7 @@ const mfqScheduling = async (input) => {
         }
         // If process is not done, move to next queue
         if(q2[0].remaining > 0) {
+<<<<<<< HEAD
           if(stop) {
             displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#FFFF00");
             q2[0].priority = 3;
@@ -807,6 +820,12 @@ const mfqScheduling = async (input) => {
           else {
             stop = false;
           }
+=======
+          displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#e39a0f");
+          updateTableTop(q2[0].id, 20-q2[0].priority, q2[0].priority, 'S', -1);
+          q2[0].priority = 3;
+          q3.push(q2[0]); 
+>>>>>>> 1abe74bcc2797ea6e7f8b53a8d9341b684dd7432
         }
         // Remove from queue
         q2.shift();
@@ -819,6 +838,7 @@ const mfqScheduling = async (input) => {
         displayLog("Ejecutando proceso: " + q3[0].id);
         for(let j = 0; j < q3[0].burst; j++) {
           displayLog("Ejecutando proceso en tiempo " + currentTime, "#dddddd");
+          updateTableTop(q3[0].id, 20-q3[0].priority, q3[0].priority, 'R');
           currentTime += 1;// For every unit of time, check if new processes have arrived
           if(processes.length > 0 && currentTime <= processes[0].arrival) {
             // New processes are added to q1 always
@@ -829,7 +849,8 @@ const mfqScheduling = async (input) => {
           q3[0].remaining -= 1;
           await sleep(1000);
           if(q3[0].remaining === 0) {
-            displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#00D100");
+            displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
+            updateTableTop(q3[0].id, 20-q3[0].priority, q3[0].priority, 'Z', -1);
             break;
           }
           // Check for interruptions
@@ -866,28 +887,28 @@ const lruPageReplacement = async (input) => {
     if(cache[0] === page || cache[1] === page || cache[2] === page) {
       // Page found, this is a hit
       hits++;
-      displayLog("Pagina " + page + " encontrada en cache", "#00D100");
+      displayLog("Página " + page + " encontrada en cache", "#00D100");
     }
     else {
       // If not found, implement LRU
       faults++; 
-      displayLog("Pagina " + page + " no encontrada en cache", "#FFFF00");
+      displayLog("Página " + page + " no encontrada en cache", "#FFFF00");
       // Check if cache is empty
       if(cache[0] === -1) {
         cache[0] = page;
-        displayLog("Pagina " + page + " guardada en cache", "#dddddd");
+        displayLog("Página " + page + " guardada en cache", "#dddddd");
         displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
       }
       
       else if(cache[1] === -1) {
         cache[1] = page;
-        displayLog("Pagina " + page + " guardada en cache", "#dddddd");
+        displayLog("Página " + page + " guardada en cache", "#dddddd");
         displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
       }
       
       else if(cache[2] === -1) {
         cache[2] = page;
-        displayLog("Pagina " + page + " guardada en cache", "#dddddd");
+        displayLog("Página " + page + " guardada en cache", "#dddddd");
         displayLog("Cache actual: " + cache[0] + " " + cache[1] + " " + cache[2], "#dddddd");
       }
 
@@ -934,7 +955,7 @@ const lruPageReplacement = async (input) => {
     displayLog("");
   }
   displayLog("Page faults: " + faults, "#00D100");
-}
+};
 
  
 // Object containing all algorithms
