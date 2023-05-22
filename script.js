@@ -621,7 +621,7 @@ const hrrnScheduling = async (input) => {
   let queue = [];
   let numProcesses = processes.length;
   let done = 0;
-
+  stop = false;
   // Time
   let currentTime = 0;
   timeSpan.textContent = currentTime;
@@ -655,6 +655,11 @@ const hrrnScheduling = async (input) => {
         displayLog(`Ejecutando proceso ${queue[0].id} en tiempo: ${currentTime}`, "#dddddd");
         updateTableTop(queue[0].id, 20, 0, 'R');
         await sleep(1000);
+        if(stop) {
+          currentTime++;
+          timeSpan.textContent = currentTime;
+          break;
+        }
       }
       displayLog(`Proceso: ${queue[0].id} terminado en tiempo ${currentTime}`, "#08967e");
       updateTableTop(queue[0].id, 20, 0, 'Z', -1);
@@ -688,8 +693,16 @@ const hrrnScheduling = async (input) => {
         displayLog(`Ejecutando proceso ${nextP.id} en tiempo: ${currentTime}`, "#dddddd");
         updateTableTop(nextP.id, 20, 0, 'R');
         await sleep(1000);
+        if(stop) {
+          currentTime++;
+          timeSpan.textContent = currentTime;
+          break;
+        }
       }
-      displayLog(`Proceso: ${nextP.id} terminado en tiempo ${currentTime}`, "#08967e");
+      if(!stop) {
+        displayLog(`Proceso: ${nextP.id} terminado en tiempo ${currentTime}`, "#08967e");
+        stop = false;
+      }
       updateTableTop(nextP.id, 20, 0, 'Z', -1);
       done++;
 
@@ -706,7 +719,7 @@ const hrrnScheduling = async (input) => {
 const mfqScheduling = async (input) => {
   // List of all processes
   let processes = input;
-
+  stop = false;
   // Sort algorithms by arrival time
   for (let i = 0; i < processes.length - 1; i++) {
     for (let j = 0; j < processes.length - 1; j++) {
@@ -767,13 +780,25 @@ const mfqScheduling = async (input) => {
               updateTableTop(q1[0].id, 20-q1[0].priority, q1[0].priority, 'Z', -1);
               break;
             }
+            // Check for interruptions
+            if(stop) {
+              currentTime++;
+              timeSpan.textContent = currentTime;
+              // Stop execution
+              break;
+            }
           }
         // If process is not done, move to next queue
         if(q1[0].remaining > 0) {
-          displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#e39a0f");
-          updateTableTop(q1[0].id, 20-q1[0].priority, q1[0].priority, 'S', -1);
-          q1[0].priority = 2;
-          q2.push(q1[0]); 
+          if(!stop) {
+            displayLog("Tiempo restante para el proceso " + q1[0].id + ": " + q1[0].remaining, "#e39a0f");
+            updateTableTop(q1[0].id, 20-q1[0].priority, q1[0].priority, 'S', -1);
+            q1[0].priority = 2;
+            q2.push(q1[0]); 
+          }
+          else {
+            stop = false;
+          }
         }
         // Remove from queue
         q1.shift();
@@ -802,13 +827,25 @@ const mfqScheduling = async (input) => {
             updateTableTop(q2[0].id, 20-q2[0].priority, q2[0].priority, 'Z', -1);
             break;
           }
+          // Check for interruptions
+          if(stop) {
+            currentTime++;
+            timeSpan.textContent = currentTime;
+            // Stop execution
+            break;
+          }
         }
         // If process is not done, move to next queue
         if(q2[0].remaining > 0) {
-          displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#e39a0f");
-          updateTableTop(q2[0].id, 20-q2[0].priority, q2[0].priority, 'S', -1);
-          q2[0].priority = 3;
-          q3.push(q2[0]); 
+          if(stop) {
+            displayLog("Tiempo restante para el proceso " + q2[0].id + ": " + q2[0].remaining, "#e39a0f");
+            updateTableTop(q2[0].id, 20-q2[0].priority, q2[0].priority, 'S', -1);
+            q2[0].priority = 3;
+            q3.push(q2[0]); 
+          }
+          else {
+            stop = false;
+          }
         }
         // Remove from queue
         q2.shift();
@@ -834,6 +871,14 @@ const mfqScheduling = async (input) => {
           if(q3[0].remaining === 0) {
             displayLog("Proceso " + q3[0].id + " terminado en tiempo: " + currentTime, "#08967e");
             updateTableTop(q3[0].id, 20-q3[0].priority, q3[0].priority, 'Z', -1);
+            break;
+          }
+          // Check for interruptions
+          if(stop) {
+            currentTime++;
+            timeSpan.textContent = currentTime;
+            // Stop execution
+            stop = false;
             break;
           }
         }
